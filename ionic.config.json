@@ -1,0 +1,7 @@
+{
+  "name": "ww-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
