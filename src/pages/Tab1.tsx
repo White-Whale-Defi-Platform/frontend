@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
 import { wifi, wine, warning } from 'ionicons/icons'
 
 import GaugeChart from 'react-gauge-chart'
@@ -8,6 +8,10 @@ import './Tab1.css'
 import ReactSpeedometer from 'react-d3-speedometer'
 const Tab1: React.FC = () => {
   const [currentUSTPrice, setCurrentUSTPrice] = React.useState(0.80)
+  // Replace these states values with smart contract function calls
+  const [currentDeposit, setDeposit] = React.useState(0.00)
+  const [currentRewards, setRewards] = React.useState(0.00)
+  const [currentAPY, setAPY] = React.useState(37.6)
   const callAPI = async (url) => {
     const response = await fetch(url, {
       headers: {
@@ -56,8 +60,8 @@ const Tab1: React.FC = () => {
       () => {
         fetchData().then((chartData) => {
           setCurrentUSTPrice(chartData.price[chartData.price.length - 1].toPrecision(4))
-        }).catch((err)=>{
-          console.log("Found issue with price grab"+err)
+        }).catch((err) => {
+          console.log("Found issue with price grab" + err)
           setCurrentUSTPrice(parseFloat((Math.random() * (0.80 - 1.20) + 1.20).toPrecision(4)))
         })
       },
@@ -82,7 +86,7 @@ const Tab1: React.FC = () => {
           <IonToolbar>
             <IonTitle size="large">White Whale - Info</IonTitle>
           </IonToolbar>
-          
+
         </IonHeader>
 
         <IonCard>
@@ -107,16 +111,27 @@ const Tab1: React.FC = () => {
             </IonRow> */}
             <IonRow>
               <IonCol></IonCol>
-              <IonCol>UST Price Peg:<ReactSpeedometer
+              <IonCol color='light'>UST Price Peg:<ReactSpeedometer
                 minValue={0.80}
                 maxValue={1.20}
+                textColor={'white'}
                 value={currentUSTPrice}
                 needleTransitionDuration={1000}
                 customSegmentStops={[0.80, 0.85, 0.90, 0.95, 1.05, 1.10, 1.15, 1.20]}
                 segmentColors={['firebrick', 'tomato', 'gold', 'limegreen', 'gold', 'tomato', 'firebrick']}
               />
-                <IonButton expand="block" color="secondary">Deposit</IonButton>
-                <IonButton expand="block" color="tertiary">Withdraw</IonButton></IonCol>
+                {/*-- Item Labels --*/}
+                <IonItem>
+                  <IonLabel>APY: {currentAPY} %</IonLabel>
+                </IonItem>
+                <IonItem>
+                  <IonLabel>Your Deposit: {currentDeposit} UST</IonLabel>
+                </IonItem>
+                <IonButton expand="block" color="secondary">Deposit / Withdrawl</IonButton>
+                <IonItem>
+                  <IonLabel>Your Rewards: {currentRewards} UST</IonLabel>
+                </IonItem>
+                <IonButton expand="block" color="tertiary">Claim Rewards</IonButton></IonCol>
 
               <IonCol></IonCol>
             </IonRow>
