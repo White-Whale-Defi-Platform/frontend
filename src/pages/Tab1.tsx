@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
+import { IonContent, IonHeader, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
 import { wifi, wine, warning } from 'ionicons/icons'
 
 import GaugeChart from 'react-gauge-chart'
+import {Header } from '../components/Header'
+import { WalletSelector } from '../components/Header/WalletSelector';
+
 import './Tab1.css'
 // import the component
 import ReactSpeedometer from 'react-d3-speedometer'
@@ -75,11 +78,17 @@ const Tab1: React.FC = () => {
   }, [])
 
   return (
+    
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>White Whale - Info</IonTitle>
+          <IonButtons slot="end">
+          <WalletSelector />
+          </IonButtons>
         </IonToolbar>
+        <Header/>
+
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
@@ -111,7 +120,7 @@ const Tab1: React.FC = () => {
             </IonRow> */}
             <IonRow>
               <IonCol></IonCol>
-              <IonCol color='light'>UST Price Peg:<ReactSpeedometer
+              <IonCol size="auto" color='light'>UST Price Peg:<ReactSpeedometer
                 minValue={0.80}
                 maxValue={1.20}
                 textColor={'white'}

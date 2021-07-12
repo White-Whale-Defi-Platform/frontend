@@ -13,6 +13,18 @@ import { speedometer, wallet, logoUsd } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
+import {
+  ExtensionNetworkOnlyWalletProvider,
+  NetworkInfo,
+  WalletProvider,
+} from '@terra-money/wallet-provider';
+import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
+
+import { GlobalStyle } from '@terra-dev/neumorphism-ui/themes/GlobalStyle';
+import { darkTheme } from '@terra-dev/neumorphism-ui/themes/darkTheme';
+import { lightTheme } from '@terra-dev/neumorphism-ui/themes/lightTheme';
+import { ThemeProvider } from '@terra-dev/neumorphism-ui/themes/ThemeProvider';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,8 +45,38 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+const walletConnectChainIds: Record<number, NetworkInfo> = {
+  0: {
+    name: 'testnet',
+    chainID: 'tequila-0004',
+    lcd: 'https://tequila-lcd.terra.dev',
+  },
+  1: {
+    name: 'mainnet',
+    chainID: 'columbus-4',
+    lcd: 'https://lcd.terra.dev',
+  },
+};
+
+const defaultNetwork = {
+  chainID: 'columbus-4',
+  fcd: 'https://fcd.terra.dev',
+  lcd: 'https://lcd.terra.dev',
+  name: 'mainnet',
+  ws: 'wss://fcd.terra.dev',
+};
 const App: React.FC = () => (
+
   <IonApp>
+    <ThemeProvider theme={lightTheme}>
+    {/* /** Terra Station Wallet Address :: useWallet() */}
+    <WalletProvider
+      defaultNetwork={defaultNetwork}
+      walletConnectChainIds={walletConnectChainIds}
+      connectorOpts={{
+        bridge: 'https://tequila-walletconnect.terra.dev/',
+      }}
+    >
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -66,7 +108,10 @@ const App: React.FC = () => (
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
+      
     </IonReactRouter>
+    </WalletProvider>
+    </ThemeProvider>
   </IonApp>
 );
 
