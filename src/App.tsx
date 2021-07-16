@@ -24,7 +24,7 @@ import {
   BankProvider as WebappBankProvider,
   CW20Contract,
   TerraWebappProvider,
-  webworkerMantleFetch,
+  defaultMantleFetch,
 } from '@terra-money/webapp-provider';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 
@@ -136,7 +136,7 @@ const App: React.FC = () => (
         }}
       >
         <TerraWebappProvider
-          mantleFetch={webworkerMantleFetch}
+          mantleFetch={defaultMantleFetch}
           txRefetchMap={ANCHOR_TX_REFETCH_MAP}
           txErrorReporter={errorReporter}
           queryErrorReporter={errorReporter}
