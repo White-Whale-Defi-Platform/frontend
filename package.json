@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@anchor-protocol/anchor.js": "*",
     "@anchor-protocol/icons": "^0.19.0",
     "@anchor-protocol/notation": "^0.19.0",
+    "@anchor-protocol/webapp-fns": "^0.19.0",
     "@anchor-protocol/webapp-provider": "^0.19.0",
     "@capacitor/app": "1.0.2",
     "@capacitor/core": "3.0.2",
@@ -13,6 +15,7 @@
     "@ionic/react": "^5.5.0",
     "@ionic/react-router": "^5.5.0",
     "@rx-stream/react": "^0.7.0",
+    "@sentry/react": "^6.9.0",
     "@terra-dev/big-math": "^0.19.0",
     "@terra-dev/browser-check": "^1.1.0-alpha.2",
     "@terra-dev/neumorphism-ui": "^0.19.0",
@@ -24,12 +27,14 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
+    "@types/big.js": "^6.1.1",
     "@types/jest": "^26.0.20",
     "@types/node": "^12.19.15",
     "@types/react": "^16.14.3",
     "@types/react-dom": "^16.9.10",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "big.js": "^6.1.1",
     "ionicons": "^5.4.0",
     "react": "^17.0.2",
     "react-d3-speedometer": "^1.0.1",
@@ -91,7 +96,8 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-react": "^7.24.0"
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "^2.3.2"
   },
   "description": "An Ionic project"
 }

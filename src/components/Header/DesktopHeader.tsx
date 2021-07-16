@@ -1,10 +1,10 @@
 import { Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Launch } from '@material-ui/icons';
-import logoUrl from '../Header/assets/Logo.svg';
+import logoUrl from '../Header/assets/ww-Logo.svg';
 import { DesktopNotification } from '../Header/notifications/DesktopNotification';
 import { WalletSelector } from './WalletSelector';
-import { IonContent, IonHeader, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
+import { IonContent, IonHeader, IonAvatar, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
 
 import { govPathname } from '../Header/env/gov';
 import React from 'react';
@@ -62,16 +62,18 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
           target="_blank"
           rel="noreferrer"
         >
-          <img src={logoUrl} alt="logo" />
+          <IonAvatar>
+        <img src={logoUrl} />
+      </IonAvatar>
         </a>
       </Tooltip>
 
-      <nav className="menu">
+      {/* <nav className="menu">
         <NavMenu to="/earn" title="EARN" docsTo={links.earn} />
         <NavMenu to="/borrow" title="BORROW" docsTo={links.borrow} />
         <NavMenu to="/bond" title="BOND" docsTo={links.bond} />
         <NavMenu to={`/${govPathname}`} title="GOVERN" docsTo={links.gov} />
-      </nav>
+      </nav> */}
 
       <div />
 
@@ -133,7 +135,7 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
 
   .menu {
     > div {
-      padding: 6px 17px;
+      padding: 2px 17px;
 
       display: flex;
       align-items: center;
@@ -160,7 +162,7 @@ export const DesktopHeader = styled(DesktopHeaderBase)`
         position: relative;
 
         svg {
-          margin-left: 2px;
+          margin-left: 0px;
           font-size: 1em;
           transform: translateY(2px);
         }

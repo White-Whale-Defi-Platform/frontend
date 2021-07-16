@@ -9,7 +9,7 @@ import {
   useWallet,
   WalletStatus,
 } from '@terra-money/wallet-provider';
-import logoUrl from '../Header/assets/Logo.svg';
+import logoUrl from '../Header/assets/ww-Logo.svg';
 import { AirdropContent } from './WalletSelector/AirdropContent';
 import { govPathname } from './env/gov';
 // import { useSendDialog } from './dialog/send/useSendDialog';

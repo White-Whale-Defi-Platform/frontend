@@ -8,8 +8,10 @@ import {
   IonTabButton,
   IonTabs,
 } from '@ionic/react';
+import { captureException } from '@sentry/react';
+
 import { IonReactRouter } from '@ionic/react-router';
-import { speedometer, wallet, logoUsd } from 'ionicons/icons';
+import { speedometer, wallet, logoUsd, business } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -18,13 +20,23 @@ import {
   NetworkInfo,
   WalletProvider,
 } from '@terra-money/wallet-provider';
+import {
+  BankProvider as WebappBankProvider,
+  CW20Contract,
+  TerraWebappProvider,
+  webworkerMantleFetch,
+} from '@terra-money/webapp-provider';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 
 import { GlobalStyle } from '@terra-dev/neumorphism-ui/themes/GlobalStyle';
 import { darkTheme } from '@terra-dev/neumorphism-ui/themes/darkTheme';
 import { lightTheme } from '@terra-dev/neumorphism-ui/themes/lightTheme';
 import { ThemeProvider } from '@terra-dev/neumorphism-ui/themes/ThemeProvider';
-
+import { ADDRESSES, defaultNetwork, onProduction } from './env';
+import {
+  ANCHOR_TX_REFETCH_MAP,
+  AnchorWebappProvider,
+} from '@anchor-protocol/webapp-provider';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -44,7 +56,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
+//TODO: Add the Terra webapp provider components so the app can gather the token balances
 const walletConnectChainIds: Record<number, NetworkInfo> = {
   0: {
     name: 'testnet',
@@ -58,59 +70,119 @@ const walletConnectChainIds: Record<number, NetworkInfo> = {
   },
 };
 
-const defaultNetwork = {
-  chainID: 'columbus-4',
-  fcd: 'https://fcd.terra.dev',
-  lcd: 'https://lcd.terra.dev',
-  name: 'mainnet',
-  ws: 'wss://fcd.terra.dev',
+const cw20TokenContracts: Record<string, Record<string, CW20Contract>> = {
+  mainnet: {
+    uaUST: {
+      contractAddress: ADDRESSES.mainnet.cw20.aUST,
+    },
+    ubLuna: {
+      contractAddress: ADDRESSES.mainnet.cw20.bLuna,
+    },
+    uANC: {
+      contractAddress: ADDRESSES.mainnet.cw20.ANC,
+    },
+    uAncUstLP: {
+      contractAddress: ADDRESSES.mainnet.cw20.AncUstLP,
+    },
+    ubLunaLunaLP: {
+      contractAddress: ADDRESSES.mainnet.cw20.bLunaLunaLP,
+    },
+  },
+  testnet: {
+    uaUST: {
+      contractAddress: ADDRESSES.testnet.cw20.aUST,
+    },
+    ubLuna: {
+      contractAddress: ADDRESSES.testnet.cw20.bLuna,
+    },
+    uANC: {
+      contractAddress: ADDRESSES.testnet.cw20.ANC,
+    },
+    uAncUstLP: {
+      contractAddress: ADDRESSES.testnet.cw20.AncUstLP,
+    },
+    ubLunaLunaLP: {
+      contractAddress: ADDRESSES.testnet.cw20.bLunaLunaLP,
+    },
+  },
 };
+
+const maxCapTokenDenoms: Record<string, string> = {
+  maxTaxUUSD: 'uusd',
+};
+const errorReporter = null;
+
+// const [openReadonlyWalletSelector, readonlyWalletSelectorElement] =
+//     useReadonlyWalletDialog();
+// const createReadonlyWalletSession = useCallback(
+//   (networks: NetworkInfo[]): Promise<ReadonlyWalletSession | null> => {
+//     return openReadonlyWalletSelector({
+//       networks,
+//     });
+//   },
+//   [openReadonlyWalletSelector],
+// );
 const App: React.FC = () => (
+
 
   <IonApp>
     <ThemeProvider theme={lightTheme}>
-    {/* /** Terra Station Wallet Address :: useWallet() */}
-    <WalletProvider
-      defaultNetwork={defaultNetwork}
-      walletConnectChainIds={walletConnectChainIds}
-      connectorOpts={{
-        bridge: 'https://tequila-walletconnect.terra.dev/',
-      }}
-    >
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={speedometer} />
-            <IonLabel>Peg </IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={logoUsd} />
-            <IonLabel>UST Whales</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={wallet} />
-            <IonLabel>Vaults</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-      
-    </IonReactRouter>
-    </WalletProvider>
+      {/* /** Terra Station Wallet Address :: useWallet() */}
+      <WalletProvider
+        defaultNetwork={defaultNetwork}
+        walletConnectChainIds={walletConnectChainIds}
+        connectorOpts={{
+          bridge: 'https://walletconnect.terra.dev/',
+        }}
+      >
+        <TerraWebappProvider
+          mantleFetch={webworkerMantleFetch}
+          txRefetchMap={ANCHOR_TX_REFETCH_MAP}
+          txErrorReporter={errorReporter}
+          queryErrorReporter={errorReporter}
+        >
+          <WebappBankProvider
+            cw20TokenContracts={cw20TokenContracts}
+            maxCapTokenDenoms={maxCapTokenDenoms}
+          >
+            <AnchorWebappProvider>
+            <IonReactRouter>
+              <IonTabs>
+                <IonRouterOutlet>
+                  <Route exact path="/tab1">
+                    <Tab1 />
+                  </Route>
+                  <Route exact path="/tab2">
+                    <Tab2 />
+                  </Route>
+                  <Route path="/tab3">
+                    <Tab3 />
+                  </Route>
+                  <Route exact path="/">
+                    <Redirect to="/tab1" />
+                  </Route>
+                </IonRouterOutlet>
+                <IonTabBar slot="bottom" color="light">
+                  <IonTabButton tab="tab1" href="/tab1">
+                    <IonIcon icon={speedometer} />
+                    <IonLabel>Peg </IonLabel>
+                  </IonTabButton>
+                  <IonTabButton tab="tab2" href="/tab2">
+                    <IonIcon icon={wallet} />
+                    <IonLabel>Vaults</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton tab="tab3" href="/tab3">
+                    <IonIcon icon={business} />
+                    <IonLabel>Governance</IonLabel>
+                  </IonTabButton>
+                </IonTabBar>
+              </IonTabs>
+
+            </IonReactRouter>
+            </AnchorWebappProvider>
+          </WebappBankProvider>
+        </TerraWebappProvider>
+      </WalletProvider>
     </ThemeProvider>
   </IonApp>
 );

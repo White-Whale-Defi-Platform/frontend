@@ -1,20 +1,37 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { IonContent, IonHeader, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
 import { wifi, wine, warning } from 'ionicons/icons'
 
 import GaugeChart from 'react-gauge-chart'
-import {Header } from '../components/Header'
+import { Header } from '../components/Header'
 import { WalletSelector } from '../components/Header/WalletSelector';
 
 import './Tab1.css'
 // import the component
 import ReactSpeedometer from 'react-d3-speedometer'
 const Tab1: React.FC = () => {
-  const [currentUSTPrice, setCurrentUSTPrice] = React.useState(0.80)
+  const [currentUSTPrice, setCurrentUSTPrice] = React.useState(1.000)
   // Replace these states values with smart contract function calls
   const [currentDeposit, setDeposit] = React.useState(0.00)
   const [currentRewards, setRewards] = React.useState(0.00)
   const [currentAPY, setAPY] = React.useState(37.6)
+  const [textColour, setTextColour] = React.useState('')
+  const parentRef = useRef(null);
+  const childrenRef = useRef(null);
+  // // Use matchMedia to check the user preference
+  // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  // // Listen for changes to the prefers-color-scheme media query
+  // prefersDark.addListener((mediaQuery) => updateStyles(mediaQuery.matches))
+
+  // function updateStyles(shouldUpdate){
+  //   if ((shouldUpdate && textColour != '#FFFFFF') || (shouldUpdate && textColour == '#000000')){
+  //     shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
+  //   }
+  //   console.log(`Doing an update ${shouldUpdate}`)
+  //   // shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
+
+  // }
+
   const callAPI = async (url) => {
     const response = await fetch(url, {
       headers: {
@@ -40,21 +57,18 @@ const Tab1: React.FC = () => {
     return data
   }
 
-  // // add side effect to component for dummy UST Price
-  // React.useEffect(() => {
-  //   // create interval
-  //   const interval = setInterval(
-  //     // set number every 5s between 1.20 and 0.80 UST
-  //     () => setCurrentUSTPrice(parseFloat((Math.random() * (0.80 - 1.20) + 1.20).toPrecision(4))),
-  //     5000
-  //   )
+  //  add side effect to detect dark mode for speedometer colours 
+  useEffect(() => {
 
-  //   // clean up interval on unmount
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
-  // }, [])
+    if (parentRef.current) {
 
+      let parentColor = parentRef.current.backgroundColor;
+      setTextColour(parentColor)
+    }
+
+
+
+  }, [parentRef]);
   // add side effect to component for dummy UST Price
   React.useEffect(() => {
     // create interval
@@ -65,7 +79,7 @@ const Tab1: React.FC = () => {
           setCurrentUSTPrice(chartData.price[chartData.price.length - 1].toPrecision(4))
         }).catch((err) => {
           console.log("Found issue with price grab" + err)
-          setCurrentUSTPrice(parseFloat((Math.random() * (0.80 - 1.20) + 1.20).toPrecision(4)))
+          setCurrentUSTPrice(parseFloat((Math.random() * (0.90 - 1.10) + 1.20).toPrecision(4)))
         })
       },
       3000
@@ -78,16 +92,16 @@ const Tab1: React.FC = () => {
   }, [])
 
   return (
-    
+
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        {/* <IonToolbar>
           <IonTitle>White Whale - Info</IonTitle>
           <IonButtons slot="end">
           <WalletSelector />
           </IonButtons>
-        </IonToolbar>
-        <Header/>
+        </IonToolbar> */}
+        <Header />
 
       </IonHeader>
       <IonContent fullscreen>
@@ -120,28 +134,58 @@ const Tab1: React.FC = () => {
             </IonRow> */}
             <IonRow>
               <IonCol></IonCol>
-              <IonCol size="auto" color='light'>UST Price Peg:<ReactSpeedometer
-                minValue={0.80}
-                maxValue={1.20}
-                textColor={'white'}
+              <IonCol size="auto" color='light' ref={parentRef}><IonLabel>UST Price Peg:</IonLabel><ReactSpeedometer
+                minValue={0.90}
+                maxValue={1.10}
+                textColor={textColour}
                 value={currentUSTPrice}
+                needleHeightRatio={0.7}
+                forceRender={true}
+                segments={10}
+                maxSegmentLabels={10}
+                currentValueText={`UST Price: $ ${currentUSTPrice}`}
+                valueTextFontSize={'37px'}
+                valueTextFontWeight={'500'}
+                paddingHorizontal={27}
+                paddingVertical={40}
                 needleTransitionDuration={1000}
-                customSegmentStops={[0.80, 0.85, 0.90, 0.95, 1.05, 1.10, 1.15, 1.20]}
-                segmentColors={['firebrick', 'tomato', 'gold', 'limegreen', 'gold', 'tomato', 'firebrick']}
+                // customSegmentStops={[0.90, 0.95, 1.05, 1.10,]}
+                segmentColors={['red', 'red', 'gold', 'gold', 'limegreen', 'limegreen', 'gold', 'gold', 'red', 'red']}
               />
-                {/*-- Item Labels --*/}
-                <IonItem>
-                  <IonLabel>APY: {currentAPY} %</IonLabel>
-                </IonItem>
-                <IonItem>
-                  <IonLabel>Your Deposit: {currentDeposit} UST</IonLabel>
-                </IonItem>
-                <IonButton expand="block" color="secondary">Deposit / Withdrawl</IonButton>
-                <IonItem>
-                  <IonLabel>Your Rewards: {currentRewards} UST</IonLabel>
-                </IonItem>
-                <IonButton expand="block" color="tertiary">Claim Rewards</IonButton></IonCol>
+                {/*-- Buttons and Label Grid --*/}
+                <IonGrid>
+                  <IonRow>
+                    <IonItem>
+                      <IonLabel>APY: {currentAPY} %</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Your Deposit: {currentDeposit} UST</IonLabel>
+                    </IonItem>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <IonButton expand="block" color="secondary">Deposit</IonButton>
+                    </IonCol>
+                    <IonCol>
+                      <IonButton expand="block" color="secondary">Withdraw</IonButton>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonItem>
+                      <IonLabel>Your Rewards: {currentRewards} UST</IonLabel>
+                    </IonItem>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <IonButton expand="block" color="tertiary">Claim</IonButton>
+                    </IonCol>
+                    <IonCol>
+                      <IonButton expand="block" color="tertiary">Compound</IonButton>
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
 
+              </IonCol>
               <IonCol></IonCol>
             </IonRow>
           </IonGrid>
