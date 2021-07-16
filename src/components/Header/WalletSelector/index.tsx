@@ -11,7 +11,7 @@ import {
   WalletStatus,
 } from '@terra-money/wallet-provider';
 import { useBank } from '../WalletSelector/bank';
-// import { useSendDialog } from '../dialog/send/useSendDialog';
+import { useSendDialog } from '../dialog/send/useSendDialog';
 import { useCallback, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -64,7 +64,7 @@ function WalletSelectorBase({ className }: WalletSelectorProps) {
 
   const matchAirdrop = useRouteMatch('/airdrop');
 
-  // const [openSendDialog, sendDialogElement] = useSendDialog();
+  const [openSendDialog, sendDialogElement] = useSendDialog();
 
   // ---------------------------------------------
   // states
@@ -258,13 +258,13 @@ function WalletSelectorBase({ className }: WalletSelectorProps) {
                     network={network}
                     closePopup={() => setOpenDropdown(false)}
                     disconnectWallet={disconnectWallet}
-                    openSend={() => console.log("send open")}
+                    openSend={() => openSendDialog({})}
                   />
                 </DropdownBox>
               </DropdownContainer>
             )}
 
-            {/* {sendDialogElement} */}
+            {sendDialogElement}
           </div>
         </ClickAwayListener>
       ) : null;

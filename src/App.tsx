@@ -37,6 +37,7 @@ import {
   ANCHOR_TX_REFETCH_MAP,
   AnchorWebappProvider,
 } from '@anchor-protocol/webapp-provider';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -56,6 +57,11 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+
+
+const queryClient = new QueryClient();
+
+
 //TODO: Add the Terra webapp provider components so the app can gather the token balances
 const walletConnectChainIds: Record<number, NetworkInfo> = {
   0: {
@@ -127,6 +133,7 @@ const App: React.FC = () => (
 
   <IonApp>
     <ThemeProvider theme={lightTheme}>
+    <QueryClientProvider client={queryClient}>
       {/* /** Terra Station Wallet Address :: useWallet() */}
       <WalletProvider
         defaultNetwork={defaultNetwork}
@@ -183,6 +190,7 @@ const App: React.FC = () => (
           </WebappBankProvider>
         </TerraWebappProvider>
       </WalletProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   </IonApp>
 );
