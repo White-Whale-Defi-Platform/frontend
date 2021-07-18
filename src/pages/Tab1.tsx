@@ -11,7 +11,6 @@ import { wifi, wine, warning } from 'ionicons/icons'
 import GaugeChart from 'react-gauge-chart'
 import { Header } from '../components/Header'
 import { WalletSelector } from '../components/Header/WalletSelector';
-
 import './Tab1.css'
 // import the component
 import ReactSpeedometer from 'react-d3-speedometer'
@@ -21,22 +20,22 @@ const Tab1: React.FC = () => {
   const [currentDeposit, setDeposit] = React.useState(0.00)
   const [currentRewards, setRewards] = React.useState(0.00)
   const [currentAPY, setAPY] = React.useState(37.6)
-  const [textColour, setTextColour] = React.useState('')
+  const [textColour, setTextColour] = React.useState('#FFFFFF')
   const parentRef = useRef(null);
   const childrenRef = useRef(null);
-  // // Use matchMedia to check the user preference
-  // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-  // // Listen for changes to the prefers-color-scheme media query
-  // prefersDark.addListener((mediaQuery) => updateStyles(mediaQuery.matches))
+  // Use matchMedia to check the user preference
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  // Listen for changes to the prefers-color-scheme media query
+  prefersDark.addListener((mediaQuery) => updateStyles(mediaQuery.matches))
 
-  // function updateStyles(shouldUpdate){
-  //   if ((shouldUpdate && textColour != '#FFFFFF') || (shouldUpdate && textColour == '#000000')){
-  //     shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
-  //   }
-  //   console.log(`Doing an update ${shouldUpdate}`)
-  //   // shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
+  function updateStyles(shouldUpdate){
+    // if ((shouldUpdate && textColour != '#FFFFFF') || (shouldUpdate && textColour == '#000000')){
+    //   shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
+    // }
+    console.log(`Doing an update ${shouldUpdate}`)
+    shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
 
-  // }
+  }
 
   const callAPI = async (url) => {
     const response = await fetch(url, {
@@ -140,7 +139,7 @@ const Tab1: React.FC = () => {
             </IonRow> */}
             <IonRow>
               <IonCol></IonCol>
-              <IonCol size="auto" color='light' ref={parentRef}><IonLabel>UST Price Peg:</IonLabel><ReactSpeedometer
+              <IonCol size="auto" color='light' ref={parentRef}><ReactSpeedometer
                 minValue={0.90}
                 maxValue={1.10}
                 textColor={textColour}
