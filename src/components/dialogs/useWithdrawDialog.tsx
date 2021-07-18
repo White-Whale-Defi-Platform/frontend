@@ -11,8 +11,11 @@ import {
   computeTotalDeposit,
   useEarnEpochStatesQuery,
   useEarnWithdrawForm,
-  useEarnWithdrawTx,
+  // useEarnWithdrawTx,
 } from '@anchor-protocol/webapp-provider';
+import {
+  useWWWithdrawTx
+} from '../../tx/withdraw'
 import { InputAdornment, Modal } from '@material-ui/core';
 import { StreamStatus } from '@rx-stream/react';
 import { ActionButton } from '@terra-dev/neumorphism-ui/components/ActionButton';
@@ -54,7 +57,7 @@ function ComponentBase({
   // ---------------------------------------------
   const connectedWallet = useConnectedWallet();
 
-  const [withdraw, withdrawResult] = useEarnWithdrawTx();
+  const [withdraw, withdrawResult] = useWWWithdrawTx();
 
   // ---------------------------------------------
   // states
@@ -146,9 +149,9 @@ function ComponentBase({
             endAdornment: <InputAdornment position="end">UST</InputAdornment>,
           }}
         />
-
-        <div className="wallet" aria-invalid={!!invalidWithdrawAmount}>
-          <span>{invalidWithdrawAmount}</span>
+        <div className="wallet" >
+        {/* <div className="wallet" aria-invalid={!!invalidWithdrawAmount}> */}
+          {/* <span>{invalidWithdrawAmount}</span> */}
           <span>
             Max:{' '}
             <span
@@ -180,12 +183,12 @@ function ComponentBase({
         <ViewAddressWarning>
           <ActionButton
             className="proceed"
-            disabled={
-              !connectedWallet ||
-              !connectedWallet.availablePost ||
-              !withdraw ||
-              !availablePost
-            }
+            // disabled={
+            //   !connectedWallet ||
+            //   !connectedWallet.availablePost ||
+            //   !withdraw ||
+            //   !availablePost
+            // }
             onClick={() => proceed(withdrawAmount, txFee)}
           >
             Proceed
