@@ -89,6 +89,7 @@ export const tequilaContractAddresses: AddressMap = {
   mmOracle: "terra1p4gg3p2ue6qy2qfuxtrmgv2ec3f4jmgqtazum8",
   //TODO: Update bethReward and token
   mmCustodyBEth: "terra1ptjp2vfjrwh0j0faj9r6katm640kgjxnwwq9kn",
+  // Note: mmMarket is the current anchor money market
   mmMarket: "terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal",
   mmOverseer: "terra1qljxd0y3j3gk97025qvl3lgq8ygup4gsksvaxv",
   mmCustody: "terra1ltnkx0mv7lf2rca9f8w740ashu93ujughy4s7p",
@@ -112,6 +113,8 @@ export const tequilaContractAddresses: AddressMap = {
   //vesting: 'terra19f6ktw4qpjj9p9m49y8mhf6pr9807d44xdcus7',
   //team: 'terra1x7ted5g0g6ntyqdaqmjwtzcctvvrdju49vs8pl',
   //terraswapFactory: '',
+  // WhiteWhale deposit and withdraw contract
+  wwMarket: ""
 };
 
 export const ADDRESS_PROVIDERS = {
