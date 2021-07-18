@@ -10,6 +10,9 @@ import {
   useEarnDepositForm,
   useEarnDepositTx,
 } from '@anchor-protocol/webapp-provider';
+import {
+  useWWDepositTx
+} from '../../tx/deposit'
 import { InputAdornment, Modal } from '@material-ui/core';
 import { StreamStatus } from '@rx-stream/react';
 import { ActionButton } from '@terra-dev/neumorphism-ui/components/ActionButton';
@@ -53,7 +56,7 @@ function ComponentBase({
 
   const [openConfirm, confirmElement] = useConfirm();
 
-  const [deposit, depositResult] = useEarnDepositTx();
+  const [deposit, depositResult] = useWWDepositTx();
 
   // ---------------------------------------------
   // states

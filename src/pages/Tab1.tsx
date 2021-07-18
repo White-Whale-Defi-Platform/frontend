@@ -241,7 +241,7 @@ const Tab1: React.FC = () => {
         </IonCard>
         {/* <ExploreContainer name="Tab 1 page" /> */}
         {depositDialogElement}
-      {withdrawDialogElement}
+        {withdrawDialogElement}
       </IonContent>
     </IonPage>
   )

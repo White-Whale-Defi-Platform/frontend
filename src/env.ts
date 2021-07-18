@@ -1,5 +1,4 @@
 import {
-  AddressMap,
   AddressProviderFromJson,
 } from "@anchor-protocol/anchor.js";
 import { Rate } from "@anchor-protocol/types";
@@ -39,6 +38,39 @@ export const defaultNetwork = {
   name: "mainnet",
   ws: "wss://fcd.terra.dev",
 };
+
+export interface AddressMap {
+  bLunaHub: string;
+  bLunaToken: string;
+  bLunaReward: string;
+  bLunaAirdrop: string;
+  bEthReward: string;
+  bEthToken: string;
+  mmInterestModel: string;
+  mmOracle: string;
+  mmMarket: string;
+  mmOverseer: string;
+  mmCustody: string;
+  mmCustodyBEth: string;
+  mmLiquidation: string;
+  mmDistributionModel: string;
+  aTerra: string;
+  terraswapblunaLunaPair: string;
+  terraswapblunaLunaLPToken: string;
+  terraswapAncUstPair: string;
+  terraswapAncUstLPToken: string;
+  gov: string;
+  distributor: string;
+  collector: string;
+  community: string;
+  staking: string;
+  ANC: string;
+  airdrop: string;
+  investor_vesting: string;
+  team_vesting: string;
+  wwMarket?: string;
+  wwLpToken?: string;
+}
 
 export const columbusContractAddresses: AddressMap = {
   bLunaHub: "terra1mtwph2juhj0rvjz7dy92gvl6xvukaxu8rfv8ts",
