@@ -4,7 +4,7 @@
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { IonContent, IonHeader, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
 import { wifi, wine, warning } from 'ionicons/icons'
 
@@ -14,6 +14,8 @@ import { WalletSelector } from '../components/Header/WalletSelector';
 import './Tab1.css'
 // import the component
 import ReactSpeedometer from 'react-d3-speedometer'
+import { useDepositDialog } from '../components/dialogs/useDepositDialog';
+import { useWithdrawDialog } from '../components/dialogs/useWithdrawDialog';
 const Tab1: React.FC = () => {
   const [currentUSTPrice, setCurrentUSTPrice] = React.useState(1.000)
   // Replace these states values with smart contract function calls
@@ -23,6 +25,22 @@ const Tab1: React.FC = () => {
   const [textColour, setTextColour] = React.useState('#FFFFFF')
   const parentRef = useRef(null);
   const childrenRef = useRef(null);
+
+  // ---------------------------------------------
+  // dialogs
+  // ---------------------------------------------
+  const [openDepositDialog, depositDialogElement] = useDepositDialog();
+
+  const [openWithdrawDialog, withdrawDialogElement] = useWithdrawDialog();
+
+  const openDeposit = useCallback(async () => {
+    await openDepositDialog({});
+  }, [openDepositDialog]);
+
+  const openWithdraw = useCallback(async () => {
+    await openWithdrawDialog({});
+  }, [openWithdrawDialog]);
+  // Theming 
   // Use matchMedia to check the user preference
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   // Listen for changes to the prefers-color-scheme media query
@@ -169,10 +187,10 @@ const Tab1: React.FC = () => {
                   </IonRow>
                   <IonRow>
                     <IonCol>
-                      <IonButton expand="block" color="secondary">Deposit</IonButton>
+                      <IonButton expand="block" color="secondary" onClick={openDeposit}>Deposit</IonButton>
                     </IonCol>
                     <IonCol>
-                      <IonButton expand="block" color="secondary">Withdraw</IonButton>
+                      <IonButton expand="block" color="secondary" onClick={openWithdraw}>Withdraw</IonButton>
                     </IonCol>
                   </IonRow>
                   <IonRow>
@@ -222,6 +240,8 @@ const Tab1: React.FC = () => {
 
         </IonCard>
         {/* <ExploreContainer name="Tab 1 page" /> */}
+        {depositDialogElement}
+      {withdrawDialogElement}
       </IonContent>
     </IonPage>
   )

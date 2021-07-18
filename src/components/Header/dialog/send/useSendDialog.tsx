@@ -38,7 +38,7 @@ import {
   import { MessageBox } from '../../../MessageBox';
   import { TxFeeList, TxFeeListItem } from '../../..//TxFeeList';
   import { TxResultRenderer } from '../../..//TxResultRenderer';
-  import { CurrencyInfo } from '../send/models/currency';
+  import { CurrencyInfo } from './models/currency';
   import React, {
     ChangeEvent,
     ReactNode,
