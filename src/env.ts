@@ -114,7 +114,8 @@ export const tequilaContractAddresses: AddressMap = {
   //team: 'terra1x7ted5g0g6ntyqdaqmjwtzcctvvrdju49vs8pl',
   //terraswapFactory: '',
   // WhiteWhale deposit and withdraw contract
-  wwMarket: ""
+  wwMarket: "terra1qppq9uu6xqz2c4my456gpxd89cwqsgc33fjy0t",
+  wwLpToken: "terra1hz7qmqdt9hh5rae5qflry9vg8l5l45w8ldd3sd"
 };
 
 export const ADDRESS_PROVIDERS = {
