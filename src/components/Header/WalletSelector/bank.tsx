@@ -37,7 +37,6 @@ export function useBank(): Bank {
     AnchorTax
   >();
   refetchTokenBalances()
-  console.log(tokenBalances)
   const state = useMemo<Bank>(() => {
     return {
       tax,

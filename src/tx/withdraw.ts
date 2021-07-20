@@ -10,6 +10,7 @@ import {
 } from '@terra-money/webapp-provider';
 import { useCallback } from 'react';
 // import { ANCHOR_TX_KEY } from '../../env';
+// end result will be something like whitewhale.js 
 import {
     useAnchorWebapp,
   } from '@anchor-protocol/webapp-provider';

@@ -1,6 +1,6 @@
 //  Copyright: (c) 2021, 0xFable, WhiteWhale Team
 //  The MIT License
-  
+
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -23,8 +23,7 @@ const Tab1: React.FC = () => {
   const [currentRewards, setRewards] = React.useState(0.00)
   const [currentAPY, setAPY] = React.useState(37.6)
   const [textColour, setTextColour] = React.useState('#FFFFFF')
-  const parentRef = useRef(null);
-  const childrenRef = useRef(null);
+
 
   // ---------------------------------------------
   // dialogs
@@ -46,11 +45,7 @@ const Tab1: React.FC = () => {
   // Listen for changes to the prefers-color-scheme media query
   prefersDark.addListener((mediaQuery) => updateStyles(mediaQuery.matches))
 
-  function updateStyles(shouldUpdate){
-    // if ((shouldUpdate && textColour != '#FFFFFF') || (shouldUpdate && textColour == '#000000')){
-    //   shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
-    // }
-    console.log(`Doing an update ${shouldUpdate}`)
+  function updateStyles(shouldUpdate) {
     shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
 
   }
@@ -80,18 +75,6 @@ const Tab1: React.FC = () => {
     return data
   }
 
-  //  add side effect to detect dark mode for speedometer colours 
-  useEffect(() => {
-
-    if (parentRef.current) {
-
-      let parentColor = parentRef.current.backgroundColor;
-      setTextColour(parentColor)
-    }
-
-
-
-  }, [parentRef]);
   // add side effect to component for dummy UST Price
   React.useEffect(() => {
     // create interval
@@ -136,109 +119,84 @@ const Tab1: React.FC = () => {
         </IonHeader>
 
         <IonCard>
-          <IonGrid>
-            {/* <IonRow>
-              <IonCol> <IonCard>
-                <IonItem>
-                  <IonIcon icon={pin} slot="start" />
-                  <IonLabel>Luna Price: {5.57}</IonLabel>
-                  <IonButton fill="outline" slot="end">View</IonButton>
-                </IonItem>
-              </IonCard>
-              </IonCol>
-              <IonCol> <IonCard>
-                <IonItem>
-                  <IonIcon icon={pin} slot="start" />
-                  <IonLabel>Anchor Price: {2.1}</IonLabel>
-                  <IonButton fill="outline" slot="end">View</IonButton>
-                </IonItem>
-              </IonCard>
-              </IonCol>
-            </IonRow> */}
-            <IonRow>
-              <IonCol></IonCol>
-              <IonCol size="auto" color='light' ref={parentRef}><ReactSpeedometer
-                minValue={0.90}
-                maxValue={1.10}
-                textColor={textColour}
-                value={currentUSTPrice}
-                needleHeightRatio={0.7}
-                forceRender={true}
-                segments={10}
-                maxSegmentLabels={10}
-                currentValueText={`UST Price: $ ${currentUSTPrice}`}
-                valueTextFontSize={'37px'}
-                valueTextFontWeight={'500'}
-                paddingHorizontal={27}
-                paddingVertical={40}
-                needleTransitionDuration={1000}
-                // customSegmentStops={[0.90, 0.95, 1.05, 1.10,]}
-                segmentColors={['red', 'red', 'gold', 'gold', 'limegreen', 'limegreen', 'gold', 'gold', 'red', 'red']}
-              />
-                {/*-- Buttons and Label Grid --*/}
-                <IonGrid>
-                  <IonRow>
-                    <IonItem>
-                      <IonLabel>APY: {currentAPY} %</IonLabel>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Your Deposit: {currentDeposit} UST</IonLabel>
-                    </IonItem>
-                  </IonRow>
-                  <IonRow>
-                    <IonCol>
-                      <IonButton expand="block" color="secondary" onClick={openDeposit}>Deposit</IonButton>
-                    </IonCol>
-                    <IonCol>
-                      <IonButton expand="block" color="secondary" onClick={openWithdraw}>Withdraw</IonButton>
-                    </IonCol>
-                  </IonRow>
-                  <IonRow>
-                    <IonItem>
-                      <IonLabel>Your Rewards: {currentRewards} UST</IonLabel>
-                    </IonItem>
-                  </IonRow>
-                  <IonRow>
-                    <IonCol>
-                      <IonButton expand="block" color="tertiary">Claim</IonButton>
-                    </IonCol>
-                    <IonCol>
-                      <IonButton expand="block" color="tertiary">Compound</IonButton>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-
-              </IonCol>
-              <IonCol></IonCol>
-            </IonRow>
-          </IonGrid>
-
           <IonCardHeader>
-            <IonCardSubtitle>UST Price Peg Guage</IonCardSubtitle>
-            <IonCardTitle>Terra and UST Info Links</IonCardTitle>
+            <IonCardTitle>UST Arb Vault</IonCardTitle>
           </IonCardHeader>
 
           <IonCardContent>
-            Provided with this guage are a few helpful links
+            {/* This Grid is responsible for ensuring the speedometer remains centered within the component*/}
+            <IonGrid>
+              <IonRow>
+                <IonCol></IonCol>
+                <IonCol size="auto"><ReactSpeedometer
+                  minValue={0.95}
+                  maxValue={1.05}
+                  textColor={textColour}
+                  value={currentUSTPrice}
+                  height={160}
+                  needleHeightRatio={0.7}
+                  forceRender={true}
+                  segments={10}
+                  maxSegmentLabels={10}
+                  // We set to text to empty as we use custom text components below
+                  currentValueText={``}
+                  valueTextFontSize={'2px'}
+                  valueTextFontWeight={'0'}
+                  paddingHorizontal={27}
+                  paddingVertical={5}
+                  needleTransitionDuration={1000}
+                  segmentColors={['#03DF04', '#03DF04', '#A0F9A0', '#A0F9A0', '#FFFFFE', '#FFFFFE', '#A0F9A0', '#A0F9A0', '#03DF04', '#03DF04']}
+                />
+                  <IonItem className="value-text">
+
+                    <IonLabel className="ion-text-center"><IonIcon src='/assets/ust.svg'></IonIcon>UST:</IonLabel>
+                  </IonItem>
+                  <IonItem className="value-text">
+                    <IonLabel className="ion-text-center">$ {currentUSTPrice}</IonLabel>
+                  </IonItem>
+                  {/*-- This is another Buttons and Label Grid. Inside the first one, the intention here is to be able to have columns which are perfectly split from teh speedometer but still all centered --*/}
+                  {/* TODO: Refactor in component */}
+                  <IonGrid>
+                    <IonRow>
+                      <IonItem>
+                        <IonLabel>APY: {currentAPY} %</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Your Deposit: {currentDeposit} UST</IonLabel>
+                      </IonItem>
+                    </IonRow>
+                    <IonRow>
+                      <IonCol>
+                        <IonButton strong expand="block" color="secondary" onClick={openDeposit}>Deposit</IonButton>
+                      </IonCol>
+                      <IonCol>
+                        <IonButton strong expand="block" color="secondary" onClick={openWithdraw}>Withdraw</IonButton>
+                      </IonCol>
+                    </IonRow>
+                    <IonRow>
+                      <IonItem>
+                        <IonLabel>Your Rewards: {currentRewards} UST</IonLabel>
+                      </IonItem>
+                    </IonRow>
+                    <IonRow>
+                      <IonCol>
+                        <IonButton strong expand="block" color="tertiary">Claim</IonButton>
+                      </IonCol>
+                      <IonCol>
+                        <IonButton strong expand="block" color="tertiary">Compound</IonButton>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+
+                </IonCol>
+                <IonCol></IonCol>
+              </IonRow>
+            </IonGrid>
           </IonCardContent>
         </IonCard>
-        <IonCard>
-          <IonItem href="https://station.terra.money/" className="ion-activated">
-            <IonIcon icon={wifi} slot="start" />
-            <IonLabel>TerraStation</IonLabel>
-          </IonItem>
 
-          <IonItem href="https://app.anchorprotocol.com">
-            <IonIcon icon={wine} slot="start" />
-            <IonLabel>Anchor Protocol</IonLabel>
-          </IonItem>
 
-          <IonItem href="https://terra.mirror.finance/" className="ion-activated">
-            <IonIcon icon={warning} slot="start" />
-            <IonLabel>Mirror Protocol</IonLabel>
-          </IonItem>
 
-        </IonCard>
         {/* <ExploreContainer name="Tab 1 page" /> */}
         {depositDialogElement}
         {withdrawDialogElement}

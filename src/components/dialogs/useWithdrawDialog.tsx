@@ -13,6 +13,8 @@ import {
   useEarnWithdrawForm,
   // useEarnWithdrawTx,
 } from '@anchor-protocol/webapp-provider';
+//TODO: Eventually the pieces we add to here and take away from @anchor-protocol/webapp-provider
+// end result will be something like whitewhale.js 
 import {
   useWWWithdrawTx
 } from '../../tx/withdraw'

@@ -3,6 +3,7 @@
  * AddressProvider interface exposes the available operations 
  * for a smart contract and their types. Think of this like
  * a stub for an API call.
+ * Eventually this will be filled with things we need addresses for related to this project
  */
 export interface AddressProvider {
   bLunaReward(): string;
@@ -13,8 +14,6 @@ export interface AddressProvider {
 
   // This should be the white whale contract which can handle deposits and withdraws
   market(denom: MARKET_DENOMS): string;
-
-  
 }
 
 export enum MARKET_DENOMS {

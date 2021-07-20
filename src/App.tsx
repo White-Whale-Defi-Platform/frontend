@@ -178,11 +178,11 @@ const App: React.FC = () => (
                 <IonTabBar slot="bottom" color="light">
                   <IonTabButton tab="tab1" href="/tab1">
                     <IonIcon icon={speedometer} />
-                    <IonLabel>Peg </IonLabel>
+                    <IonLabel>Vaults </IonLabel>
                   </IonTabButton>
                   <IonTabButton tab="tab2" href="/tab2">
                     <IonIcon icon={wallet} />
-                    <IonLabel>Vaults</IonLabel>
+                    <IonLabel>Swap</IonLabel>
                   </IonTabButton>
                   <IonTabButton tab="tab3" href="/tab3">
                     <IonIcon icon={business} />

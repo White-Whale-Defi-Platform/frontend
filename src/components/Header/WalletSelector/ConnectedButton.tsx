@@ -26,8 +26,6 @@ function ConnectedButtonBase({
   bank,
   ...buttonProps
 }: ConnectedButtonProps) {
-  console.log(walletAddress)
-  console.log(bank)
   return (
     <button {...buttonProps}>
       <IconSpan>
