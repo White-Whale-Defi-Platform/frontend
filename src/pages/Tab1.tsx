@@ -10,64 +10,23 @@ import { Header } from '../components/Header'
 import './Tab1.css'
 // import the component
 import ReactSpeedometer from 'react-d3-speedometer'
-import { useDepositDialog } from '../components/dialogs/useDepositDialog';
-import { useWithdrawDialog } from '../components/dialogs/useWithdrawDialog';
+import ButtonGrid from '../components/ButtonGrid'
 
-import {
-  useEarnEpochStatesQuery
-} from '@anchor-protocol/webapp-provider';
-import { useBank } from '@terra-money/webapp-provider';
-import { WhiteWhaleTokenBalances, computeTotalDeposit } from '../tx/withdraw-hook'
-import {
-  demicrofy,
-  formatUST,
-} from '@anchor-protocol/notation';
 const Tab1: React.FC = () => {
   const [currentUSTPrice, setCurrentUSTPrice] = React.useState(1.000)
-  // Note: We can replace this by simply querying the bank module
-  const { tokenBalances } = useBank<WhiteWhaleTokenBalances>();
-  const { data } = useEarnEpochStatesQuery();
-
-  const { totalDeposit } = useMemo(() => {
-    return {
-      totalDeposit: computeTotalDeposit(
-        tokenBalances.wwUST,
-        data?.moneyMarketEpochState,
-      ),
-    };
-  }, [data?.moneyMarketEpochState, tokenBalances.wwUST]);
-
-  const [currentDeposit, setDeposit] = React.useState(0.00)
-  const [currentRewards, setRewards] = React.useState(0.00)
-  const [currentAPY, setAPY] = React.useState(15.5)
   const [textColour, setTextColour] = React.useState('#FFFFFF')
 
 
-  // ---------------------------------------------
-  // dialogs
-  // ---------------------------------------------
-  const [openDepositDialog, depositDialogElement] = useDepositDialog();
-
-  const [openWithdrawDialog, withdrawDialogElement] = useWithdrawDialog();
-
-  const openDeposit = useCallback(async () => {
-    await openDepositDialog({});
-  }, [openDepositDialog]);
-
-  const openWithdraw = useCallback(async () => {
-    await openWithdrawDialog({});
-  }, [openWithdrawDialog]);
   // Theming 
   // Use matchMedia to check the user preference
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   // Listen for changes to the prefers-color-scheme media query
   prefersDark.addListener((mediaQuery) => updateStyles(mediaQuery.matches))
-
+  // Based on the query, determine the text colour. 
   function updateStyles(shouldUpdate) {
     shouldUpdate ? setTextColour('#FFFFFF') : setTextColour('#000000')
-
   }
-
+  // callAPI is an abstraction used to make an API and return its JSON response
   const callAPI = async (url) => {
     const response = await fetch(url, {
       headers: {
@@ -81,7 +40,7 @@ const Tab1: React.FC = () => {
     }
     return response.json()
   }
-
+  // fetchData is used to return a precise UST-USD coin price from the 1m chart.
   const fetchData = async () => {
     const data = { index: [], price: [], volumes: [] }
     const result = await callAPI('https://api.coingecko.com/api/v3/coins/terrausd/market_chart?vs_currency=usd&days=1&interval=1m')
@@ -100,6 +59,7 @@ const Tab1: React.FC = () => {
     const interval = setInterval(
       // set number every 3s between 1.20 and 0.80 UST
       () => {
+
         fetchData().then((chartData) => {
           setCurrentUSTPrice(parseFloat(chartData.price[chartData.price.length - 1].toPrecision(4)))
         }).catch((err) => {
@@ -169,37 +129,7 @@ const Tab1: React.FC = () => {
                   </IonItem>
                   {/*-- This is another Buttons and Label Grid. Inside the first one, the intention here is to be able to have columns which are perfectly split from teh speedometer but still all centered --*/}
                   {/* TODO: Refactor in component */}
-                  <IonGrid>
-                    <IonRow>
-                      <IonItem>
-                        <IonLabel>APY: {currentAPY} %</IonLabel>
-                      </IonItem>
-                      <IonItem>
-                        <IonLabel>Your Deposit: {formatUST(demicrofy(totalDeposit))} UST</IonLabel>
-                      </IonItem>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <IonButton strong expand="block" color="secondary" onClick={openDeposit}>Deposit</IonButton>
-                      </IonCol>
-                      <IonCol>
-                        <IonButton strong expand="block" color="secondary" onClick={openWithdraw}>Withdraw</IonButton>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <IonItem>
-                        <IonLabel>Your Rewards: {currentDeposit} UST</IonLabel>
-                      </IonItem>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <IonButton strong expand="block" color="tertiary">Claim</IonButton>
-                      </IonCol>
-                      <IonCol>
-                        <IonButton strong expand="block" color="tertiary">Compound</IonButton>
-                      </IonCol>
-                    </IonRow>
-                  </IonGrid>
+                  <ButtonGrid></ButtonGrid>
 
                 </IonCol>
                 <IonCol></IonCol>
@@ -211,8 +141,7 @@ const Tab1: React.FC = () => {
 
 
         {/* <ExploreContainer name="Tab 1 page" /> */}
-        {depositDialogElement}
-        {withdrawDialogElement}
+
       </IonContent>
     </IonPage>
   )
