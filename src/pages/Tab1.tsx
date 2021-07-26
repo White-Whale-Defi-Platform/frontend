@@ -4,24 +4,42 @@
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { ChangeEvent, useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { IonContent, IonHeader, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'
-import { wifi, wine, warning } from 'ionicons/icons'
-
-import GaugeChart from 'react-gauge-chart'
 import { Header } from '../components/Header'
-import { WalletSelector } from '../components/Header/WalletSelector';
 import './Tab1.css'
 // import the component
 import ReactSpeedometer from 'react-d3-speedometer'
 import { useDepositDialog } from '../components/dialogs/useDepositDialog';
 import { useWithdrawDialog } from '../components/dialogs/useWithdrawDialog';
+
+import {
+  useEarnEpochStatesQuery
+} from '@anchor-protocol/webapp-provider';
+import { useBank } from '@terra-money/webapp-provider';
+import { WhiteWhaleTokenBalances, computeTotalDeposit } from '../tx/withdraw-hook'
+import {
+  demicrofy,
+  formatUST,
+} from '@anchor-protocol/notation';
 const Tab1: React.FC = () => {
   const [currentUSTPrice, setCurrentUSTPrice] = React.useState(1.000)
-  // Replace these states values with smart contract function calls
+  // Note: We can replace this by simply querying the bank module
+  const { tokenBalances } = useBank<WhiteWhaleTokenBalances>();
+  const { data } = useEarnEpochStatesQuery();
+
+  const { totalDeposit } = useMemo(() => {
+    return {
+      totalDeposit: computeTotalDeposit(
+        tokenBalances.wwUST,
+        data?.moneyMarketEpochState,
+      ),
+    };
+  }, [data?.moneyMarketEpochState, tokenBalances.wwUST]);
+
   const [currentDeposit, setDeposit] = React.useState(0.00)
   const [currentRewards, setRewards] = React.useState(0.00)
-  const [currentAPY, setAPY] = React.useState(37.6)
+  const [currentAPY, setAPY] = React.useState(15.5)
   const [textColour, setTextColour] = React.useState('#FFFFFF')
 
 
@@ -75,6 +93,7 @@ const Tab1: React.FC = () => {
     return data
   }
 
+
   // add side effect to component for dummy UST Price
   React.useEffect(() => {
     // create interval
@@ -82,10 +101,10 @@ const Tab1: React.FC = () => {
       // set number every 3s between 1.20 and 0.80 UST
       () => {
         fetchData().then((chartData) => {
-          setCurrentUSTPrice(chartData.price[chartData.price.length - 1].toPrecision(4))
+          setCurrentUSTPrice(parseFloat(chartData.price[chartData.price.length - 1].toPrecision(4)))
         }).catch((err) => {
           console.log("Found issue with price grab" + err)
-          setCurrentUSTPrice(parseFloat((Math.random() * (0.90 - 1.10) + 1.20).toPrecision(4)))
+          setCurrentUSTPrice(parseFloat((Math.random() * (0.90 - 1.10) + 1.10).toPrecision(4)))
         })
       },
       3000
@@ -95,18 +114,13 @@ const Tab1: React.FC = () => {
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  })
 
   return (
 
     <IonPage>
       <IonHeader>
-        {/* <IonToolbar>
-          <IonTitle>White Whale - Info</IonTitle>
-          <IonButtons slot="end">
-          <WalletSelector />
-          </IonButtons>
-        </IonToolbar> */}
+        {/* Header contains the Mobile/Desktop changing header with wallet integration */}
         <Header />
 
       </IonHeader>
@@ -135,7 +149,6 @@ const Tab1: React.FC = () => {
                   value={currentUSTPrice}
                   height={160}
                   needleHeightRatio={0.7}
-                  forceRender={true}
                   segments={10}
                   maxSegmentLabels={10}
                   // We set to text to empty as we use custom text components below
@@ -162,7 +175,7 @@ const Tab1: React.FC = () => {
                         <IonLabel>APY: {currentAPY} %</IonLabel>
                       </IonItem>
                       <IonItem>
-                        <IonLabel>Your Deposit: {currentDeposit} UST</IonLabel>
+                        <IonLabel>Your Deposit: {formatUST(demicrofy(totalDeposit))} UST</IonLabel>
                       </IonItem>
                     </IonRow>
                     <IonRow>
@@ -175,7 +188,7 @@ const Tab1: React.FC = () => {
                     </IonRow>
                     <IonRow>
                       <IonItem>
-                        <IonLabel>Your Rewards: {currentRewards} UST</IonLabel>
+                        <IonLabel>Your Rewards: {currentDeposit} UST</IonLabel>
                       </IonItem>
                     </IonRow>
                     <IonRow>

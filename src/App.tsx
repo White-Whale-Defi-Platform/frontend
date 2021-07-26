@@ -63,6 +63,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { wwUST } from './tx/forms/withdraw-form';
 
 
 const queryClient = new QueryClient();
@@ -115,6 +116,9 @@ const cw20TokenContracts: Record<string, Record<string, CW20Contract>> = {
     },
     ubLunaLunaLP: {
       contractAddress: ADDRESSES.testnet.cw20.bLunaLunaLP,
+    },
+    wwUST: {
+      contractAddress: "terra1hz7qmqdt9hh5rae5qflry9vg8l5l45w8ldd3sd" as wwUST,
     },
   },
 };

@@ -1,7 +1,7 @@
 import { Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Launch } from '@material-ui/icons';
-import logoUrl from '../Header/assets/ww-Logo.svg';
+import logoUrl from '../Header/assets/ww-Only-Logo.svg';
 import { DesktopNotification } from '../Header/notifications/DesktopNotification';
 import { WalletSelector } from './WalletSelector';
 import { IonContent, IonHeader, IonAvatar, IonButtons, IonPage, IonTitle, IonToolbar, IonCard, IonItem, IonLabel, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, IonText } from '@ionic/react'

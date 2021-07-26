@@ -8,7 +8,6 @@ import {
 import { aUST, UST, uUST } from '@anchor-protocol/types';
 import {
   AnchorTokenBalances,
-  computeTotalDeposit,
   useEarnEpochStatesQuery,
   useEarnWithdrawForm,
   // useEarnWithdrawTx,
@@ -18,6 +17,10 @@ import {
 import {
   useWWWithdrawTx
 } from '../../tx/withdraw'
+import {
+  useWWWithdrawForm,
+  computeTotalDeposit
+} from '../../tx/withdraw-hook'
 import { InputAdornment, Modal } from '@material-ui/core';
 import { StreamStatus } from '@rx-stream/react';
 import { ActionButton } from '@terra-dev/neumorphism-ui/components/ActionButton';
@@ -50,6 +53,11 @@ export function useWithdrawDialog(): [
   return useDialog(Component);
 }
 
+export type NominalType<T extends string> = { __type: T };
+export type wwUST<T = string> = T & NominalType<'wwUST'>;
+export interface WhiteWhaleTokenBalances extends AnchorTokenBalances {
+    wwUST: wwUST
+}
 function ComponentBase({
   className,
   closeDialog,
@@ -72,14 +80,15 @@ function ComponentBase({
     invalidWithdrawAmount,
     updateWithdrawAmount,
     availablePost,
-  } = useEarnWithdrawForm();
+  } = useWWWithdrawForm();
 
   // ---------------------------------------------
   // queries
   // ---------------------------------------------
+  
   const {
-    tokenBalances: { uaUST },
-  } = useBank<AnchorTokenBalances>();
+    tokenBalances: { wwUST },
+  } = useBank<WhiteWhaleTokenBalances>();
 
   const { data } = useEarnEpochStatesQuery();
 
@@ -88,9 +97,9 @@ function ComponentBase({
   // ---------------------------------------------
   const { totalDeposit } = useMemo(() => {
     return {
-      totalDeposit: computeTotalDeposit(uaUST, data?.moneyMarketEpochState),
+      totalDeposit: computeTotalDeposit(wwUST, data?.moneyMarketEpochState),
     };
-  }, [data?.moneyMarketEpochState, uaUST]);
+  }, [data?.moneyMarketEpochState, wwUST]);
 
   // ---------------------------------------------
   // callbacks

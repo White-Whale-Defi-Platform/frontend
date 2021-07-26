@@ -8,6 +8,7 @@ import {
   uUST,
 } from '@anchor-protocol/types';
 import { AnchorTax, AnchorTokenBalances } from '@anchor-protocol/webapp-fns';
+import { WhiteWhaleTokenBalances } from '../../../tx/withdraw-hook';
 import { useBank as useBank_ } from '@terra-money/webapp-provider';
 import { useMemo } from 'react';
 
@@ -33,7 +34,7 @@ export interface Bank {
  */
 export function useBank(): Bank {
   const { tokenBalances, tax, refetchTax, refetchTokenBalances } = useBank_<
-    AnchorTokenBalances,
+    WhiteWhaleTokenBalances,
     AnchorTax
   >();
   refetchTokenBalances()
