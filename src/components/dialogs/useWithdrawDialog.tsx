@@ -194,12 +194,12 @@ function ComponentBase({
         <ViewAddressWarning>
           <ActionButton
             className="proceed"
-            // disabled={
-            //   !connectedWallet ||
-            //   !connectedWallet.availablePost ||
-            //   !withdraw ||
-            //   !availablePost
-            // }
+            disabled={
+              !connectedWallet ||
+              !connectedWallet.availablePost ||
+              !withdraw ||
+              !availablePost
+            }
             onClick={() => proceed(withdrawAmount, txFee)}
           >
             Proceed
