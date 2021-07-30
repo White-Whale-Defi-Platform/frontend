@@ -68,8 +68,8 @@ export interface AddressMap {
   airdrop: string;
   investor_vesting: string;
   team_vesting: string;
-  wwMarket?: string;
-  wwLpToken?: string;
+  wwUSTVault?: string;
+  wwUSTLpToken?: string;
 }
 
 export const columbusContractAddresses: AddressMap = {
@@ -146,8 +146,8 @@ export const tequilaContractAddresses: AddressMap = {
   //team: 'terra1x7ted5g0g6ntyqdaqmjwtzcctvvrdju49vs8pl',
   //terraswapFactory: '',
   // WhiteWhale deposit and withdraw contract
-  wwMarket: "terra1qppq9uu6xqz2c4my456gpxd89cwqsgc33fjy0t",
-  wwLpToken: "terra1hz7qmqdt9hh5rae5qflry9vg8l5l45w8ldd3sd"
+  wwUSTVault: "terra17fvgcyj0n92px30xt0qdhmnhjmuj6wyuya9tzd",
+  wwUSTLpToken: "terra1wu96fpq6cwer3753kxcwuqv9hxu552esfjult7"
 };
 
 export const ADDRESS_PROVIDERS = {

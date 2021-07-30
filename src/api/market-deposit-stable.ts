@@ -5,6 +5,7 @@ import { validateAddress } from "./validation/address";
 import { validateIsGreaterThanZero } from "./validation/number";
 import { AddressProvider } from "../address-provider/provider";
 import { MARKET_DENOMS } from "../address-provider/provider";
+import { tequilaContractAddresses } from "../env";
 
 interface Option {
   address: string;
@@ -31,7 +32,7 @@ export const fabricateMarketDepositStableCoin =
     return [
       new MsgExecuteContract(
         address,
-        "terra1qppq9uu6xqz2c4my456gpxd89cwqsgc33fjy0t",
+        tequilaContractAddresses.wwUSTVault,
         {
           // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/market/src/msg.rs#L65
           provide_liquidity: {

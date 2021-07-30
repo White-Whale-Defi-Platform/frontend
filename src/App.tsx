@@ -118,7 +118,7 @@ const cw20TokenContracts: Record<string, Record<string, CW20Contract>> = {
       contractAddress: ADDRESSES.testnet.cw20.bLunaLunaLP,
     },
     wwUST: {
-      contractAddress: "terra1hz7qmqdt9hh5rae5qflry9vg8l5l45w8ldd3sd" as wwUST,
+      contractAddress: "terra1wu96fpq6cwer3753kxcwuqv9hxu552esfjult7" as wwUST,
     },
   },
 };

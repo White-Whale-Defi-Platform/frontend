@@ -8,12 +8,34 @@ import {
 } from '@anchor-protocol/notation';
 import { LCDClient, Coin } from '@terra-money/terra.js';
 import { UST, uUST } from '@anchor-protocol/types';
+import { tequilaContractAddresses } from '../env';
+
 
 interface ArbVaultProps {
     vaultName: string;
 }
+
+const getDepositsInUST = async (terra: LCDClient) : Promise<number> => {
+    const contractAddress = tequilaContractAddresses.wwUSTVault;
+    const balances = await terra.bank.balance(contractAddress);
+
+    const ustAmount = parseFloat(balances.get("uusd").toData().amount);
+
+    const lunaAmount = balances.get("uluna");
+    const lunaAmountInUST = parseFloat((await terra.market.swapRate(lunaAmount, "uusd")).toData().amount);
+
+    const austQueryResult = await terra.wasm.contractQuery(tequilaContractAddresses.aTerra, { balance: { address: contractAddress }});
+    const austAmount = JSON.parse(JSON.stringify(austQueryResult)).balance;
+    const austState = await terra.wasm.contractQuery(tequilaContractAddresses.mmMarket, { state: {} });
+    const austToUSTRate = JSON.parse(JSON.stringify(austState)).prev_exchange_rate;
+    const austAmountInUST = austAmount * austToUSTRate;
+
+    return (ustAmount + lunaAmountInUST + austAmountInUST)/1000000;
+}
+
 function ArbVault({ vaultName }: ArbVaultProps) {
-    const [currentUSTPrice, setCurrentUSTPrice] = React.useState(1.000)
+    const [currentUSTPrice, setCurrentUSTPrice] = React.useState(1.000);
+    const [totalValueLocked, setTotalValueLocked] = React.useState(0.000);
     const [labelTextColour, setTextColour] = React.useState('#FFFFFF')
     const terra = new LCDClient({
         URL: 'https://tequila-lcd.terra.dev',
@@ -55,15 +77,17 @@ function ArbVault({ vaultName }: ArbVaultProps) {
         return data
     }
 
-
     // add side effect to component for dummy UST Price
     React.useEffect(() => {
         // create interval
         const interval = setInterval(
             // set number every 3s between 1.20 and 0.80 UST
             () => {
+                getDepositsInUST(terra).then(depositsInUST => {
+                    setTotalValueLocked(depositsInUST);
+                });
 
-                if (vaultName == 'UST') {
+                if (vaultName === 'UST') {
                     fetchData().then((chartData) => {
                         setCurrentUSTPrice(parseFloat(chartData.price[chartData.price.length - 1].toPrecision(4)))
                     }).catch((err) => {
@@ -73,7 +97,7 @@ function ArbVault({ vaultName }: ArbVaultProps) {
                 }
                 else {
                     // In the case of KRW, we are using a value of 1000 KRW rather than just 1 unit of KRW due to its exchange rate.
-                    let coin_to_check = new Coin(`u${vaultName.toLowerCase()}`, vaultName == "KRW" ? '1000000000' : '1000000');
+                    let coin_to_check = new Coin(`u${vaultName.toLowerCase()}`, vaultName === "KRW" ? '1000000000' : '1000000');
                     terra.market.swapRate(coin_to_check, 'uusd').then(c => {
                         console.log(`${coin_to_check.toString()} can be swapped for ${c.toString()}`);
                         setCurrentUSTPrice(parseFloat(formatUST(demicrofy(c.toData().amount as uUST))))
@@ -88,9 +112,10 @@ function ArbVault({ vaultName }: ArbVaultProps) {
             clearInterval(interval)
         }
     })
+
     return (<IonCard>
         <IonCardHeader>
-            <IonCardTitle>{`${vaultName} Arb Vault`}</IonCardTitle>
+            <IonCardTitle>{`${vaultName} Arb Vault (TVL: ${totalValueLocked} $)`}</IonCardTitle>
         </IonCardHeader>
 
         <IonCardContent>
