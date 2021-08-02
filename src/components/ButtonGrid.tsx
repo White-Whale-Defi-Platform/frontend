@@ -14,26 +14,49 @@ import {
     useEarnEpochStatesQuery
 } from '@anchor-protocol/webapp-provider';
 import { useBank } from '@terra-money/webapp-provider';
+import { LCDClient } from '@terra-money/terra.js';
 import { WhiteWhaleTokenBalances, computeTotalDeposit } from '../tx/withdraw-hook'
+import { getDepositsInUST } from './ArbVault'
+import { tequilaContractAddresses } from '../env';
+
+interface PoolResponse {
+    assets: Array<object>,
+    total_deposits_in_ust: number,
+    total_share: number
+}
+
+interface BalanceResponse {
+    balance: number
+}
+
+export const getUserDepositsInUST = async (terra: LCDClient) : Promise<number> => {
+    const contractAddress = tequilaContractAddresses.wwUSTVault;
+    const response: PoolResponse = await terra.wasm.contractQuery(contractAddress, { pool: {} });
+
+    const user_balance: BalanceResponse = await terra.wasm.contractQuery(tequilaContractAddresses.wwUSTLpToken, { balance: {address: "terra1lzquc5em3qrz6e2uyp9se60un4e7wnpf5yvz97"}});
+    const user_ratio = user_balance.balance / response.total_share;
+
+    return (user_ratio * response.total_deposits_in_ust)/1000000;
+}
 
 
 const ButtonGrid: React.FC = (props) => {
 
     const [currentDeposit, setDeposit] = React.useState(0.00)
     const [currentRewards, setRewards] = React.useState(0.00)
+    const [userDeposit, setUserDeposit] = React.useState(0.00)
     const [currentAPY, setAPY] = React.useState(15.5)
     // Note: We can replace this by simply querying the bank module
     const { tokenBalances } = useBank<WhiteWhaleTokenBalances>();
     const { data } = useEarnEpochStatesQuery();
 
-    const { totalDeposit } = useMemo(() => {
-        return {
-            totalDeposit: computeTotalDeposit(
-                tokenBalances.wwUST,
-                data?.moneyMarketEpochState,
-            ),
-        };
-    }, [data?.moneyMarketEpochState, tokenBalances.wwUST]);
+    const terra = new LCDClient({
+        URL: 'https://tequila-lcd.terra.dev',
+        chainID: 'tequila-0004',
+    });
+    getUserDepositsInUST(terra).then(deposit => {
+        setUserDeposit(deposit);
+    });
 
     // ---------------------------------------------
     // dialogs
@@ -55,7 +78,7 @@ const ButtonGrid: React.FC = (props) => {
                 <IonLabel>APY: {currentAPY} %</IonLabel>
             </IonItem>
             <IonItem>
-                <IonLabel>Your Deposit: {formatUST(demicrofy(totalDeposit))} UST</IonLabel>
+                <IonLabel>Your Deposit: {userDeposit} UST</IonLabel>
             </IonItem>
         </IonRow>
         <IonRow>

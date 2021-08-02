@@ -9,28 +9,24 @@ import {
 import { LCDClient, Coin } from '@terra-money/terra.js';
 import { UST, uUST } from '@anchor-protocol/types';
 import { tequilaContractAddresses } from '../env';
+import { moneyMarket } from '@anchor-protocol/types';
 
 
 interface ArbVaultProps {
     vaultName: string;
 }
 
-const getDepositsInUST = async (terra: LCDClient) : Promise<number> => {
+interface PoolResponse {
+    assets: Array<object>,
+    total_deposits_in_ust: number,
+    total_share: number
+}
+
+export const getDepositsInUST = async (terra: LCDClient) : Promise<number> => {
     const contractAddress = tequilaContractAddresses.wwUSTVault;
-    const balances = await terra.bank.balance(contractAddress);
+    const response: PoolResponse = await terra.wasm.contractQuery(contractAddress, { pool: {} });
 
-    const ustAmount = parseFloat(balances.get("uusd").toData().amount);
-
-    const lunaAmount = balances.get("uluna");
-    const lunaAmountInUST = parseFloat((await terra.market.swapRate(lunaAmount, "uusd")).toData().amount);
-
-    const austQueryResult = await terra.wasm.contractQuery(tequilaContractAddresses.aTerra, { balance: { address: contractAddress }});
-    const austAmount = JSON.parse(JSON.stringify(austQueryResult)).balance;
-    const austState = await terra.wasm.contractQuery(tequilaContractAddresses.mmMarket, { state: {} });
-    const austToUSTRate = JSON.parse(JSON.stringify(austState)).prev_exchange_rate;
-    const austAmountInUST = austAmount * austToUSTRate;
-
-    return (ustAmount + lunaAmountInUST + austAmountInUST)/1000000;
+    return (response.total_deposits_in_ust)/1000000;
 }
 
 function ArbVault({ vaultName }: ArbVaultProps) {

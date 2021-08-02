@@ -32,6 +32,16 @@ export function computeTotalDeposit(
   ) as uUST<Big>;
 }
 
+
+export function computeUserDeposit(
+  userWWUSTBalance: wwUST | undefined,
+  moneyMarketEpochState: moneyMarket.market.EpochStateResponse | undefined,
+) {
+  return big(userWWUSTBalance ?? '0').mul(
+    moneyMarketEpochState?.exchange_rate ?? '1',
+  ) as uUST<Big>;
+}
+
 export type NominalType<T extends string> = { __type: T };
 export type wwUST<T = string> = T & NominalType<'wwUST'>;
 export interface WhiteWhaleTokenBalances extends AnchorTokenBalances {
