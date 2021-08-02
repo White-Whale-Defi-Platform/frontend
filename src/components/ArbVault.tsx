@@ -10,6 +10,7 @@ import { LCDClient, Coin } from '@terra-money/terra.js';
 import { UST, uUST } from '@anchor-protocol/types';
 import { tequilaContractAddresses } from '../env';
 import { moneyMarket } from '@anchor-protocol/types';
+import { BigSource } from 'big.js';
 
 
 interface ArbVaultProps {
@@ -111,7 +112,7 @@ function ArbVault({ vaultName }: ArbVaultProps) {
 
     return (<IonCard>
         <IonCardHeader>
-            <IonCardTitle>{`${vaultName} Arb Vault (TVL: ${totalValueLocked} $)`}</IonCardTitle>
+            <IonCardTitle>{`${vaultName} Arb Vault (TVL: ${formatUST(totalValueLocked as UST<BigSource>)} UST)`}</IonCardTitle>
         </IonCardHeader>
 
         <IonCardContent>

@@ -18,6 +18,9 @@ import { LCDClient } from '@terra-money/terra.js';
 import { WhiteWhaleTokenBalances, computeTotalDeposit } from '../tx/withdraw-hook'
 import { getDepositsInUST } from './ArbVault'
 import { tequilaContractAddresses } from '../env';
+import { wwUST } from '../tx/forms/withdraw-form';
+import { UST, uUST } from '@anchor-protocol/types';
+import { BigSource } from 'big.js';
 
 interface PoolResponse {
     assets: Array<object>,
@@ -45,7 +48,7 @@ const ButtonGrid: React.FC = (props) => {
     const [currentDeposit, setDeposit] = React.useState(0.00)
     const [currentRewards, setRewards] = React.useState(0.00)
     const [userDeposit, setUserDeposit] = React.useState(0.00)
-    const [currentAPY, setAPY] = React.useState(15.5)
+    const [currentAPY, setAPY] = React.useState("tbd")
     // Note: We can replace this by simply querying the bank module
     const { tokenBalances } = useBank<WhiteWhaleTokenBalances>();
     const { data } = useEarnEpochStatesQuery();
@@ -78,7 +81,7 @@ const ButtonGrid: React.FC = (props) => {
                 <IonLabel>APY: {currentAPY} %</IonLabel>
             </IonItem>
             <IonItem>
-                <IonLabel>Your Deposit: {userDeposit} UST</IonLabel>
+                <IonLabel>Your Deposit: {formatUST(userDeposit as UST<BigSource>)} UST</IonLabel>
             </IonItem>
         </IonRow>
         <IonRow>
