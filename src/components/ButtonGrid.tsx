@@ -21,6 +21,7 @@ import { tequilaContractAddresses } from '../env';
 import { wwUST } from '../tx/forms/withdraw-form';
 import { UST, uUST } from '@anchor-protocol/types';
 import { BigSource } from 'big.js';
+import { useConnectedWallet } from '@terra-money/wallet-provider'
 
 interface PoolResponse {
     assets: Array<object>,
@@ -32,14 +33,16 @@ interface BalanceResponse {
     balance: number
 }
 
-export const getUserDepositsInUST = async (terra: LCDClient) : Promise<number> => {
-    const contractAddress = tequilaContractAddresses.wwUSTVault;
-    const response: PoolResponse = await terra.wasm.contractQuery(contractAddress, { pool: {} });
+export const getUserDepositsInUST = async (terra: LCDClient, wallet: any) : Promise<number> => {
+    if(wallet){
+        const contractAddress = tequilaContractAddresses.wwUSTVault;
+        const response: PoolResponse = await terra.wasm.contractQuery(contractAddress, { pool: {} });
+        const user_balance: BalanceResponse = await terra.wasm.contractQuery(tequilaContractAddresses.wwUSTLpToken, { balance: {address: wallet}});
+        const user_ratio = user_balance.balance / response.total_share;
 
-    const user_balance: BalanceResponse = await terra.wasm.contractQuery(tequilaContractAddresses.wwUSTLpToken, { balance: {address: "terra1lzquc5em3qrz6e2uyp9se60un4e7wnpf5yvz97"}});
-    const user_ratio = user_balance.balance / response.total_share;
-
-    return (user_ratio * response.total_deposits_in_ust)/1000000;
+        return (user_ratio * response.total_deposits_in_ust)/1000000;
+    }
+    return 0
 }
 
 
@@ -52,12 +55,13 @@ const ButtonGrid: React.FC = (props) => {
     // Note: We can replace this by simply querying the bank module
     const { tokenBalances } = useBank<WhiteWhaleTokenBalances>();
     const { data } = useEarnEpochStatesQuery();
-
+    const connectedWallet = useConnectedWallet();
     const terra = new LCDClient({
         URL: 'https://tequila-lcd.terra.dev',
         chainID: 'tequila-0004',
     });
-    getUserDepositsInUST(terra).then(deposit => {
+    
+    getUserDepositsInUST(terra, connectedWallet? connectedWallet.walletAddress : "").then(deposit => {
         setUserDeposit(deposit);
     });
 
