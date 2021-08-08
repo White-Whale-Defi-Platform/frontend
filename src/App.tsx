@@ -34,6 +34,8 @@ import {
 } from '@terra-money/webapp-provider';
 import { ReadonlyWalletSession } from '@terra-dev/readonly-wallet';
 
+
+
 import { GlobalStyle } from '@terra-dev/neumorphism-ui/themes/GlobalStyle';
 import { darkTheme } from '@terra-dev/neumorphism-ui/themes/darkTheme';
 import { lightTheme } from '@terra-dev/neumorphism-ui/themes/lightTheme';
@@ -118,7 +120,7 @@ const cw20TokenContracts: Record<string, Record<string, CW20Contract>> = {
       contractAddress: ADDRESSES.testnet.cw20.bLunaLunaLP,
     },
     wwUST: {
-      contractAddress: "terra14m8zrxz8v5tl8h5g0mv254c7wvn332wfpsy285" as wwUST,
+      contractAddress: ADDRESSES.testnet.whitewhale.wwLPToken,
     },
   },
 };

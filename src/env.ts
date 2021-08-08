@@ -1,10 +1,16 @@
+
+import { Rate } from "@anchor-protocol/types";
+import { createAnchorContractAddress, AddressMap } from "./address-provider/address-handler"
+// import {AddressProviderFromJson} from "./address-provider/address-handler"
 import {
   AddressProviderFromJson,
 } from "@anchor-protocol/anchor.js";
-import { Rate } from "@anchor-protocol/types";
-import { createAnchorContractAddress } from "@anchor-protocol/webapp-fns";
 
 
+// declare class extendedProvider extends AddressProviderFromJson{
+//   wwUSTVault(): string;
+//   wwLPToken(): string;
+// }
 export const SAFE_RATIO: Rate<number> = 0.7 as Rate<number>;
 
 export const onProduction =
@@ -39,38 +45,7 @@ export const defaultNetwork = {
   ws: "wss://fcd.terra.dev",
 };
 
-export interface AddressMap {
-  bLunaHub: string;
-  bLunaToken: string;
-  bLunaReward: string;
-  bLunaAirdrop: string;
-  bEthReward: string;
-  bEthToken: string;
-  mmInterestModel: string;
-  mmOracle: string;
-  mmMarket: string;
-  mmOverseer: string;
-  mmCustody: string;
-  mmCustodyBEth: string;
-  mmLiquidation: string;
-  mmDistributionModel: string;
-  aTerra: string;
-  terraswapblunaLunaPair: string;
-  terraswapblunaLunaLPToken: string;
-  terraswapAncUstPair: string;
-  terraswapAncUstLPToken: string;
-  gov: string;
-  distributor: string;
-  collector: string;
-  community: string;
-  staking: string;
-  ANC: string;
-  airdrop: string;
-  investor_vesting: string;
-  team_vesting: string;
-  wwUSTVault?: string;
-  wwUSTLpToken?: string;
-}
+
 
 export const columbusContractAddresses: AddressMap = {
   bLunaHub: "terra1mtwph2juhj0rvjz7dy92gvl6xvukaxu8rfv8ts",
@@ -107,6 +82,8 @@ export const columbusContractAddresses: AddressMap = {
   //team: 'terra1pm54pmw3ej0vfwn3gtn6cdmaqxt0x37e9jt0za',
   //vesting: 'terra10evq9zxk2m86n3n3xnpw28jpqwp628c6dzuq42',
   //terraswapFactory: '',
+  wwUSTVault: "",
+  wwUSTLpToken: ""
 };
 
 export const tequilaContractAddresses: AddressMap = {
@@ -146,8 +123,8 @@ export const tequilaContractAddresses: AddressMap = {
   //team: 'terra1x7ted5g0g6ntyqdaqmjwtzcctvvrdju49vs8pl',
   //terraswapFactory: '',
   // WhiteWhale deposit and withdraw contract
-  wwUSTVault: "terra18ccpgpa2z2hd58jxpdhtjr4h7x6htp05y02f0r",
-  wwUSTLpToken: "terra14m8zrxz8v5tl8h5g0mv254c7wvn332wfpsy285"
+  wwUSTVault: "terra1v24y45dkgs65an05qgljdhqwzrwjygsksqfgrr",
+  wwUSTLpToken: "terra1dk3rdc09m6j0nd4k3s0at8vy092kvxl2u25p5w"
 };
 
 export const ADDRESS_PROVIDERS = {
