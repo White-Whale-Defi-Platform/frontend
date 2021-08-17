@@ -6,7 +6,7 @@ const styles = {
     },
     dialog: {
       borderRadius: "2xl",
-      bg: "brand.700",
+      bg: "rgba(26,26,26,0.8)",
       py: "8",
       color: "white",
       boxShadow: "2xl",

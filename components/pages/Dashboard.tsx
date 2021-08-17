@@ -7,7 +7,7 @@ import TokenCirculatingSupply from "components/dashboard/TokenCirculatingSupply"
 
 const Dashboard = () => {
   return (
-    <Box mt="16">
+    <Box mt="16" mx="auto" maxW="container.xl">
       <Box>
         <Heading color="#fff" size="lg" mb="10">
           Dashboard

@@ -1,51 +1,43 @@
-import { toToken, getTokenDenom, isNativeToken } from "modules/terra";
+import { LCDClient } from "@terra-money/terra.js";
+
+import { toToken, getTokenDenom, isNativeToken } from "@arthuryeti/terra";
 import { findSwapRoute } from "modules/swap";
 import { Pair } from "types/common";
 
-const createMonoSwapQuery = async (client, token, route, amount) => {
-  const [{ contract_addr }] = route;
-
-  return client.wasm.contractQuery(contract_addr, {
-    simulation: {
-      offer_asset: toToken({ token, amount }),
-    },
-  });
-};
-
 export const createMultiSwapOperations = (
   from: string,
-  route: Pair[],
+  route: any[],
   operations: any[] = []
 ): any[] => {
   if (route.length === 0) {
     return operations;
   }
 
-  const asset_infos = route[0]?.asset_infos;
+  const assets = route[0]?.asset_infos;
 
-  if (!asset_infos) {
+  if (!assets) {
     return operations;
   }
 
-  const assetInfos = [...asset_infos].sort((a) =>
+  const sortedAssets = [...assets].sort((a) =>
     getTokenDenom(a) === from ? -1 : 1
   );
 
-  const operation = assetInfos.every(isNativeToken)
+  const operation = sortedAssets.every(isNativeToken)
     ? {
         native_swap: {
-          offer_denom: assetInfos[0].native_token.denom,
-          ask_denom: assetInfos[1].native_token.denom,
+          offer_denom: sortedAssets[0].native_token.denom,
+          ask_denom: sortedAssets[1].native_token.denom,
         },
       }
     : {
         terra_swap: {
-          offer_asset_info: assetInfos[0],
-          ask_asset_info: assetInfos[1],
+          offer_asset_info: sortedAssets[0],
+          ask_asset_info: sortedAssets[1],
         },
       };
 
-  const nextFrom = getTokenDenom(assetInfos[1]);
+  const nextFrom = getTokenDenom(sortedAssets[1]);
 
   return createMultiSwapOperations(nextFrom, route.slice(1), [
     ...operations,
@@ -53,13 +45,25 @@ export const createMultiSwapOperations = (
   ]);
 };
 
-const createMultiSwapQuery = async (
+type CreateMultiSwapQueryOptions = {
+  client: LCDClient;
+  routeContract: string;
+  from: string;
+  route: Pair[];
+  amount: string;
+};
+
+type CreateMultiSwapQueryResponse = {
+  amount: string;
+};
+
+const createMultiSwapQuery = async ({
   client,
   routeContract,
   from,
   route,
-  amount
-) => {
+  amount,
+}: CreateMultiSwapQueryOptions): Promise<CreateMultiSwapQueryResponse> => {
   const operations = createMultiSwapOperations(from, route);
 
   return client.wasm.contractQuery(routeContract, {
@@ -70,8 +74,35 @@ const createMultiSwapQuery = async (
   });
 };
 
-export const simulateSwap = async (
+type CreateMonoSwapQueryOptions = {
+  client: LCDClient;
+  token: string;
+  route: Pair[];
+  amount: string;
+};
+
+type CreateMonoSwapQueryResponse = {
+  return_amount: string;
+  spread_amount: string;
+};
+
+const createMonoSwapQuery = async ({
   client,
+  token,
+  route,
+  amount,
+}: CreateMonoSwapQueryOptions): Promise<CreateMonoSwapQueryResponse> => {
+  const [{ contract }] = route;
+
+  return client.wasm.contractQuery(contract, {
+    simulation: {
+      offer_asset: toToken({ token, amount }),
+    },
+  });
+};
+
+export const simulateSwap = async (
+  client: LCDClient,
   routeContract,
   routes,
   from,
@@ -89,7 +120,12 @@ export const simulateSwap = async (
 
   if (route.length === 1) {
     try {
-      const result = await createMonoSwapQuery(client, from, route, amount);
+      const result = await createMonoSwapQuery({
+        client,
+        token: from,
+        route,
+        amount,
+      });
 
       return {
         error: false,
@@ -107,13 +143,13 @@ export const simulateSwap = async (
   }
 
   try {
-    const result = await createMultiSwapQuery(
+    const result = await createMultiSwapQuery({
       client,
       routeContract,
       from,
       route,
-      amount
-    );
+      amount,
+    });
 
     return {
       error: false,

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { isEmpty } from "lodash";
+import { useTerra } from "@arthuryeti/terra";
 
-import { useTerra } from "contexts/TerraContext";
 import { simulateSwap } from "modules/swap";
 
 export const useSimulation = (
@@ -34,7 +34,7 @@ export const useSimulation = (
       amount1
     );
 
-    setResult(result);
+    setResult(result as any);
   }, [client, routeContract, routes, token1, token2, amount1]);
 
   useEffect(() => {

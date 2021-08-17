@@ -1,0 +1,18 @@
+{
+  "mainnet": {
+    "whaleToken": "",
+    "ustVault": "",
+    "gov": ""
+  },
+  "testnet": {
+    "whaleToken": "",
+    "ustVault": "",
+    "gov": ""
+  },
+  "bombay": {
+    "whaleToken": "terra1gwmn9h9cyp76ea2ce0djrhn9dpwmjhy3hepq50",
+    "ustVault": "terra1759jepndfjyfzzgexa5vmkhhaq7vyn8tq8gf5z",
+    "ustVaultLpToken": "terra17hrfaufaqg3zx8rfhdqdyqsax0n2kc3gay2rca",
+    "gov": ""
+  }
+}

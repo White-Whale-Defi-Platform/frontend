@@ -50,7 +50,7 @@ const TotalBurned: FC<Props> = () => {
     <Card>
       <CardTitle
         label="Total LUNA burned in White Whale"
-        value="91,180,812"
+        value="--"
         asset="LUNA"
       />
       <Box height="250px" mt="8">

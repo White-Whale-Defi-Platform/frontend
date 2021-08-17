@@ -1,6 +1,6 @@
 import { getColor } from "@chakra-ui/theme-tools";
 
-export default {
+const styles = {
   baseStyle: {
     field: {
       fontWeight: "500",
@@ -22,7 +22,7 @@ export default {
       return {
         field: {
           border: "1px solid",
-          borderColor: "brand.600",
+          borderColor: "brand.100",
           bg: "inherit",
           _hover: {
             borderColor: "brand.500",
@@ -41,3 +41,5 @@ export default {
     },
   },
 };
+
+export default styles;

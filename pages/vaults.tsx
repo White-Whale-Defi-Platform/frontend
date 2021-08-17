@@ -1,4 +1,7 @@
 import React from "react";
+
+import Vaults from "components/pages/Vaults";
+
 import Head from "next/head";
 import { NextPage } from "next";
 
@@ -8,6 +11,7 @@ const VaultsPage: NextPage = () => {
       <Head>
         <title>WhiteWhale Protocol</title>
       </Head>
+      <Vaults />
     </>
   );
 };

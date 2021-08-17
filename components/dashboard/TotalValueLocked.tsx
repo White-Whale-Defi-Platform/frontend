@@ -10,25 +10,25 @@ const data = [
     label: "WHALE",
     color: "#3CCD64",
     value: 0.1,
-    valueCount: "87M",
+    valueCount: "--",
   },
   {
     label: "UST",
     color: "#3CA058",
     value: 0.2,
-    valueCount: "35M",
+    valueCount: "--",
   },
   {
     label: "LUNA",
     color: "#476F52",
     value: 0.3,
-    valueCount: "13M",
+    valueCount: "--",
   },
   {
     label: "Others",
     color: "#344238",
     value: 0.4,
-    valueCount: "61M",
+    valueCount: "--",
   },
 ];
 
@@ -46,7 +46,7 @@ const TotalValueLocked: FC<Props> = () => {
             fontSize="3xl"
             lineHeight="1"
           >
-            1.79B
+            --
           </Text>
           <Text color="brand.500" fontWeight="700" lineHeight="1">
             UST

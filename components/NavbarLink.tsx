@@ -27,6 +27,7 @@ const NavbarLink: FC<Props> = ({ text, href }) => {
         py="8"
         borderBottomWidth="2px"
         borderBottomColor="transparent"
+        whiteSpace="nowrap"
         _hover={{
           color: "brand.500",
           borderBottomColor: "brand.500",

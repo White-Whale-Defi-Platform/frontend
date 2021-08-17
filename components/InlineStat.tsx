@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import { Flex, Box, Text, HStack, Tooltip } from "@chakra-ui/react";
 
 import InfoIcon from "components/icons/InfoIcon";
@@ -6,7 +6,7 @@ import InfoIcon from "components/icons/InfoIcon";
 type Props = {
   label: string;
   value: string | number;
-  name: string;
+  name?: string;
   tooltip?: string;
 };
 

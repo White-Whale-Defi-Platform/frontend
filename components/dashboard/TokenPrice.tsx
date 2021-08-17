@@ -4,7 +4,6 @@ import { Box, HStack } from "@chakra-ui/react";
 import Card from "components/Card";
 import CardTitle from "components/CardTitle";
 import LineChart from "components/LineChart";
-import EyeIcon from "components/icons/EyeIcon";
 
 const data = [
   {

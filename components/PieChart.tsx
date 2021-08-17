@@ -18,10 +18,10 @@ const PieChart: FC<Props> = ({ data }) => {
           data={data}
           dataKey="value"
           nameKey="label"
-          cx="50%"
-          cy="50%"
-          innerRadius={85}
-          outerRadius={95}
+          // cx="50%"
+          // cy="50%"
+          innerRadius={60}
+          outerRadius={80}
         >
           {data.map((entry, index) => {
             return (

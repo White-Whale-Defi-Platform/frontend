@@ -14,8 +14,10 @@ import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
+import { TerraProvider } from "@arthuryeti/terra";
+
 import Layout from "components/Layout";
-import { TerraProvider } from "contexts/TerraContext";
+import whitelist from "constants/whitelist.json";
 import theme from "../theme";
 
 dayjs.extend(timezone);
@@ -51,7 +53,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ChakraProvider theme={theme}>
-            <TerraProvider>
+            <TerraProvider data={whitelist}>
               <CSSReset />
               <Layout>
                 <Component {...pageProps} />
