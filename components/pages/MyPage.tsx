@@ -117,7 +117,6 @@ const Gov: NextPage = () => {
         <Heading color="#fff" size="lg">
           My Page
         </Heading>
-        <Button variant="primary">Claim All Rewards</Button>
       </Flex>
       <Flex justifyContent="space-between" gridGap="12">
         <Card flex="1">
@@ -167,57 +166,10 @@ const Gov: NextPage = () => {
                 fontSizeAsset="md"
               />
             </Box>
-            <Center h="102px" px="8">
-              <Divider
-                orientation="vertical"
-                borderColor="rgba(255, 255, 255, 0.1)"
-              />
-            </Center>
-            <Box>
-              <Text fontSize="xl" fontWeight="700" mb="4">
-                Claimable Rewards
-              </Text>
-              <SimpleStat
-                value="--"
-                asset="WHALE"
-                fontSizeValue="2xl"
-                fontSizeAsset="md"
-              />
-            </Box>
           </HStack>
-          <Box height="200" mt="8">
+          <Box height="230px" mt="8">
             <LineChart data={dataChart} />
           </Box>
-        </Card>
-      </Flex>
-
-      <Flex pt="94">
-        <Heading color="#fff" size="md" mb="10">
-          Rewards
-        </Heading>
-      </Flex>
-      <Flex>
-        <Card w="full">
-          <HStack spacing="10">
-            <Text color="brand.200" fontSize="xl" fontWeight="bold">
-              All
-            </Text>
-            <Text color="brand.200" fontSize="xl" fontWeight="bold">
-              Rewards
-            </Text>
-            <Text color="brand.200" fontSize="xl" fontWeight="bold">
-              Earn
-            </Text>
-            <Text color="brand.200" fontSize="xl" fontWeight="bold">
-              Borrow{" "}
-            </Text>
-            <Text color="brand.200" fontSize="xl" fontWeight="bold">
-              Govern
-            </Text>
-            <Text color="brand.200" fontSize="xl" fontWeight="bold">
-              History
-            </Text>
-          </HStack>
         </Card>
       </Flex>
     </Box>

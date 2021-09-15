@@ -45,23 +45,9 @@ const VaultLine: FC<Props> = ({ data }) => {
             display={{ base: "none", sm: "none", md: "inherit" }}
           >
             <VaultStat label="APR" value="--" />
+            <VaultStat label="Daily Yield" value="--" />
             <VaultStat label="My Deposit" value={balanceAmount} />
-            <Flex justifyContent="space-between">
-              <Text color="#fff" mr="3" fontSize="large">
-                My Rewards
-              </Text>
-              <HStack spacing="8px">
-                <Image
-                  src="/logo-small.svg"
-                  alt="Vector"
-                  width="1.25rem"
-                  height="1.25rem"
-                />
-                <Text color="brand.500" fontWeight="700">
-                  --
-                </Text>
-              </HStack>
-            </Flex>
+            <VaultStat label="Total Deposit" value={balanceAmount} />
           </HStack>
           <Button variant="primary" onClick={() => setIsOpen(!isOpen)}>
             +

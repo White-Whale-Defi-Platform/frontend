@@ -187,62 +187,7 @@ const VaultLineActive: FC<Props> = ({
             borderColor="rgba(255, 255, 255, 0.1)"
           />
         </Center>
-        {/* Start bloc two */}
-        <Flex
-          justify="space-between"
-          flexDir={{ base: "row", sm: "row", md: "column" }}
-          order={{ base: 6, sm: 6, md: 0 }}
-        >
-          <Box>
-            <Text fontSize="xl" mb="4" fontWeight="bold">
-              My Rewards
-            </Text>
-            <Flex>
-              <Image
-                src="/logo-small.svg"
-                alt="logo-small.svg"
-                boxSize="6"
-                mr="2"
-              />
-              <Box>
-                <SimpleStat
-                  value="--"
-                  asset="WHALE"
-                  fontSizeValue="2xl"
-                  fontSizeAsset="xl"
-                />
-                <Text
-                  color="#8b8b8c"
-                  mt="2"
-                  display={{ base: "none", sm: "none", md: "initial" }}
-                >
-                  ---
-                </Text>
-              </Box>
-            </Flex>
-          </Box>
-          <Box pl={{ base: "60px", sm: "60px", md: "initial" }}>
-            <Button variant="primary" size="sm" isFullWidth mb="4">
-              Claim
-            </Button>
-            <Button variant="secondary" size="sm" isFullWidth>
-              Coumpound
-            </Button>
-          </Box>
-        </Flex>
-        {/* End bloc two */}
-        <Center
-          h="48"
-          px="12"
-          alignSelf="center"
-          display={{ base: "none", sm: "none", md: "initial" }}
-        >
-          <Divider
-            orientation="vertical"
-            borderColor="rgba(255, 255, 255, 0.1)"
-          />
-        </Center>
-        {/* Start bloc three */}
+
         {item.type == "peg" && (
           <Flex
             order={{ base: 2, sm: 2, md: 5 }}
@@ -264,7 +209,7 @@ const VaultLineActive: FC<Props> = ({
         {item.type == "asset" && (
           <Flex order={{ base: 2, sm: 2, md: 5 }} flexDir="column">
             <Flex justifyContent="space-between">
-              <Text fontSize="xl"> Assets </Text>
+              <Text fontSize="xl">Assets</Text>
               <Flex>
                 <Button
                   variant="primary"
@@ -283,43 +228,12 @@ const VaultLineActive: FC<Props> = ({
                   </Box>
                 ))}
               </Flex>
-              <Flex>
+              <Box>
                 <EllipseChartVaultAsset pt="36px" />
-              </Flex>
+              </Box>
             </Flex>
           </Flex>
         )}
-
-        <Box
-          order={{ base: 3, sm: 3, md: 5 }}
-          display={{ base: "initial", sm: "initial", md: "none" }}
-          py="27px"
-        >
-          <Divider borderColor="rgba(255, 255, 255, 0.1)" />
-        </Box>
-        <Box
-          order={{ base: 5, sm: 5, md: 5 }}
-          display={{ base: "initial", sm: "initial", md: "none" }}
-          py="27px"
-        >
-          <Divider borderColor="rgba(255, 255, 255, 0.1)" />
-        </Box>
-
-        <Box
-          order={{ base: 3, sm: 3, md: 5 }}
-          display={{ base: "initial", sm: "initial", md: "none" }}
-          py="27px"
-        >
-          <Divider borderColor="rgba(255, 255, 255, 0.1)" />
-        </Box>
-        <Box
-          order={{ base: 5, sm: 5, md: 5 }}
-          display={{ base: "initial", sm: "initial", md: "none" }}
-          py="27px"
-        >
-          <Divider borderColor="rgba(255, 255, 255, 0.1)" />
-        </Box>
-        {/* End bloc three */}
       </MotionFlex>
     </Card>
   );
