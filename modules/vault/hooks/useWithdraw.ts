@@ -5,10 +5,17 @@ import { createWithdrawMsgs } from "modules/vault";
 
 type Params = {
   contract: string;
+  lpToken: string;
   amount: string;
+  onSuccess: () => void;
 };
 
-export const useWithdraw = ({ contract, amount }: Params) => {
+export const useWithdraw = ({
+  contract,
+  lpToken,
+  amount,
+  onSuccess,
+}: Params) => {
   const address = useAddress();
 
   const msgs = useMemo(() => {
@@ -19,17 +26,21 @@ export const useWithdraw = ({ contract, amount }: Params) => {
     return createWithdrawMsgs(
       {
         contract,
+        lpToken,
         amount,
       },
       address
     );
-  }, [contract, amount, address]);
+  }, [contract, amount, lpToken, address]);
 
-  const { fee, submit, result, error, reset } = useTransaction({
+  const { fee, submit, result, error, isLoading, isReady } = useTransaction({
     msgs,
+    onSuccess,
   });
 
   return {
+    isLoading,
+    isReady,
     fee,
     result,
     error,

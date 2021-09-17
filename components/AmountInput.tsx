@@ -11,14 +11,17 @@ import {
   Image,
   chakra,
 } from "@chakra-ui/react";
-import { useBalance, useTokenInfo } from "@arthuryeti/terra";
+import numeral from "numeral";
+import { useTokenInfo } from "@arthuryeti/terra";
 
 import Balance from "components/Balance";
-import { lookup, lookupSymbol } from "libs/parse";
+import { lookup, lookupSymbol, formatAsset } from "libs/parse";
+import { useBalance } from "hooks/useBalance";
 
 type Props = {
   onChange: any;
   onBlur: any;
+  initialBalance?: string;
   value: {
     amount: string;
     asset: string;
@@ -26,17 +29,28 @@ type Props = {
 };
 
 const AmountInput: FC<Props> = forwardRef(
-  ({ onChange, onBlur, value }, ref) => {
+  ({ onChange, onBlur, value, initialBalance }, ref) => {
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
     const symbol = lookupSymbol(getSymbol(value.asset));
     const balance = useBalance(value.asset);
-    const amount = lookup(balance, value.asset);
+    const initialAmount = lookup(initialBalance || balance, value.asset);
+    const amount = numeral(initialAmount).subtract("0.1").value();
 
     return (
       <Box ref={ref}>
-        <Box mb="1">
-          <Balance asset={value.asset} />
+        <Box mb="2">
+          {initialBalance == null && <Balance asset={value.asset} />}
+          {initialBalance != null && (
+            <Text>
+              <Text as="span" variant="light">
+                Balance:
+              </Text>{" "}
+              <Text as="span" fontSize="sm" fontWeight="500">
+                {formatAsset(initialBalance, getSymbol(value.asset))}
+              </Text>
+            </Text>
+          )}
         </Box>
         <Box position="relative">
           <NumberInput
@@ -57,17 +71,19 @@ const AmountInput: FC<Props> = forwardRef(
             px="6"
           >
             <HStack spacing="4">
-              <Box>
-                <chakra.button
-                  type="button"
-                  outline="none"
-                  color="brand.500"
-                  fontWeight="500"
-                  onClick={() => onChange({ ...value, amount })}
-                >
-                  Max
-                </chakra.button>
-              </Box>
+              {amount > 0 && (
+                <Box>
+                  <chakra.button
+                    type="button"
+                    outline="none"
+                    color="brand.500"
+                    fontWeight="500"
+                    onClick={() => onChange({ ...value, amount })}
+                  >
+                    Max
+                  </chakra.button>
+                </Box>
+              )}
               <Box py="2" height="full">
                 <Divider orientation="vertical" borderColor="brand.600" />
               </Box>

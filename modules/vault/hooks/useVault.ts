@@ -1,6 +1,8 @@
-import { useCallback, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
+import numeral from "numeral";
 
 import { useAddress, useTerra } from "@arthuryeti/terra";
+import { useQuery } from "react-query";
 
 type Params = {
   contract: string;
@@ -10,69 +12,69 @@ export const useVault = ({ contract }: Params) => {
   const { client } = useTerra();
   const address = useAddress();
 
-  const [vault, setVault] = useState(null);
-  const [balance, setBalance] = useState("0");
-  const [totalBalance, setTotalBalance] = useState("0");
-
-  const getVault = useCallback(async () => {
-    try {
-      const res: any = await client.wasm.contractQuery(contract, {
+  const { data: vault } = useQuery(
+    ["config", contract],
+    () => {
+      return client.wasm.contractQuery<{ liquidity_token: string }>(contract, {
         config: {},
       });
-
-      setVault(res);
-    } catch (e) {
-      console.log(e);
+    },
+    {
+      enabled: contract != null,
     }
-  }, [client, contract]);
+  );
 
-  const getTotalBalance = useCallback(async () => {
-    if (vault == null || address == null) {
-      return;
-    }
-
-    try {
-      const res: any = await client.wasm.contractQuery(contract, {
+  const { data: pool } = useQuery(
+    ["pool", contract],
+    () => {
+      return client.wasm.contractQuery<{
+        total_deposits_in_ust: string;
+        total_share: string;
+      }>(contract, {
         pool: {},
       });
-
-      setTotalBalance(res.total_share);
-    } catch (e) {
-      console.log(e);
+    },
+    {
+      enabled: contract != null,
     }
-  }, [client, contract, vault, address]);
+  );
 
-  const getMyBalance = useCallback(async () => {
-    if (vault == null || address == null) {
-      return;
+  const { data: balData } = useQuery(
+    ["balance", vault?.liquidity_token],
+    () => {
+      return client.wasm.contractQuery<{ balance: string }>(
+        vault?.liquidity_token,
+        {
+          balance: {
+            address,
+          },
+        }
+      );
+    },
+    {
+      enabled: vault != null && contract != null,
+    }
+  );
+
+  const balance = useMemo(() => {
+    if (balData == null || pool == null) {
+      return "0";
     }
 
-    console.log(vault);
+    return numeral(balData.balance)
+      .multiply(pool.total_deposits_in_ust)
+      .divide(pool.total_share)
+      .value()
+      .toString();
+  }, [balData, pool]);
 
-    try {
-      const res: any = await client.wasm.contractQuery(vault.liquidity_token, {
-        balance: {
-          address,
-        },
-      });
-
-      setBalance(res.balance);
-    } catch (e) {
-      console.log(e);
+  const totalBalance = useMemo(() => {
+    if (pool == null) {
+      return "0";
     }
-  }, [client, vault, address]);
 
-  useEffect(() => {
-    getVault();
-  }, [getVault]);
-
-  useEffect(() => {
-    getMyBalance();
-  }, [getMyBalance]);
-
-  useEffect(() => {
-    getTotalBalance();
-  }, [getTotalBalance]);
+    return pool.total_deposits_in_ust;
+  }, [pool]);
 
   return {
     vault,

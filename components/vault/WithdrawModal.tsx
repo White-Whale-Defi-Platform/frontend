@@ -40,12 +40,8 @@ const WithdrawModal: FC<Props> = ({ vault }) => {
           <ModalBody>
             <Flex align="center" direction="column">
               <Heading size="md" mb="4">
-                Deposit asset
+                Withdraw asset
               </Heading>
-              <Text variant="light" textAlign="center" fontWeight="500" mb="8">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </Text>
 
               <WithdrawForm token="uusd" vault={vault} onClose={onClose} />
             </Flex>

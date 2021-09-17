@@ -3,6 +3,7 @@ import { toBase64 } from "@arthuryeti/terra";
 
 type CreateWithdrawMsgsOptions = {
   contract: string;
+  lpToken: string;
   amount: string;
 };
 
@@ -10,10 +11,10 @@ export const createWithdrawMsgs = (
   options: CreateWithdrawMsgsOptions,
   sender: string
 ): MsgExecuteContract[] => {
-  const { contract, amount } = options;
+  const { contract, lpToken, amount } = options;
 
   return [
-    new MsgExecuteContract(sender, "lpToken", {
+    new MsgExecuteContract(sender, lpToken, {
       send: {
         contract,
         amount,

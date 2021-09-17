@@ -56,184 +56,88 @@ const VaultLineActive: FC<Props> = ({
           opacity: 1,
         }}
       >
-        {/* Start bloc one */}
-        <Flex
-          flex="1"
-          justify="space-between"
-          flexDir="column"
-          order={{ base: 0, sm: 0, md: 0 }}
-        >
-          <Flex justify="space-between" align="center">
-            <Box>
-              <HStack spacing="2" mb="4">
-                <Image src={item.logo} alt={item.logo} boxSize="1.875rem" />
-                <Text color="#fff" fontSize="xl" fontWeight="bold">
-                  UST
-                </Text>
-              </HStack>
-              <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-                --
+        <Box>
+          <Box>
+            <HStack spacing="2" mb="4">
+              <Image src={item.logo} alt={item.logo} boxSize="1.875rem" />
+              <Text color="#fff" fontSize="xl" fontWeight="bold">
+                UST
               </Text>
-            </Box>
-            <Center h="16">
-              <Divider
-                orientation="vertical"
-                borderColor="rgba(255, 255, 255, 0.1)"
-              />
-            </Center>
-            <Box>
-              <Text color="#fff" fontSize="xl" fontWeight="bold" mb="4">
-                APY
-              </Text>
-              <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-                --
-              </Text>
-            </Box>
-            <Center h="16">
-              <Divider
-                orientation="vertical"
-                borderColor="rgba(255, 255, 255, 0.1)"
-              />
-            </Center>
-            <Box>
-              <Text color="#fff" fontSize="xl" mb="4" fontWeight="bold">
-                Daily Yield
-              </Text>
-              <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-                --
-              </Text>
-            </Box>
-          </Flex>
-          <Box py={{ base: "27px", sm: "27px", md: "initial" }}>
-            <Divider borderColor="rgba(255, 255, 255, 0.1)" />
+            </HStack>
+            <Text color="brand.500" fontSize="2xl" fontWeight="bold">
+              --
+            </Text>
           </Box>
+          <ChartVault value={graphData} />
           <Flex
             justify="space-between"
-            align="center"
-            display={{ base: "none", sm: "none", md: "inherit" }}
+            py="2"
+            borderBottom="1px solid"
+            borderBottomColor="whiteAlpha.300"
           >
-            <Box>
-              <Text color="#fff" fontSize="large" mb="4" fontWeight="bold">
-                Total Deposits
-              </Text>
-              <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-                {totalBalanceAmount}
-              </Text>
-            </Box>
-            <Center
-              h="16"
-              display={{ base: "none", sm: "none", md: "inherit" }}
-            >
-              <Divider
-                orientation="vertical"
-                borderColor="rgba(255, 255, 255, 0.1)"
-              />
-            </Center>
-            <Flex justify="space-between">
-              <Box mr="12">
-                <Text color="#fff" fontSize="large" mb="4" fontWeight="bold">
-                  My Deposit
-                </Text>
-                <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-                  {balanceAmount}
-                </Text>
-              </Box>
-              <Box>
-                <Box mb="2">
-                  {vault && <DepositModal token="uusd" vault={vault} />}
-                </Box>
-                <Box>{vault && <WithdrawModal vault={vault} />}</Box>
-              </Box>
-            </Flex>
+            <Text color="#fff" fontSize="xl">
+              APY
+            </Text>
+            <SimpleStat
+              value="--"
+              asset="%"
+              fontSizeValue="2xl"
+              fontSizeAsset="sm"
+            />
           </Flex>
-        </Flex>
-        {/* Responsive part TOTAL */}
-        <Flex
-          justify="space-between"
-          order={{ base: 4, sm: 4, md: 0 }}
-          display={{ base: "flex", sm: "flex", md: "none" }}
-        >
-          <Box mr="12">
-            <Text color="#fff" fontSize="large" mb="4" fontWeight="bold">
+          <Flex
+            justify="space-between"
+            py="2"
+            borderBottom="1px solid"
+            borderBottomColor="whiteAlpha.300"
+          >
+            <Text color="#fff" fontSize="xl">
+              Daily Yield
+            </Text>
+            <SimpleStat
+              value="--"
+              asset="%"
+              fontSizeValue="2xl"
+              fontSizeAsset="sm"
+            />
+          </Flex>
+          <Flex
+            justify="space-between"
+            py="2"
+            borderBottom="1px solid"
+            borderBottomColor="whiteAlpha.300"
+          >
+            <Text color="#fff" fontSize="xl">
               My Deposit
             </Text>
-            <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-              {balanceAmount}
-            </Text>
-          </Box>
-          <Box>
-            <Box mb="2">
-              <DepositModal token="uusd" vault={vault} />
-            </Box>
-            <Box>
-              <Button variant="secondary" size="sm" isFullWidth>
-                Withdraw
-              </Button>
-            </Box>
-          </Box>
-        </Flex>
-        {/* Responsive part TOTAL */}
-
-        {/* End bloc one */}
-        <Center
-          h="48"
-          px="12"
-          alignSelf="center"
-          display={{ base: "none", sm: "none", md: "initial" }}
-          order={{ base: 2, sm: 2, md: 0 }}
-        >
-          <Divider
-            orientation="vertical"
-            borderColor="rgba(255, 255, 255, 0.1)"
-          />
-        </Center>
-
-        {item.type == "peg" && (
+            <SimpleStat
+              value={balanceAmount}
+              asset="UST"
+              fontSizeValue="2xl"
+              fontSizeAsset="sm"
+            />
+          </Flex>
           <Flex
-            order={{ base: 2, sm: 2, md: 5 }}
-            justifyContent="space-between"
+            justify="space-between"
+            py="2"
+            borderBottom="1px solid"
+            borderBottomColor="whiteAlpha.300"
           >
-            <ChartVault value={graphData} />
-            <Flex>
-              <Button
-                variant="primary"
-                bgColor="#8F8F8F"
-                onClick={() => onClose()}
-              >
-                -
-              </Button>
-            </Flex>
+            <Text color="#fff" fontSize="xl">
+              Total Deposits
+            </Text>
+            <SimpleStat
+              value={totalBalanceAmount}
+              asset="UST"
+              fontSizeValue="2xl"
+              fontSizeAsset="sm"
+            />
           </Flex>
-        )}
-
-        {item.type == "asset" && (
-          <Flex order={{ base: 2, sm: 2, md: 5 }} flexDir="column">
-            <Flex justifyContent="space-between">
-              <Text fontSize="xl">Assets</Text>
-              <Flex>
-                <Button
-                  variant="primary"
-                  bgColor="#8F8F8F"
-                  onClick={() => onClose()}
-                >
-                  -
-                </Button>
-              </Flex>
-            </Flex>
-            <Flex alignItems="center">
-              <Flex flexDir="column" pr="38" pt="37">
-                {item.assetList.map((data) => (
-                  <Box key={data.label}>
-                    <AssetLine data={data} />
-                  </Box>
-                ))}
-              </Flex>
-              <Box>
-                <EllipseChartVaultAsset pt="36px" />
-              </Box>
-            </Flex>
-          </Flex>
-        )}
+          <Box mb="2">
+            {vault && <DepositModal token="uusd" vault={vault} />}
+          </Box>
+          <Box>{vault && <WithdrawModal vault={vault} />}</Box>
+        </Box>
       </MotionFlex>
     </Card>
   );

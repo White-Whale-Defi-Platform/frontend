@@ -27,7 +27,7 @@ const DepositModal: FC<Props> = ({ token, vault }) => {
     <>
       <Button
         type="button"
-        variant="secondary"
+        variant="primary"
         size="sm"
         isFullWidth
         onClick={onOpen}
@@ -43,10 +43,6 @@ const DepositModal: FC<Props> = ({ token, vault }) => {
               <Heading size="md" mb="4">
                 Deposit asset
               </Heading>
-              <Text variant="light" textAlign="center" fontWeight="500" mb="8">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </Text>
 
               <DepositForm token={token} vault={vault} onClose={onClose} />
             </Flex>

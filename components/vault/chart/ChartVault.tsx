@@ -11,7 +11,7 @@ const ChartVault: FC<Props> = ({ value }) => {
     <Flex>
       <svg
         width="424"
-        height="230"
+        height="175"
         viewBox="0 0 424 230"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
