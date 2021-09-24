@@ -1,13 +1,13 @@
 import React, { FC, useCallback } from "react";
 import { Box, HStack, chakra, Button } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
+import { useFeeToString } from "@arthuryeti/terra";
 
 import AmountInput from "components/AmountInput";
 import LoadingForm from "components/LoadingForm";
 import InlineStat from "components/InlineStat";
 import { toAmount } from "libs/parse";
 import { useDeposit } from "modules/vault";
-import { useFeeToString } from "@arthuryeti/terra";
 import useDebounceValue from "hooks/useDebounceValue";
 
 type IFormInputs = {

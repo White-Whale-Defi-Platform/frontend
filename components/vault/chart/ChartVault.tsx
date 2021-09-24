@@ -1,12 +1,21 @@
-import React, { FC } from "react";
-import { motion } from "framer-motion";
+import React, { FC, useEffect } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Flex } from "@chakra-ui/react";
 
 type Props = {
-  value: any;
+  value: number;
 };
 
 const ChartVault: FC<Props> = ({ value }) => {
+  const x = useMotionValue(0);
+  const input = [0.9, 1, 1.1];
+  const output = [-90, 0, 90];
+  const rotate = useTransform(x, input, output);
+
+  useEffect(() => {
+    x.set(value);
+  }, [value, x]);
+
   return (
     <Flex>
       <svg
@@ -149,7 +158,7 @@ const ChartVault: FC<Props> = ({ value }) => {
         />
         <ellipse cx="212.5" cy="220" rx="10.5" ry="10" fill="#3CCD64" />
         <motion.line
-          animate={{ rotate: ["-43deg", "30deg", "-22deg", "12deg", "-5deg"] }}
+          animate={{ rotate: `${rotate.get()}deg` }}
           x1="213"
           x2="213"
           y1="35"

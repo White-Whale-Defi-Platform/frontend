@@ -8,6 +8,7 @@ import SimpleStat from "components/SimpleStat";
 import ChartVault from "components/vault/chart/ChartVault";
 import DepositModal from "components/vault/DepositModal";
 import WithdrawModal from "components/vault/WithdrawModal";
+import { useUstPrice } from "hooks/useUstPrice";
 
 type Props = {
   data: any;
@@ -42,6 +43,7 @@ const VaultItem: FC<Props> = ({ data }) => {
   });
   const balanceAmount = format(balance, "uusd");
   const totalBalanceAmount = format(totalBalance, "uusd");
+  const ustPrice = useUstPrice();
 
   return (
     <Card
@@ -59,10 +61,10 @@ const VaultItem: FC<Props> = ({ data }) => {
             </Text>
           </HStack>
           <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-            --
+            {data.name == "UST" ? `$${ustPrice}` : "--"}
           </Text>
         </Flex>
-        <ChartVault value={1} />
+        <ChartVault value={data.name == "UST" ? ustPrice : 0} />
       </Box>
       <Box p="8">
         <Box>
