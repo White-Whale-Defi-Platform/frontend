@@ -9,12 +9,8 @@ export const createUnstakeMsgs = (options: Opts, sender: string) => {
   const { govContract, amount } = options;
 
   const executeMsg = {
-    anyone: {
-      anyone_msg: {
-        withdraw_voting_tokens: {
-          amount,
-        },
-      },
+    withdraw_voting_tokens: {
+      amount,
     },
   };
 

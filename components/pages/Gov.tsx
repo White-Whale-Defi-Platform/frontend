@@ -1,32 +1,119 @@
 import React from "react";
+import { formatAmount, useTerra } from "@arthuryeti/terra";
 import {
   Box,
+  Divider,
   Heading,
   Flex,
-  Divider,
-  Center,
   HStack,
   Text,
   Select,
   Tag,
   Stack,
+  Image,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import { NextPage } from "next";
 import Card from "components/Card";
-import BarChart from "components/BarChart";
+
+import contracts from "constants/contracts.json";
+import { useTokenPrice } from "modules/swap";
 
 import SimpleStat from "components/SimpleStat";
 import CustomCardPoll from "components/governance/CustomCardPoll";
+import AssetLine from "components/myPage/AssetLine";
+import PieChart from "components/PieChart";
+import CardLine from "components/governance/CardLine";
+import LineChart from "components/LineChart";
 import UnstakeModal from "components/governance/UnstakeModal";
+import StakeModal from "components/governance/StakeModal";
 import {
   useGovStakable,
   useGovStaked,
   useGovTotalStaked,
 } from "modules/govern";
-import StakeModal from "components/governance/StakeModal";
-import { format } from "libs/parse";
+
+const dataPie = [
+  {
+    label: "Jan",
+    value: 0.22,
+    color: "#3CCD64",
+  },
+  {
+    label: "Feb",
+    value: 0.39,
+    color: "#2C8D47",
+  },
+  {
+    label: "Apr",
+    value: 0.1,
+    color: "#444E46",
+  },
+  {
+    label: "May",
+    value: 0.29,
+    color: "#3CCD64",
+  },
+];
+
+const dataChart = [
+  {
+    name: "Apr",
+    value: 1.32,
+  },
+  {
+    name: "May",
+    value: 4.12,
+  },
+  {
+    name: "Jun",
+    value: 2.22,
+  },
+  {
+    name: "Jul",
+    value: 3.22,
+  },
+  {
+    name: "Aug",
+    value: 1.22,
+  },
+  {
+    name: "Sep",
+    value: 7.22,
+  },
+  {
+    name: "Sep",
+    value: 7.255,
+  },
+];
+
+const assets = [
+  {
+    color: "#FFDD4D",
+    label: "LUNA",
+    value: "32M",
+    asset: "UST",
+  },
+  {
+    color: "#3CCD64",
+    label: "WHALE",
+    value: "8M",
+    asset: "UST",
+  },
+  {
+    color: "#2E78E9",
+    label: "UST",
+    value: "12M",
+    asset: "UST",
+  },
+  {
+    color: "#525252",
+    label: "Others",
+    value: "12M",
+    asset: "UST",
+  },
+];
 
 const CustomChevronDownIcon = () => {
   return (
@@ -36,297 +123,105 @@ const CustomChevronDownIcon = () => {
   );
 };
 
-const data = [
-  {
-    label: "WHALE",
-    color: "#3CCD64",
-    value: 0.8,
-    valueCount: "87M",
-  },
-  {
-    label: "UST",
-    color: "rgba(58, 58, 58, 0.5);",
-    value: 0.2,
-    valueCount: "80MM",
-  },
-];
-
 const Gov: NextPage = () => {
+  const {
+    networkInfo: { name },
+  } = useTerra();
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
-  const stakableAmount = useGovStakable();
+  const price = useTokenPrice(contracts[name].whaleToken);
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Heading color="#fff" size="lg" mb="10">
         Governance
       </Heading>
-      <Flex
-        justifyContent="space-between"
-        flexDir={{ base: "column", sm: "column", md: "row" }}
-      >
-        <Box flex="1" pr={{ base: "0", sm: "0", md: "4" }}>
-          <Card h="full" flex="1">
-            <Flex h="full" justifyContent="space-between" flexDir="column">
-              <Flex align="center">
-                <Box>
-                  <HStack spacing="4" mb="4">
-                    <Text fontSize="xl">WHALE</Text>
-                    <Tag size="sm" color="white" bg="#3CCD64">
-                      --
-                    </Tag>
-                  </HStack>
-                  {/* <Text color="brand.500" fontSize='2xl' fontWeight='700'> 1.001 UST </Text> */}
-                  <SimpleStat
-                    value="1.001"
-                    asset="UST"
-                    fontSizeValue="2xl"
-                    fontSizeAsset="xl"
-                  />
-                </Box>
-                <Center h="102px" p="0px 37px">
-                  <Divider
-                    orientation="vertical"
-                    borderColor="rgba(255, 255, 255, 0.1)"
-                  />
-                </Center>
-                <Box>
-                  <Text fontSize="xl" mb="4">
-                    APR
-                  </Text>
-                  <Text
-                    color="brand.500"
-                    fontSize="2xl"
-                    fontWeight="700"
-                    lineHeight="1"
-                  >
-                    --
-                  </Text>
-                </Box>
-                <Center
-                  h="102px"
-                  p="0px 37px"
-                  display={{ base: "none", sm: "none", md: "initial" }}
-                >
-                  <Divider
-                    orientation="vertical"
-                    borderColor="rgba(255, 255, 255, 0.1)"
-                  />
-                </Center>
-                <Box display={{ base: "none", sm: "none", md: "initial" }}>
-                  <Text fontSize="xl" mb="4">
-                    Total Staked
-                  </Text>
-                  <SimpleStat
-                    value={format(totalStakedAmount)}
-                    asset="WHALE"
-                    fontSizeValue="2xl"
-                    fontSizeAsset="xl"
-                  />
-                </Box>
-              </Flex>
-              <Box py="6">
-                <Divider borderColor="rgba(255, 255, 255, 0.1)" />
-              </Box>
 
-              {/* Responsive part  */}
-              <Box display={{ base: "block", sm: "block", md: "none" }}>
-                <Text fontSize="xl" mb="4">
-                  Total Staked
-                </Text>
+      <Flex justify="space-between" gridGap="12">
+        <Card flex="1.7" noPadding>
+          <Flex justify="space-between">
+            <Box p="8" bg="blackAlpha.400" flex="1">
+              <Flex justify="space-between" align="center" mb="6">
+                <HStack spacing="4">
+                  <Image
+                    src="/warChest.png"
+                    alt="War Chest"
+                    boxSize="2.25rem"
+                  />
+                  <Text color="#fff" fontSize="xl" fontWeight="700">
+                    War Chest
+                  </Text>
+                </HStack>
                 <SimpleStat
-                  value={format(totalStakedAmount)}
-                  asset="WHALE"
+                  value="54.06"
+                  asset="UST"
                   fontSizeValue="2xl"
                   fontSizeAsset="xl"
                 />
-              </Box>
-              {/* Responsive part */}
+              </Flex>
 
-              <Box display={{ base: "none", sm: "none", md: "block" }}>
-                <HStack spacing="3">
-                  <Box boxSize="6" bg="#2A2C2B" borderRadius="full" />
-                  <Text fontSize="lg">Initial Supply</Text>
-                  <HStack align="baseline" color="brand.200" spacing="1">
-                    <Text fontSize="lg" fontWeight="700">
-                      --
-                    </Text>
-                    <Text fontSize="xs" color="#8b8b8c">
-                      WHALE
-                    </Text>
-                  </HStack>
-                </HStack>
-                <HStack spacing="3" mt="16px">
-                  <Box boxSize="6" bg="brand.500" borderRadius="full" />
-                  <Text fontSize="lg">Current Supply</Text>
-                  <HStack align="baseline" color="brand.200" spacing="1">
-                    <Text fontSize="lg" fontWeight="700">
-                      --
-                    </Text>
-                    <Text fontSize="xs" color="#8b8b8c">
-                      WHALE
-                    </Text>
-                  </HStack>
-                </HStack>
-                <Box mt="8">
-                  <BarChart data={data} />
+              <Flex>
+                <Box flex="1">
+                  {assets.map((item) => (
+                    <AssetLine key={item.asset} data={item} />
+                  ))}
                 </Box>
-              </Box>
-            </Flex>
-          </Card>
-        </Box>
-        <Flex
-          flexDir="column"
-          pt={{ base: "12", sm: "12", md: "initial" }}
-          flex="1"
-          pl={{ base: "0", sm: "0", md: "4" }}
-        >
-          <Card>
-            <Flex
-              justify="space-between"
-              flexDir={{ base: "column", sm: "column", md: "row" }}
-            >
-              <Box>
-                <Text fontSize="xl" mb="4" whiteSpace="nowrap">
-                  Governance Vault
-                </Text>
-                <SimpleStat
-                  value="--"
-                  asset="UST"
-                  fontSizeValue="2xl"
-                  fontSizeAsset="md"
-                />
-              </Box>
-              <Center
-                h="24"
-                px="6"
-                display={{ base: "none", sm: "none", md: "initial" }}
-              >
-                <Divider
-                  orientation="vertical"
-                  borderColor="rgba(255, 255, 255, 0.1)"
-                />
-              </Center>
 
-              <Box
-                py="6"
-                display={{ base: "initial", sm: "initial", md: "none" }}
-              >
-                <Divider borderColor="rgba(255, 255, 255, 0.1)" />
-              </Box>
+                <Box h="150" w="155px" pl="8">
+                  <PieChart data={dataPie} innerRadius={45} outerRadius={60} />
+                </Box>
+              </Flex>
+            </Box>
 
-              <Box flex="1">
-                <Flex justifyContent="space-between" align="center" mb="3">
-                  <Text
-                    bg="#2A2C2B"
-                    px="3"
-                    py="1"
-                    borderRadius="full"
-                    minW="24"
-                    textAlign="center"
-                    mr="3"
-                  >
-                    Staked
-                  </Text>
-                  <Box flex="1">
-                    <SimpleStat
-                      value={format(stakedAmount)}
-                      asset="WHALE"
-                      fontSizeValue="xl"
-                      fontSizeAsset="xs"
-                    />
-                  </Box>
-                  <UnstakeModal />
-                </Flex>
-                <Flex justifyContent="space-between" align="center">
-                  <Text
-                    bg="#2A2C2B"
-                    px="3"
-                    py="1"
-                    borderRadius="full"
-                    minW="24"
-                    textAlign="center"
-                    mr="3"
-                  >
-                    Stakable
-                  </Text>
-                  <Box flex="1">
-                    <SimpleStat
-                      value={format(stakableAmount)}
-                      asset="WHALE"
-                      fontSizeValue="xl"
-                      fontSizeAsset="xs"
-                    />
-                  </Box>
-                  <StakeModal />
-                </Flex>
-              </Box>
-            </Flex>
-          </Card>
-          <Card
-            mt="30"
-            padding="30px 29px"
-            display={{ base: "none", sm: "none", md: "initial" }}
-          >
-            <Flex justify="space-between" align="center">
+            <Box p="8" flex="1">
               <Box>
-                <Text fontSize="xl" mb="4" whiteSpace="nowrap">
-                  Burn Vault
-                </Text>
-                <SimpleStat
-                  value="--"
-                  asset="UST"
-                  fontSizeValue="2xl"
-                  fontSizeAsset="md"
+                <CardLine value="18.2" asset="%" label="APY" />
+                <Box py="3">
+                  <Divider borderColor="whiteAlpha.400" />
+                </Box>
+                <CardLine value="0.21" asset="%" label="Daily Yield" />
+                <Box py="3">
+                  <Divider borderColor="whiteAlpha.400" />
+                </Box>
+                <CardLine
+                  value={formatAmount(totalStakedAmount)}
+                  asset="WHALE"
+                  label="Total Deposits"
+                />
+                <Box py="3">
+                  <Divider borderColor="whiteAlpha.400" />
+                </Box>
+                <CardLine
+                  value={formatAmount(stakedAmount)}
+                  asset="WHALE"
+                  label="My Deposit"
                 />
               </Box>
-              <Center h="24" px="6">
-                <Divider
-                  orientation="vertical"
-                  borderColor="rgba(255, 255, 255, 0.1)"
-                />
-              </Center>
-              <Box flex="1">
-                <HStack justify="space-between" mb="4">
-                  <Text
-                    bg="#2A2C2B"
-                    px="6"
-                    py="1"
-                    borderRadius="full"
-                    whiteSpace="nowrap"
-                  >
-                    Total WHALE burned
-                  </Text>
-                  <SimpleStat
-                    value="--"
-                    asset="WHALE"
-                    fontSizeValue="2xl"
-                    fontSizeAsset="sm"
-                  />
-                </HStack>
-                <HStack justify="space-between">
-                  <Text
-                    bg="#2A2C2B"
-                    px="6"
-                    py="1"
-                    borderRadius="full"
-                    whiteSpace="nowrap"
-                  >
-                    Burned in the last 24h
-                  </Text>
-                  <SimpleStat
-                    value="--"
-                    asset="WHALE"
-                    fontSizeValue="2xl"
-                    fontSizeAsset="sm"
-                  />
-                </HStack>
-              </Box>
-            </Flex>
-          </Card>
-        </Flex>
+              <HStack mt="5">
+                <UnstakeModal />
+                <StakeModal />
+              </HStack>
+            </Box>
+          </Flex>
+        </Card>
+
+        <Card flex="1">
+          <Text fontSize="xl" mb="4">
+            WHALE
+          </Text>
+          <SimpleStat
+            value={formatAmount(price)}
+            asset="UST"
+            fontSizeValue="2xl"
+            fontSizeAsset="xl"
+          />
+          <Box height="120" mt="12">
+            <LineChart data={dataChart} />
+          </Box>
+        </Card>
       </Flex>
-      <Flex justifyContent="space-between" mt="24" mb="6">
+
+      <Flex justify="space-between" mt="24" mb="6">
         <Heading color="#fff" size="lg">
           Polls
         </Heading>

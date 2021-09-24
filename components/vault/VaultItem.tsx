@@ -3,12 +3,13 @@ import { Box, HStack, Flex, Text, Image } from "@chakra-ui/react";
 
 import { format } from "libs/parse";
 import { useVault } from "modules/vault";
+import { useUstPrice } from "hooks/useUstPrice";
+
 import Card from "components/Card";
 import SimpleStat from "components/SimpleStat";
 import ChartVault from "components/vault/chart/ChartVault";
 import DepositModal from "components/vault/DepositModal";
 import WithdrawModal from "components/vault/WithdrawModal";
-import { useUstPrice } from "hooks/useUstPrice";
 
 type Props = {
   data: any;

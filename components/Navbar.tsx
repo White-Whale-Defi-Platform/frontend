@@ -16,7 +16,6 @@ const Navbar: FC = () => {
                 <Image src="/logo.svg" alt="WhiteWhale Logo" boxSize="12" />
               </a>
             </Link>
-            <NavbarLink text="Dashboard" href="/" />
             <NavbarLink text="My Page" href="/myPage" />
             <NavbarLink text="Vaults" href="/vaults" />
             <NavbarLink text="Swap" href="/swap" />

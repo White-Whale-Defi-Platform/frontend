@@ -168,12 +168,12 @@
         ]
       },
       {
-        "contract": "terra1tc4dertggfyz9qye4ymptneqxlye2dpgfxfrhf",
+        "contract": "terra1jcpchr3229qvld9q2gqpx0rr8h2z9mh4a3jm50",
         "lpToken": "terra16xn9lyh0x2hcznrh894fctytnv60a5gqrzw5q5",
         "asset_infos": [
           {
             "token": {
-              "contract_addr": "terra1gwmn9h9cyp76ea2ce0djrhn9dpwmjhy3hepq50"
+              "contract_addr": "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9"
             }
           },
           {

@@ -26,6 +26,7 @@ const StakeModal: FC = () => {
         variant="primary"
         size="sm"
         onClick={onOpen}
+        isFullWidth
       >
         Stake
       </Button>

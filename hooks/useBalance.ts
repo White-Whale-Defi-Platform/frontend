@@ -7,7 +7,7 @@ export const useBalance = (token: string) => {
   const { client } = useTerra();
   const address = useAddress();
 
-  const { data, isLoading } = useQuery<any>(["balance", token], () => {
+  const { data, isLoading } = useQuery<any>(`balance-${token}`, () => {
     if (getIsTokenNative(token)) {
       return client.bank.balance(address);
     }
@@ -20,7 +20,7 @@ export const useBalance = (token: string) => {
   });
 
   if (isLoading || !data) {
-    return "0.00";
+    return "0";
   }
 
   if (data.balance) {

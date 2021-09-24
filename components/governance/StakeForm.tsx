@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from "react";
-import { Button, HStack, Box, chakra, useToast } from "@chakra-ui/react";
+import { Button, HStack, Box, chakra } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useTerra, useFeeToString } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
@@ -7,8 +7,8 @@ import { useQueryClient } from "react-query";
 import { toAmount } from "libs/parse";
 import { useStake } from "modules/govern";
 import contracts from "constants/contracts.json";
+import useDebounceValue from "hooks/useDebounceValue";
 
-import ArrowDownIcon from "components/icons/ArrowDownIcon";
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
 import InlineStat from "components/InlineStat";
@@ -25,7 +25,6 @@ type IFormInputs = {
 };
 
 const StakeForm: FC<Props> = ({ onClose }) => {
-  const toast = useToast();
   const queryClient = useQueryClient();
   const {
     networkInfo: { name },
@@ -41,16 +40,18 @@ const StakeForm: FC<Props> = ({ onClose }) => {
   });
   const token = watch("token");
 
+  const debouncedAmount = useDebounceValue(token.amount, 500);
+
   const handleSuccess = useCallback(() => {
     queryClient.invalidateQueries("balance");
     queryClient.invalidateQueries("staker");
     onClose();
-  }, [onClose, queryClient, toast]);
+  }, [onClose, queryClient]);
 
   const stakeState = useStake({
     tokenContract: token.asset,
     govContract: contracts[name].gov,
-    amount: toAmount(token.amount),
+    amount: toAmount(debouncedAmount),
     onSuccess: handleSuccess,
   });
 

@@ -8,9 +8,11 @@ import {
 
 type Props = {
   data: any;
+  innerRadius?: number;
+  outerRadius?: number;
 };
 
-const PieChart: FC<Props> = ({ data }) => {
+const PieChart: FC<Props> = ({ data, innerRadius = 60, outerRadius = 80 }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChartComponent>
@@ -20,8 +22,8 @@ const PieChart: FC<Props> = ({ data }) => {
           nameKey="label"
           // cx="50%"
           // cy="50%"
-          innerRadius={60}
-          outerRadius={80}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius}
         >
           {data.map((entry, index) => {
             return (

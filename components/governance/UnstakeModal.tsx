@@ -26,6 +26,7 @@ const UnstakeModal: FC = () => {
         variant="secondary"
         size="sm"
         onClick={onOpen}
+        isFullWidth
       >
         Unstake
       </Button>

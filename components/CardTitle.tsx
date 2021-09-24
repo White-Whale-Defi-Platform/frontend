@@ -15,7 +15,7 @@ const CardTitle: FC<Props> = ({ label, value, icon, asset, tooltip }) => {
   return (
     <Box>
       <HStack mb="3">
-        <Text fontSize="lg" mb="2">
+        <Text fontSize="xl" fontWeight="bold">
           {label}
         </Text>
         {tooltip && (

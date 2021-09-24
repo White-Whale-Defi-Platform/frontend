@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
 import numeral from "numeral";
-
 import { useAddress, useTerra } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
 
@@ -40,7 +39,7 @@ export const useVault = ({ contract }: Params) => {
   );
 
   const { data: balData } = useQuery(
-    ["balance", vault?.liquidity_token],
+    ["balance", vault?.liquidity_token, address],
     () => {
       return client.wasm.contractQuery<{ balance: string }>(
         vault?.liquidity_token,
@@ -65,6 +64,7 @@ export const useVault = ({ contract }: Params) => {
       .multiply(pool.total_deposits_in_ust)
       .divide(pool.total_share)
       .value()
+      .toFixed()
       .toString();
   }, [balData, pool]);
 
