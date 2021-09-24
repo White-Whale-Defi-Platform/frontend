@@ -35,7 +35,7 @@ const AmountInput: FC<Props> = forwardRef(
     const symbol = lookupSymbol(getSymbol(value.asset));
     const balance = useBalance(value.asset);
     const initialAmount = lookup(initialBalance || balance, value.asset);
-    const amount = numeral(initialAmount).subtract("0.1").value();
+    const amount = numeral(initialAmount).subtract("2").value();
 
     return (
       <Box ref={ref}>
