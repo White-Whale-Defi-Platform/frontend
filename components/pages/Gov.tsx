@@ -19,6 +19,14 @@ import BarChart from "components/BarChart";
 
 import SimpleStat from "components/SimpleStat";
 import CustomCardPoll from "components/governance/CustomCardPoll";
+import UnstakeModal from "components/governance/UnstakeModal";
+import {
+  useGovStakable,
+  useGovStaked,
+  useGovTotalStaked,
+} from "modules/govern";
+import StakeModal from "components/governance/StakeModal";
+import { format } from "libs/parse";
 
 const CustomChevronDownIcon = () => {
   return (
@@ -44,6 +52,10 @@ const data = [
 ];
 
 const Gov: NextPage = () => {
+  const totalStakedAmount = useGovTotalStaked();
+  const stakedAmount = useGovStaked();
+  const stakableAmount = useGovStakable();
+
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Heading color="#fff" size="lg" mb="10">
@@ -106,7 +118,7 @@ const Gov: NextPage = () => {
                     Total Staked
                   </Text>
                   <SimpleStat
-                    value="--"
+                    value={format(totalStakedAmount)}
                     asset="WHALE"
                     fontSizeValue="2xl"
                     fontSizeAsset="xl"
@@ -123,7 +135,7 @@ const Gov: NextPage = () => {
                   Total Staked
                 </Text>
                 <SimpleStat
-                  value="--"
+                  value={format(totalStakedAmount)}
                   asset="WHALE"
                   fontSizeValue="2xl"
                   fontSizeAsset="xl"
@@ -218,22 +230,13 @@ const Gov: NextPage = () => {
                   </Text>
                   <Box flex="1">
                     <SimpleStat
-                      value="--"
+                      value={format(stakedAmount)}
                       asset="WHALE"
                       fontSizeValue="xl"
                       fontSizeAsset="xs"
                     />
                   </Box>
-                  <Text
-                    padding="4px 24px"
-                    borderRadius="full"
-                    border="1px solid #fff"
-                    boxSizing="border-box"
-                    textAlign="center"
-                    minW="28"
-                  >
-                    Unstake
-                  </Text>
+                  <UnstakeModal />
                 </Flex>
                 <Flex justifyContent="space-between" align="center">
                   <Text
@@ -249,21 +252,13 @@ const Gov: NextPage = () => {
                   </Text>
                   <Box flex="1">
                     <SimpleStat
-                      value="--"
+                      value={format(stakableAmount)}
                       asset="WHALE"
                       fontSizeValue="xl"
                       fontSizeAsset="xs"
                     />
                   </Box>
-                  <Text
-                    padding="4px 24px"
-                    borderRadius="full"
-                    bg="#3CCD64"
-                    textAlign="center"
-                    minW="28"
-                  >
-                    Stake
-                  </Text>
+                  <StakeModal />
                 </Flex>
               </Box>
             </Flex>

@@ -10,9 +10,9 @@
     "gov": ""
   },
   "bombay": {
-    "whaleToken": "terra1gwmn9h9cyp76ea2ce0djrhn9dpwmjhy3hepq50",
-    "ustVault": "terra17cwxg7cgwtrxlytnxh00zjk659zk5tgk5ey3rt",
-    "ustVaultLpToken": "terra13r76y32knhnwdeqhwkhxx0yg2u5nn5dvwsw4u9",
-    "gov": ""
+    "whaleToken": "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9",
+    "ustVault": "terra1p523s2zjpuhsz3a9xm5hj62et6shjwahqaev28",
+    "ustVaultLpToken": "terra14gtydtx76gfegc466hmr99g7y54vyxmt5uc53m",
+    "gov": "terra1jxkl0z4fam9jejzlpw3cc77rns8rrv42n4nt0y"
   }
 }
