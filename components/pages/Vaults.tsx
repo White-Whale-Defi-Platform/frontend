@@ -5,19 +5,19 @@ import VaultItem from "components/vault/VaultItem";
 
 const data = [
   {
-    contract: "terra1xkfeggsw2clvykufdk9vvqg0wrhhkgdvy7sput",
+    contract: "terra1h3220hr6jsjz5dz8ju7x8e8mc7pwqv39fftrfg",
     name: "UST",
     logo: "/ust.png",
   },
   {
     contract: null,
-    name: "KRT",
-    logo: "/krtCrypto.png",
+    name: "LUNA/bLUNA",
+    logo: "/terraCrypto.png",
   },
   {
     contract: null,
-    name: "LUNA/bLUNA",
-    logo: "/terraCrypto.png",
+    name: "KRT",
+    logo: "/krtCrypto.png",
   },
 ];
 

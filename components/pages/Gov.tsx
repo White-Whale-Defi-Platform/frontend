@@ -138,7 +138,7 @@ const Gov: NextPage = () => {
       </Heading>
 
       <Flex justify="space-between" gridGap="12">
-        <Card flex="1.7" noPadding>
+        <Card flex="2" noPadding>
           <Flex justify="space-between">
             <Box p="8" bg="blackAlpha.400" flex="1">
               <Flex justify="space-between" align="center" mb="6">
