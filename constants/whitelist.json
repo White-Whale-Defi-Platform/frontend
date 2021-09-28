@@ -127,10 +127,10 @@
         "token": "uusd",
         "icon": "https://whitelist.mirror.finance/images/UST.png"
       },
-      "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9": {
+      "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh": {
         "protocol": "WhiteWhale",
         "symbol": "Whale",
-        "token": "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9",
+        "token": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",
         "icon": "/whale.svg"
       }
     },
@@ -152,28 +152,12 @@
         ]
       },
       {
-        "contract": "terra1gy5v3yccyp4c5ku8t8t0hphjljq4k9kasq5jlc",
-        "lpToken": "terra1tk7ldkgpmqtsgpvdd3syg43tv3d0w8ac7ztgll",
+        "contract": "terra1xq3v5rp0w84ugqesv9m5q3xdx04akacsdlk5z7",
+        "lpToken": "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv",
         "asset_infos": [
           {
             "token": {
-              "contract_addr": "terra16rcjetu65x0n7j96z0pjfynvlvdmgs0vwqyq8a"
-            }
-          },
-          {
-            "native_token": {
-              "denom": "uluna"
-            }
-          }
-        ]
-      },
-      {
-        "contract": "terra1jcpchr3229qvld9q2gqpx0rr8h2z9mh4a3jm50",
-        "lpToken": "terra16xn9lyh0x2hcznrh894fctytnv60a5gqrzw5q5",
-        "asset_infos": [
-          {
-            "token": {
-              "contract_addr": "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9"
+              "contract_addr": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh"
             }
           },
           {

@@ -27,7 +27,7 @@ export const useVault = ({ contract }: Params) => {
     ["pool", contract],
     () => {
       return client.wasm.contractQuery<{
-        total_deposits_in_ust: string;
+        total_value_in_ust: string;
         total_share: string;
       }>(contract, {
         pool: {},
@@ -61,7 +61,7 @@ export const useVault = ({ contract }: Params) => {
     }
 
     return numeral(balData.balance)
-      .multiply(pool.total_deposits_in_ust)
+      .multiply(pool.total_value_in_ust)
       .divide(pool.total_share)
       .value()
       .toFixed()
@@ -73,7 +73,7 @@ export const useVault = ({ contract }: Params) => {
       return "0";
     }
 
-    return pool.total_deposits_in_ust;
+    return pool.total_value_in_ust;
   }, [pool]);
 
   return {

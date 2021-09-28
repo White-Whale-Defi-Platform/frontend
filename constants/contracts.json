@@ -11,10 +11,13 @@
     "gov": ""
   },
   "bombay": {
-    "whaleToken": "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9",
-    "ustVault": "terra1h3220hr6jsjz5dz8ju7x8e8mc7pwqv39fftrfg",
+    "whaleToken": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",
+    "ustVault": "terra1stnpy9fq8xew4mazxeenfmqxut9zsdsry8y2zu",
     "ustVaultLpToken": "terra1e9uhv7776jagx0p8sewgy8r7vz6kx4uzkk698p",
     "lunaUstPair": "terra156v8s539wtz0sjpn8y8a8lfg8fhmwa7fy22aff",
-    "gov": "terra1jxkl0z4fam9jejzlpw3cc77rns8rrv42n4nt0y"
+    "whaleUstPair": "terra1xq3v5rp0w84ugqesv9m5q3xdx04akacsdlk5z7",
+    "gov": "terra13zkn22u6fs550xdmx2s2mydesd0ym4jk3r4um3",
+    "communityFund": "terra1rlptsry577v4zamen6pduqpc0p2k9deupqz3uy",
+    "warchest": "terra1twgq7ye7rz75gs82e503gh6n9cm8nvs4tsq88v"
   }
 }

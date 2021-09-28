@@ -30,7 +30,7 @@ export const useWithdraw = ({
     ["pool", contract],
     () => {
       return client.wasm.contractQuery<{
-        total_deposits_in_ust: string;
+        total_value_in_ust: string;
         total_share: string;
       }>(contract, {
         pool: {},
@@ -61,7 +61,7 @@ export const useWithdraw = ({
     }
 
     return numeral("1000000")
-      .multiply(pool.total_deposits_in_ust)
+      .multiply(pool.total_value_in_ust)
       .divide(pool.total_share)
       .value()
       .toFixed()

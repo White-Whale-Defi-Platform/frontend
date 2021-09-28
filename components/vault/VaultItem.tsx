@@ -65,7 +65,7 @@ const VaultItem: FC<Props> = ({ data }) => {
             {data.name == "UST" ? `$${ustPrice}` : "--"}
           </Text>
         </Flex>
-        <ChartVault value={data.name == "UST" ? ustPrice : 0} />
+        <ChartVault value={data.name == "UST" ? Number(ustPrice) : 0} />
       </Box>
       <Box p="8">
         <Box>

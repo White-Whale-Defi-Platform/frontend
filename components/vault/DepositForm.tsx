@@ -60,7 +60,6 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   useEffect(() => {
     if (gt(lpTokenBalance, 0)) {
       const value = depositState.getFeeForMax(lpTokenBalance);
-      console.log(value);
     }
   }, [lpTokenBalance, depositState]);
 
