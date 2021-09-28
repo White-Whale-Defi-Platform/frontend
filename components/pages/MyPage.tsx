@@ -12,6 +12,7 @@ import LineGraphCard from "components/myPage/LineGraphCard";
 import PieGraphCard from "components/myPage/PieGraphCard";
 import { useCirculatingSupply } from "hooks/useCirculatingSupply";
 import { useCommunityFund } from "hooks/useCommunityFund";
+import TransactionListCard from "components/myPage/TransactionListCard";
 
 const dataChart = [
   {
@@ -120,6 +121,9 @@ const MyPage: NextPage = () => {
             asset="UST"
             data={data}
           />
+        </GridItem>
+        <GridItem colSpan={12}>
+          <TransactionListCard title="Transaction History" />
         </GridItem>
       </Grid>
     </Box>
