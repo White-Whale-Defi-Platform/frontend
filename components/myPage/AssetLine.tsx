@@ -32,6 +32,9 @@ const AssetLine: FC<Props> = ({ data }) => {
       px="4"
       align="center"
       justify="space-between"
+      _last={{
+        mb: "0",
+      }}
     >
       <HStack spacing="2">
         <Circle size="18" bgColor={data.color} />

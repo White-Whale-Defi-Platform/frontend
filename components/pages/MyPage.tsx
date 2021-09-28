@@ -29,31 +29,31 @@ import PieGraphCard from "components/myPage/PieGraphCard";
 
 const dataChart = [
   {
-    name: "Apr",
+    label: "Apr",
     value: 1.32,
   },
   {
-    name: "May",
+    label: "May",
     value: 4.12,
   },
   {
-    name: "Jun",
+    label: "Jun",
     value: 2.22,
   },
   {
-    name: "Jul",
+    label: "Jul",
     value: 3.22,
   },
   {
-    name: "Aug",
+    label: "Aug",
     value: 1.22,
   },
   {
-    name: "Sep",
+    label: "Sep",
     value: 7.22,
   },
   {
-    name: "Sep",
+    label: "Sep",
     value: 7.255,
   },
 ];

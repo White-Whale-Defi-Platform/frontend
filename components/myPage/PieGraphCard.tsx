@@ -1,29 +1,15 @@
-import {
-  Box,
-  Flex,
-  VStack,
-  Text,
-  HStack,
-  Center,
-  Divider,
-  Circle,
-} from "@chakra-ui/react";
+import { Doughnut } from "react-chartjs-2";
+import { Box, Flex, Text, HStack, Circle } from "@chakra-ui/react";
 import { NextPage } from "next";
 
 import Card from "components/Card";
 import CardTitle from "components/CardTitle";
-import PieChart from "components/PieChart";
 import { format } from "libs/parse";
 
 type DataIrtem = {
   label: string;
   value: number;
   color: string;
-};
-
-type Cell = {
-  label: string;
-  value: string;
 };
 
 type Props = {
@@ -33,30 +19,63 @@ type Props = {
   data: DataIrtem[];
 };
 
+const options = {
+  cutout: "75%",
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+  },
+  scales: {
+    x: {
+      display: false,
+    },
+    y: {
+      display: false,
+    },
+  },
+};
+
 const PieGraphCard: NextPage<Props> = ({ title, value, asset, data }) => {
+  const formattedData = {
+    labels: data.map((data) => data.label),
+    datasets: [
+      {
+        data: data.map((data) => data.value),
+        backgroundColor: data.map((data) => data.color),
+        borderWidth: 0,
+      },
+    ],
+  };
+
   return (
     <Card h="full">
-      <CardTitle label={title} value={value} asset={asset} />
+      <Flex flexDir="column" justify="space-between" h="full">
+        <CardTitle label={title} value={value} asset={asset} />
 
-      <Flex mt="8" align="center">
-        <Box h="175" pr="8" flex="1">
-          <PieChart data={data} innerRadius={55} outerRadius={75} />
-        </Box>
+        <Flex mt="8" align="center">
+          <Box w="45%">
+            <Doughnut data={formattedData} options={options} />
+          </Box>
 
-        <Flex justify="center" flexDir="column" gridGap="4" flex="1">
-          {data.map((item) => {
-            return (
-              <Box key={item.label}>
-                <HStack spacing="2">
-                  <Circle size="18" bgColor={item.color} />
-                  <Text whiteSpace="nowrap">{item.label}</Text>
-                </HStack>
-                <Text color="#8b8b8c" fontWeight="700">
-                  {format(String(item.value), "uusd")} UST
-                </Text>
-              </Box>
-            );
-          })}
+          <Flex justify="center" flexDir="column" gridGap="4" pl="12">
+            {data.map((item) => {
+              return (
+                <Box key={item.label}>
+                  <HStack spacing="2">
+                    <Circle size="18" bgColor={item.color} />
+                    <Text whiteSpace="nowrap">{item.label}</Text>
+                  </HStack>
+                  <Text color="#8b8b8c" fontWeight="700">
+                    {format(String(item.value), "uusd")} UST
+                  </Text>
+                </Box>
+              );
+            })}
+          </Flex>
         </Flex>
       </Flex>
     </Card>

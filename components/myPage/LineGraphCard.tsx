@@ -5,7 +5,7 @@ import Card from "components/Card";
 import LineChart from "components/LineChart";
 
 type DataIrtem = {
-  name: string;
+  label: string;
   value: number;
 };
 

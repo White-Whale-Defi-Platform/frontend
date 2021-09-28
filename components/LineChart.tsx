@@ -1,47 +1,61 @@
 import React, { FC } from "react";
-import {
-  LineChart as LineChartComponent,
-  Line,
-  ResponsiveContainer,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
+import { Line } from "react-chartjs-2";
 
 type Props = {
   data: any;
-  onValueChange?: (value: number) => void;
-  onMouseLeave?: () => void;
 };
 
-const LineChart: FC<Props> = ({ data, onValueChange, onMouseLeave }) => {
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChartComponent
-        data={data}
-        onMouseMove={(props) => {
-          if (props?.activePayload?.[0]) {
-            onValueChange?.(props?.activePayload?.[0]?.value);
-          }
-        }}
-        onMouseLeave={() => {
-          onMouseLeave?.();
-        }}
-      >
-        <CartesianGrid vertical={false} stroke="#252525" />
-        <Line dataKey="value" stroke="#3CCD64" strokeWidth={2} dot={false} />
-        <XAxis
-          dataKey="name"
-          padding={{ left: 35, right: 35 }}
-          axisLine={false}
-          tickLine={false}
-          tick={{ fill: "rgba(255, 255, 255, 0.6)" }}
-        />
-        <Tooltip cursor={false} content={() => null} />
-      </LineChartComponent>
-    </ResponsiveContainer>
-  );
+const options = {
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+        drawBorder: false,
+      },
+      ticks: {
+        autoSkip: false,
+        maxRotation: 0,
+        font: {
+          size: 16,
+        },
+        color: "rgba(255,255,255,0.6)",
+      },
+    },
+    y: {
+      grace: 5,
+      display: false,
+    },
+  },
+  elements: {
+    point: {
+      radius: 0,
+    },
+  },
+};
+
+const LineChart: FC<Props> = ({ data }) => {
+  const formattedData = {
+    labels: data.map((data) => data.label),
+    datasets: [
+      {
+        data: data.map((data) => data.value),
+        fill: false,
+        backgroundColor: "#3CCD64",
+        borderColor: "#3CCD64",
+      },
+    ],
+  };
+
+  return <Line data={formattedData} options={options} />;
 };
 
 export default LineChart;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Doughnut } from "react-chartjs-2";
 import { formatAmount, useTerra } from "@arthuryeti/terra";
 import {
   Box,
@@ -8,7 +9,6 @@ import {
   HStack,
   Text,
   Select,
-  Tag,
   Stack,
   Image,
 } from "@chakra-ui/react";
@@ -23,16 +23,11 @@ import { useTokenPrice } from "modules/swap";
 import SimpleStat from "components/SimpleStat";
 import CustomCardPoll from "components/governance/CustomCardPoll";
 import AssetLine from "components/myPage/AssetLine";
-import PieChart from "components/PieChart";
 import CardLine from "components/governance/CardLine";
 import LineChart from "components/LineChart";
 import UnstakeModal from "components/governance/UnstakeModal";
 import StakeModal from "components/governance/StakeModal";
-import {
-  useGovStakable,
-  useGovStaked,
-  useGovTotalStaked,
-} from "modules/govern";
+import { useGovStaked, useGovTotalStaked } from "modules/govern";
 
 const dataPie = [
   {
@@ -59,31 +54,31 @@ const dataPie = [
 
 const dataChart = [
   {
-    name: "Apr",
+    label: "Apr",
     value: 1.32,
   },
   {
-    name: "May",
+    label: "May",
     value: 4.12,
   },
   {
-    name: "Jun",
+    label: "Jun",
     value: 2.22,
   },
   {
-    name: "Jul",
+    label: "Jul",
     value: 3.22,
   },
   {
-    name: "Aug",
+    label: "Aug",
     value: 1.22,
   },
   {
-    name: "Sep",
+    label: "Sep",
     value: 7.22,
   },
   {
-    name: "Sep",
+    label: "Sep",
     value: 7.255,
   },
 ];
@@ -92,28 +87,53 @@ const assets = [
   {
     color: "#FFDD4D",
     label: "LUNA",
-    value: "32M",
+    value: "--",
     asset: "UST",
   },
   {
     color: "#3CCD64",
     label: "WHALE",
-    value: "8M",
+    value: "--",
     asset: "UST",
   },
   {
     color: "#2E78E9",
     label: "UST",
-    value: "12M",
+    value: "--",
     asset: "UST",
   },
   {
     color: "#525252",
     label: "Others",
-    value: "12M",
+    value: "--",
     asset: "UST",
   },
 ];
+
+const options = {
+  cutout: "75%",
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+  },
+  scales: {
+    x: {
+      display: false,
+    },
+    y: {
+      display: false,
+    },
+  },
+  elements: {
+    point: {
+      radius: 0,
+    },
+  },
+};
 
 const CustomChevronDownIcon = () => {
   return (
@@ -131,6 +151,17 @@ const Gov: NextPage = () => {
   const stakedAmount = useGovStaked();
   const price = useTokenPrice(contracts[name].whaleToken);
 
+  const formattedData = {
+    labels: dataPie.map((d) => d.label),
+    datasets: [
+      {
+        data: dataPie.map((d) => d.value),
+        backgroundColor: dataPie.map((d) => d.color),
+        borderWidth: 0,
+      },
+    ],
+  };
+
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Heading color="#fff" size="lg" mb="10">
@@ -139,8 +170,8 @@ const Gov: NextPage = () => {
 
       <Flex justify="space-between" gridGap="12">
         <Card flex="2" noPadding>
-          <Flex justify="space-between">
-            <Box p="8" bg="blackAlpha.400" flex="1">
+          <Flex justify="space-between" h="full">
+            <Box p="8" bg="blackAlpha.400" flex="1.3" h="full">
               <Flex justify="space-between" align="center" mb="6">
                 <HStack spacing="4">
                   <Image
@@ -153,33 +184,33 @@ const Gov: NextPage = () => {
                   </Text>
                 </HStack>
                 <SimpleStat
-                  value="54.06"
+                  value="--"
                   asset="UST"
                   fontSizeValue="2xl"
                   fontSizeAsset="xl"
                 />
               </Flex>
 
-              <Flex>
-                <Box flex="1">
+              <Flex align="center">
+                <Box flex="1" pr="8">
                   {assets.map((item) => (
                     <AssetLine key={item.asset} data={item} />
                   ))}
                 </Box>
 
-                <Box h="150" w="155px" pl="8">
-                  <PieChart data={dataPie} innerRadius={45} outerRadius={60} />
+                <Box w="35%">
+                  <Doughnut data={formattedData} options={options} />
                 </Box>
               </Flex>
             </Box>
 
             <Box p="8" flex="1">
               <Box>
-                <CardLine value="18.2" asset="%" label="APY" />
+                <CardLine value="--" asset="%" label="APY" />
                 <Box py="3">
                   <Divider borderColor="whiteAlpha.400" />
                 </Box>
-                <CardLine value="0.21" asset="%" label="Daily Yield" />
+                <CardLine value="--" asset="%" label="Daily Yield" />
                 <Box py="3">
                   <Divider borderColor="whiteAlpha.400" />
                 </Box>
@@ -206,7 +237,7 @@ const Gov: NextPage = () => {
         </Card>
 
         <Card flex="1">
-          <Text fontSize="xl" mb="4">
+          <Text fontSize="xl" mb="4" fontWeight="bold">
             WHALE
           </Text>
           <SimpleStat
@@ -215,7 +246,7 @@ const Gov: NextPage = () => {
             fontSizeValue="2xl"
             fontSizeAsset="xl"
           />
-          <Box height="120" mt="12">
+          <Box height="150" mt="6">
             <LineChart data={dataChart} />
           </Box>
         </Card>
