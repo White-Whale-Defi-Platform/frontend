@@ -1,24 +1,40 @@
+import { useMemo } from "react";
 import { useQuery } from "react-query";
+import { useTerra } from "@arthuryeti/terra";
+import contracts from "constants/contracts.json";
+import { getAmountsInPool } from "libs/terra";
+import { Pool } from "types/common";
 
 export const useUstPrice = () => {
-  const { data, isLoading } = useQuery<any>("ustPrice", async () => {
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=terrausd&vs_currencies=usd",
-      {
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+  const {
+    client,
+    networkInfo: { name },
+  } = useTerra();
+  const lunaUstPair = contracts[name].lunaUstPair;
 
-    return response.json();
+  const { data: exchangeRate } = useQuery("exchangeRate", () => {
+    return client.oracle.exchangeRate("uusd");
   });
 
-  if (isLoading || data == null) {
-    return 0;
-  }
+  const { data: pool } = useQuery("pool", () => {
+    return client.wasm.contractQuery<Pool>(lunaUstPair, {
+      pool: {},
+    });
+  });
 
-  return data.terrausd.usd;
+  return useMemo(() => {
+    if (exchangeRate == null || pool == null) {
+      return "0";
+    }
+
+    const lunaInUsd = exchangeRate?.amount.toString();
+
+    const { uusd, other } = getAmountsInPool(pool);
+
+    const lunaInUst = Number(uusd) / Number(other);
+
+    return (lunaInUst / Number(lunaInUsd)).toFixed(4);
+  }, [exchangeRate, pool]);
 };
 
 export default useUstPrice;

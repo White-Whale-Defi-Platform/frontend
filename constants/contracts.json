@@ -2,6 +2,7 @@
   "mainnet": {
     "whaleToken": "",
     "ustVault": "",
+    "lunaUstPair": "terra1tndcaqxkpc5ce9qee5ggqf430mr2z3pefe5wj6",
     "gov": ""
   },
   "testnet": {
@@ -13,6 +14,7 @@
     "whaleToken": "terra1al4gd6wudfalazsvrjzz4fs8srasqcn9vyvqp9",
     "ustVault": "terra1h3220hr6jsjz5dz8ju7x8e8mc7pwqv39fftrfg",
     "ustVaultLpToken": "terra1e9uhv7776jagx0p8sewgy8r7vz6kx4uzkk698p",
+    "lunaUstPair": "terra156v8s539wtz0sjpn8y8a8lfg8fhmwa7fy22aff",
     "gov": "terra1jxkl0z4fam9jejzlpw3cc77rns8rrv42n4nt0y"
   }
 }
