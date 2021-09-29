@@ -28,6 +28,7 @@ import LineChart from "components/LineChart";
 import UnstakeModal from "components/governance/UnstakeModal";
 import StakeModal from "components/governance/StakeModal";
 import { useGovStaked, useGovTotalStaked } from "modules/govern";
+import CommunityFund from "components/governance/CommunityFund";
 
 const dataPie = [
   {
@@ -251,6 +252,8 @@ const Gov: NextPage = () => {
           </Box>
         </Card>
       </Flex>
+
+      <CommunityFund />
 
       <Flex justify="space-between" mt="24" mb="6">
         <Heading color="#fff" size="lg">

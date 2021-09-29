@@ -3,6 +3,7 @@ import { Box, HStack, chakra, Button } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import numeral from "numeral";
 import { useFeeToString } from "@arthuryeti/terra";
+import { useQueryClient } from "react-query";
 
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
@@ -26,6 +27,7 @@ type Props = {
 };
 
 const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
+  const queryClient = useQueryClient();
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
       token: {
@@ -39,8 +41,9 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   const balance = useBalance(vault.liquidity_token);
 
   const handleSuccess = useCallback(() => {
+    queryClient.invalidateQueries("balance");
     onClose();
-  }, [onClose]);
+  }, [onClose, queryClient]);
 
   const withdrawState = useWithdraw({
     lpToken: vault.liquidity_token,

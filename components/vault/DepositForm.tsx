@@ -1,13 +1,12 @@
-import React, { FC, useCallback, useEffect } from "react";
+import React, { FC, useCallback } from "react";
 import { Box, HStack, chakra, Button } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useFeeToString } from "@arthuryeti/terra";
+import { useQueryClient } from "react-query";
 
 import { toAmount } from "libs/parse";
-import { gt } from "libs/math";
 import { useDeposit } from "modules/vault";
 import useDebounceValue from "hooks/useDebounceValue";
-import { useBalance } from "hooks/useBalance";
 
 import AmountInput from "components/AmountInput";
 import LoadingForm from "components/LoadingForm";
@@ -27,7 +26,7 @@ type Props = {
 };
 
 const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
-  const lpTokenBalance = useBalance(tokenContract);
+  const queryClient = useQueryClient();
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
       token: {
@@ -41,8 +40,9 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   const debouncedAmount = useDebounceValue(token.amount, 500);
 
   const handleSuccess = useCallback(() => {
+    queryClient.invalidateQueries("balance");
     onClose();
-  }, [onClose]);
+  }, [onClose, queryClient]);
 
   const depositState = useDeposit({
     token: token.asset,
@@ -56,12 +56,6 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   };
 
   const feeString = useFeeToString(depositState.fee);
-
-  useEffect(() => {
-    if (gt(lpTokenBalance, 0)) {
-      const value = depositState.getFeeForMax(lpTokenBalance);
-    }
-  }, [lpTokenBalance, depositState]);
 
   if (depositState.isLoading) {
     return <LoadingForm />;

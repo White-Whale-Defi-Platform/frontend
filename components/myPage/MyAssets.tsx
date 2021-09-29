@@ -16,7 +16,7 @@ const Gov: NextPage = () => {
   const { balance } = useVault({
     contract: contracts[name].ustVault,
   });
-  const ustBalance = useBalance(Denom.USD);
+  const ustBalance = useBalance("uusd");
   const total = numeral(balance).add(ustBalance).value().toString();
 
   const data = [

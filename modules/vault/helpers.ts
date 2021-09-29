@@ -29,27 +29,19 @@ export const findSwapRoute = (
     return [routes[from][to]];
   }
 
-  if (routes[from][Denom.USD] && routes[Denom.USD][to]) {
-    return [routes[from][Denom.USD], routes[Denom.USD][to]];
+  if (routes[from]["uusd"] && routes["uusd"][to]) {
+    return [routes[from]["uusd"], routes["uusd"][to]];
   }
 
-  if (routes[from][Denom.LUNA] && routes[Denom.LUNA][to]) {
-    return [routes[from][Denom.LUNA], routes[Denom.LUNA][to]];
+  if (routes[from]["uluna"] && routes["uluna"][to]) {
+    return [routes[from]["uluna"], routes["uluna"][to]];
   }
 
-  if (routes[from][Denom.LUNA] && routes[Denom.USD][to]) {
-    return [
-      routes[from][Denom.LUNA],
-      routes[Denom.LUNA][Denom.USD],
-      routes[Denom.USD][to],
-    ];
+  if (routes[from]["uluna"] && routes["uusd"][to]) {
+    return [routes[from]["uluna"], routes["uluna"]["uusd"], routes["uusd"][to]];
   }
 
-  return [
-    routes[from][Denom.USD],
-    routes[Denom.USD][Denom.LUNA],
-    routes[Denom.LUNA][to],
-  ];
+  return [routes[from]["uusd"], routes["uusd"]["uluna"], routes["uluna"][to]];
 };
 
 export const swapRouteToString = (

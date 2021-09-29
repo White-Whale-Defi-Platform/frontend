@@ -50,8 +50,6 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
         feeDenoms: ["uusd"],
       });
 
-      console.log(res);
-
       return "0";
     },
     [msgs, contract, client, address, token]
