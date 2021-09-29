@@ -11,6 +11,8 @@
     "gov": ""
   },
   "bombay": {
+    "wallet": "terra1lzquc5em3qrz6e2uyp9se60un4e7wnpf5yvz97",
+    "aUstToken": "terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl",
     "whaleToken": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",
     "ustVault": "terra12urr2leeyfzg2xgj4f06ev96xzh5g926vl85cl",
     "ustVaultLpToken": "terra16jqj6enhkamy4w6qnqc8ru078hcdv4xkk3cncp",

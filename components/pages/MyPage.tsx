@@ -1,31 +1,17 @@
-import { formatAmount, useTerra } from "@arthuryeti/terra";
-import {
-  Box,
-  Heading,
-  Flex,
-  VStack,
-  Grid,
-  GridItem,
-  Text,
-  HStack,
-  Center,
-  Divider,
-  Tag,
-  Circle,
-} from "@chakra-ui/react";
+import { useTerra } from "@arthuryeti/terra";
+import { Box, Heading, Grid, GridItem } from "@chakra-ui/react";
 import { NextPage } from "next";
 
 import { useTokenPrice } from "modules/swap";
+import { useMarketCap } from "hooks/useMarketCap";
+import { formatAmount } from "libs/terra";
 import contracts from "constants/contracts.json";
 
-import SimpleStat from "components/SimpleStat";
 import MyAssets from "components/myPage/MyAssets";
-import Card from "components/Card";
-import CardTitle from "components/CardTitle";
-import LineChart from "components/LineChart";
-import PieChart from "components/PieChart";
 import LineGraphCard from "components/myPage/LineGraphCard";
 import PieGraphCard from "components/myPage/PieGraphCard";
+import { useCirculatingSupply } from "hooks/useCirculatingSupply";
+import { useCommunityFund } from "hooks/useCommunityFund";
 
 const dataChart = [
   {
@@ -77,6 +63,9 @@ const MyPage: NextPage = () => {
   } = useTerra();
 
   const price = useTokenPrice(contracts[name].whaleToken);
+  const marketCap = useMarketCap();
+  const circSupply = useCirculatingSupply();
+  const communityFund = useCommunityFund();
 
   return (
     <Box my="16" mx="auto" maxW="container.xl">
@@ -92,9 +81,15 @@ const MyPage: NextPage = () => {
         <GridItem colSpan={7}>
           <LineGraphCard
             cells={[
-              { label: "WHALE", value: `${formatAmount(price)} UST` },
-              { label: "Market Cap", value: "--" },
-              { label: "Circulating Supply", value: "--" },
+              {
+                label: "WHALE",
+                value: `${formatAmount(price, "0.000000")} UST`,
+              },
+              { label: "Market Cap", value: `${formatAmount(marketCap)} UST` },
+              {
+                label: "Circulating Supply",
+                value: `${formatAmount(circSupply)} WHALE`,
+              },
             ]}
             data={dataChart}
           />
@@ -102,9 +97,18 @@ const MyPage: NextPage = () => {
         <GridItem colSpan={7}>
           <LineGraphCard
             cells={[
-              { label: "Community Fund", value: "-- UST" },
-              { label: "Total UST", value: "--" },
-              { label: "Total WHALE", value: "--" },
+              {
+                label: "Community Fund",
+                value: `${formatAmount(communityFund.totalInUst)} UST`,
+              },
+              {
+                label: "Total UST",
+                value: `${formatAmount(communityFund.ustAmount)}`,
+              },
+              {
+                label: "Total WHALE",
+                value: `${formatAmount(communityFund.whaleAmount)}`,
+              },
             ]}
             data={dataChart}
           />
