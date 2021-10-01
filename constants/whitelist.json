@@ -65,68 +65,6 @@
         "token": "uusd",
         "icon": "https://whitelist.mirror.finance/images/UST.png"
       },
-      "terra1759jepndfjyfzzgexa5vmkhhaq7vyn8tq8gf5z": {
-        "protocol": "WhiteWhale",
-        "symbol": "Whale",
-        "token": "terra1759jepndfjyfzzgexa5vmkhhaq7vyn8tq8gf5z",
-        "icon": "/whale.svg"
-      }
-    },
-    "pairs": [
-      {
-        "contract": "terra13e4jmcjnwrauvl2fnjdwex0exuzd8zrh5xk29v",
-        "lpToken": "terra1tj4pavqjqjfm0wh73sh7yy9m4uq3m2cpmgva6n",
-        "asset_infos": [
-          {
-            "token": {
-              "contract_addr": "terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x"
-            }
-          },
-          {
-            "native_token": {
-              "denom": "uluna"
-            }
-          }
-        ]
-      },
-      {
-        "contract": "terra156v8s539wtz0sjpn8y8a8lfg8fhmwa7fy22aff",
-        "lpToken": "terra1srf30cs8ax73y59gm64lkztnx0zexl8fpv3kx2",
-        "asset_infos": [
-          {
-            "native_token": {
-              "denom": "uusd"
-            }
-          },
-          {
-            "native_token": {
-              "denom": "uluna"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  "bombay": {
-    "tokens": {
-      "terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x": {
-        "protocol": "Anchor",
-        "symbol": "bLUNA",
-        "token": "terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x",
-        "icon": "/bLuna.svg"
-      },
-      "uluna": {
-        "protocol": "Native",
-        "symbol": "LUNA",
-        "token": "uluna",
-        "icon": "https://whitelist.mirror.finance/images/Luna.png"
-      },
-      "uusd": {
-        "protocol": "Native",
-        "symbol": "UST",
-        "token": "uusd",
-        "icon": "https://whitelist.mirror.finance/images/UST.png"
-      },
       "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh": {
         "protocol": "WhiteWhale",
         "symbol": "Whale",
@@ -168,5 +106,9 @@
         ]
       }
     ]
+  },
+  "bombay": {
+    "tokens": {},
+    "pairs": {}
   }
 }
