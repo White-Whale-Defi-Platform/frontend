@@ -66,7 +66,10 @@ const TransactionListCard: NextPage<Props> = ({ title }) => {
                 </ul>
             )}
             {history.length === 0 && !inProgress && (
-                <p>No tx</p>
+                <Box>
+                <h3>No transaction history</h3>
+                <p>Looks like you haven't made any transactions yet.</p>
+                </Box>
             )}
         </Card>
     );

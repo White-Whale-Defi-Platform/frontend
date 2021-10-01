@@ -122,10 +122,10 @@ const MyPage: NextPage = () => {
             data={data}
           />
         </GridItem>
-        <GridItem colSpan={12}>
-          <TransactionListCard title="Transaction History" />
-        </GridItem>
       </Grid>
+      <Box mt="12">
+        <TransactionListCard title="Transaction History" />
+      </Box>
     </Box>
   );
 };

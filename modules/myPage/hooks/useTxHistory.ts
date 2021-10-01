@@ -1,9 +1,9 @@
 import { useConnectedWallet } from "@terra-money/wallet-provider";
 import { JSDateTime } from "@anchor-protocol/types";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 
-// TODO: Update to bombay endpoint when live; move to constants.ts
-const DEFAULT_API_ENDPOINT = 'https://tequila-api.anchorprotocol.com/api/v1';
+const DEFAULT_API_ENDPOINT = process.env.DEFAULT_API_ENDPOINT || 'https://tequila-api.anchorprotocol.com/api/v1';
 
 export interface MypageTxHistory {
   tx_type: string;
@@ -41,14 +41,13 @@ export async function makeTxHistoryQuery({
 export const useTxHistoryQuery = () => {
   const connectedWallet = useConnectedWallet();
   const [history, setHistory] = useState<MypageTxHistory[]>([]);
-
   const endpoint = DEFAULT_API_ENDPOINT;
 
   const [next, setNext] = useState<string | null>(null);
 
   const [inProgress, setInProgress] = useState<boolean>(true);
 
-  const load = useCallback(() => {
+  const {data: txHistoryData} = useQuery([connectedWallet], () => {
     // initialize data
     setHistory([]);
     setNext(null);
@@ -76,15 +75,12 @@ export const useTxHistoryQuery = () => {
         setNext(null);
         setInProgress(false);
       });
-  }, [connectedWallet, endpoint]);
-  useEffect(() => {
-    load();
-  }, [load]);
+  });
 
   return {
     history,
     isLast: !next,
-    reload: load,
+    reload: txHistoryData,
     inProgress,
   };
 };
