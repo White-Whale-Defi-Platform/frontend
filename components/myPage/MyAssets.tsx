@@ -38,7 +38,7 @@ const Gov: NextPage = () => {
     {
       label: "Liquid UST",
       value: Number(ustBalance),
-      color: "#F1F1F1",
+      color: "#2E78E9",
     },
   ];
 

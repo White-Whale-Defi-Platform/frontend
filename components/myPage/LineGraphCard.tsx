@@ -3,6 +3,7 @@ import { NextPage } from "next";
 
 import Card from "components/Card";
 import LineChart from "components/LineChart";
+import { Fragment } from "react";
 
 type DataIrtem = {
   label: string;
@@ -40,7 +41,7 @@ const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
       <Flex align="center">
         {cells.map((cell, index) => {
           return (
-            <>
+            <Fragment key={cell.label}>
               <Box key={cell.label}>
                 <Text fontSize="xl" mb="4" fontWeight="bold">
                   {cell.label}
@@ -50,7 +51,7 @@ const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
                 </Text>
               </Box>
               {renderDivider(index)}
-            </>
+            </Fragment>
           );
         })}
       </Flex>

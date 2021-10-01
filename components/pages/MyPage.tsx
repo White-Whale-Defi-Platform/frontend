@@ -103,11 +103,11 @@ const MyPage: NextPage = () => {
               },
               {
                 label: "Total UST",
-                value: `${formatAmount(communityFund.ustAmount)}`,
+                value: `${formatAmount(communityFund.ustAmount)} UST`,
               },
               {
                 label: "Total WHALE",
-                value: `${formatAmount(communityFund.whaleAmount)}`,
+                value: `${formatAmount(communityFund.whaleAmount)} UST`,
               },
             ]}
             data={dataChart}

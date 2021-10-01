@@ -1,28 +1,43 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { Box, HStack, Flex, Text } from "@chakra-ui/react";
+
+import { useCommunityFund } from "hooks/useCommunityFund";
+import { formatAmount } from "libs/terra";
+import { number } from "libs/math";
 
 import Card from "components/Card";
 import BarChart from "components/BarChart";
 import BarChartStat from "components/BarChartStat";
 
-const data = [
-  {
-    label: "UST",
-    color: "#2E78E9",
-    value: 0.6,
-    valueCount: "--",
-  },
-  {
-    label: "WHALE",
-    color: "#3CCD64",
-    value: 0.4,
-    valueCount: "--",
-  },
-];
+const CommunityFund: FC = () => {
+  const communityFund = useCommunityFund();
 
-type Props = {};
+  const ustAmountInNumber = number(communityFund.ustAmount) / 1000000;
+  const whaleAmountInNumber = number(communityFund.whaleAmount) / 1000000;
+  const totalInUstAmountInNumber = number(communityFund.totalInUst) / 1000000;
 
-const CommunityFund: FC<Props> = () => {
+  const data = useMemo(() => {
+    return [
+      {
+        label: "UST",
+        color: "#2E78E9",
+        value: ustAmountInNumber / totalInUstAmountInNumber,
+        valueCount: formatAmount(communityFund.ustAmount),
+      },
+      {
+        label: "WHALE",
+        color: "#3CCD64",
+        value: whaleAmountInNumber / totalInUstAmountInNumber,
+        valueCount: formatAmount(communityFund.whaleAmount),
+      },
+    ];
+  }, [
+    communityFund,
+    whaleAmountInNumber,
+    ustAmountInNumber,
+    totalInUstAmountInNumber,
+  ]);
+
   return (
     <Card mt="12">
       <Flex align="center" justify="space-between" mb="4">
@@ -51,7 +66,7 @@ const CommunityFund: FC<Props> = () => {
             fontSize="3xl"
             lineHeight="1"
           >
-            $--
+            {formatAmount(communityFund.totalInUst)} UST
           </Text>
         </HStack>
         <Box flex="1">

@@ -67,13 +67,16 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
         <Controller
           name="token"
           control={control}
-          render={({ field }) => <AmountInput {...field} />}
+          render={({ field }) => (
+            <AmountInput {...field} max={depositState.maxAmount} />
+          )}
         />
       </Box>
 
       {depositState.isReady && (
         <Box mt="4">
           <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+          <InlineStat label="Send amount" value={`${feeString || "0.00"}`} />
         </Box>
       )}
 

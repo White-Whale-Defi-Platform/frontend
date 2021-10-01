@@ -17,33 +17,39 @@ export const useCommunityFund = () => {
   const communityFund = contracts[name].communityFund;
   const price = useTokenPrice(whaleToken);
 
-  const { data: balData } = useQuery(["balance", communityFund], () => {
-    return client.wasm.contractQuery<{
-      balance: string;
-    }>(whaleToken, {
-      balance: {
-        address: communityFund,
-      },
-    });
-  });
+  const { data: balData } = useQuery(
+    ["balance", whaleToken, communityFund],
+    () => {
+      return client.wasm.contractQuery<{
+        balance: string;
+      }>(whaleToken, {
+        balance: {
+          address: communityFund,
+        },
+      });
+    }
+  );
 
   const whaleAmount = useMemo(() => {
     if (balData == null) {
       return null;
     }
 
-    return balData.balance;
-  }, [balData]);
+    return times(balData.balance, div(price, ONE_TOKEN));
+  }, [balData, price]);
 
-  const { data: balUstData } = useQuery(["balance", communityFund], () => {
-    return client.wasm.contractQuery<{
-      balance: string;
-    }>(aUstToken, {
-      balance: {
-        address: communityFund,
-      },
-    });
-  });
+  const { data: balUstData } = useQuery(
+    ["balance", aUstToken, communityFund],
+    () => {
+      return client.wasm.contractQuery<{
+        balance: string;
+      }>(aUstToken, {
+        balance: {
+          address: communityFund,
+        },
+      });
+    }
+  );
 
   const ustAmount = useMemo(() => {
     if (balUstData == null) {
@@ -54,14 +60,12 @@ export const useCommunityFund = () => {
   }, [balUstData]);
 
   const totalInUst = useMemo(() => {
-    if (whaleAmount == null) {
+    if (whaleAmount == null || ustAmount == null) {
       return null;
     }
 
-    const whaleUst = times(whaleAmount, div(price, ONE_TOKEN));
-
-    return plus(whaleUst, balUstData.balance);
-  }, [whaleAmount, balUstData, price]);
+    return plus(whaleAmount, ustAmount);
+  }, [whaleAmount, ustAmount]);
 
   return {
     totalInUst,

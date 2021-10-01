@@ -22,36 +22,13 @@ import { useTokenPrice } from "modules/swap";
 
 import SimpleStat from "components/SimpleStat";
 import CustomCardPoll from "components/governance/CustomCardPoll";
-import AssetLine from "components/myPage/AssetLine";
+import Warchest from "components/governance/Warchest";
 import CardLine from "components/governance/CardLine";
 import LineChart from "components/LineChart";
 import UnstakeModal from "components/governance/UnstakeModal";
 import StakeModal from "components/governance/StakeModal";
 import { useGovStaked, useGovTotalStaked } from "modules/govern";
 import CommunityFund from "components/governance/CommunityFund";
-
-const dataPie = [
-  {
-    label: "Jan",
-    value: 0.22,
-    color: "#3CCD64",
-  },
-  {
-    label: "Feb",
-    value: 0.39,
-    color: "#2C8D47",
-  },
-  {
-    label: "Apr",
-    value: 0.1,
-    color: "#444E46",
-  },
-  {
-    label: "May",
-    value: 0.29,
-    color: "#3CCD64",
-  },
-];
 
 const dataChart = [
   {
@@ -84,58 +61,6 @@ const dataChart = [
   },
 ];
 
-const assets = [
-  {
-    color: "#FFDD4D",
-    label: "LUNA",
-    value: "--",
-    asset: "UST",
-  },
-  {
-    color: "#3CCD64",
-    label: "WHALE",
-    value: "--",
-    asset: "UST",
-  },
-  {
-    color: "#2E78E9",
-    label: "UST",
-    value: "--",
-    asset: "UST",
-  },
-  {
-    color: "#525252",
-    label: "Others",
-    value: "--",
-    asset: "UST",
-  },
-];
-
-const options = {
-  cutout: "75%",
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  },
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  elements: {
-    point: {
-      radius: 0,
-    },
-  },
-};
-
 const CustomChevronDownIcon = () => {
   return (
     <Flex opacity="0.33">
@@ -152,17 +77,6 @@ const Gov: NextPage = () => {
   const stakedAmount = useGovStaked();
   const price = useTokenPrice(contracts[name].whaleToken);
 
-  const formattedData = {
-    labels: dataPie.map((d) => d.label),
-    datasets: [
-      {
-        data: dataPie.map((d) => d.value),
-        backgroundColor: dataPie.map((d) => d.color),
-        borderWidth: 0,
-      },
-    ],
-  };
-
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Heading color="#fff" size="lg" mb="10">
@@ -173,36 +87,7 @@ const Gov: NextPage = () => {
         <Card flex="2" noPadding>
           <Flex justify="space-between" h="full">
             <Box p="8" bg="blackAlpha.400" flex="1.3" h="full">
-              <Flex justify="space-between" align="center" mb="6">
-                <HStack spacing="4">
-                  <Image
-                    src="/warChest.png"
-                    alt="War Chest"
-                    boxSize="2.25rem"
-                  />
-                  <Text color="#fff" fontSize="xl" fontWeight="700">
-                    War Chest
-                  </Text>
-                </HStack>
-                <SimpleStat
-                  value="--"
-                  asset="UST"
-                  fontSizeValue="2xl"
-                  fontSizeAsset="xl"
-                />
-              </Flex>
-
-              <Flex align="center">
-                <Box flex="1" pr="8">
-                  {assets.map((item) => (
-                    <AssetLine key={item.asset} data={item} />
-                  ))}
-                </Box>
-
-                <Box w="35%">
-                  <Doughnut data={formattedData} options={options} />
-                </Box>
-              </Flex>
+              <Warchest />
             </Box>
 
             <Box p="8" flex="1">

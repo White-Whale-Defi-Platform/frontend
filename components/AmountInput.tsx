@@ -21,7 +21,8 @@ import { useBalance } from "hooks/useBalance";
 type Props = {
   onChange: any;
   onBlur: any;
-  initialBalance?: string;
+  balance?: string;
+  max?: string;
   value: {
     amount: string;
     asset: string;
@@ -29,25 +30,28 @@ type Props = {
 };
 
 const AmountInput: FC<Props> = forwardRef(
-  ({ onChange, onBlur, value, initialBalance }, ref) => {
+  ({ onChange, onBlur, value, balance, max }, ref) => {
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
     const symbol = lookupSymbol(getSymbol(value.asset));
-    const balance = useBalance(value.asset);
-    const initialAmount = lookup(initialBalance || balance, value.asset);
-    const amount = numeral(initialAmount).subtract("2").value();
+    const assetBalance = useBalance(value.asset);
+    const initialMaxAmount = lookup(
+      max || balance || assetBalance,
+      value.asset
+    );
+    const amount = numeral(initialMaxAmount).value();
 
     return (
       <Box ref={ref}>
         <Box mb="2">
-          {initialBalance == null && <Balance asset={value.asset} />}
-          {initialBalance != null && (
+          {balance == null && <Balance asset={value.asset} />}
+          {balance != null && (
             <Text>
               <Text as="span" variant="light">
                 Balance:
               </Text>{" "}
               <Text as="span" fontSize="sm" fontWeight="500">
-                {formatAsset(initialBalance, getSymbol(value.asset))}
+                {formatAsset(balance, getSymbol(value.asset))}
               </Text>
             </Text>
           )}

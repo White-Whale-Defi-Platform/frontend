@@ -6,11 +6,6 @@
     "gov": ""
   },
   "testnet": {
-    "whaleToken": "",
-    "ustVault": "",
-    "gov": ""
-  },
-  "bombay": {
     "wallet": "terra1lzquc5em3qrz6e2uyp9se60un4e7wnpf5yvz97",
     "aUstToken": "terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl",
     "whaleToken": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",

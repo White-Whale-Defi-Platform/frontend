@@ -70,7 +70,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <AmountInput initialBalance={stakedAmount} {...field} />
+            <AmountInput balance={stakedAmount} {...field} />
           )}
         />
       </Box>

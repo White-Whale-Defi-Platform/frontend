@@ -75,7 +75,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           name="token"
           control={control}
           render={({ field }) => (
-            <AmountInput initialBalance={balance} {...field} />
+            <AmountInput balance={initialBalance} {...field} />
           )}
         />
       </Box>
