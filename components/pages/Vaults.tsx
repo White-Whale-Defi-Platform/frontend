@@ -5,7 +5,7 @@ import VaultItem from "components/vault/VaultItem";
 
 const data = [
   {
-    contract: "terra12urr2leeyfzg2xgj4f06ev96xzh5g926vl85cl",
+    contract: "terra1tql96x24zfeuu0zwaejsq474d44qwnkfpkztlr",
     name: "UST",
     logo: "/ust.png",
   },
