@@ -1,86 +1,49 @@
-import { useConnectedWallet } from "@terra-money/wallet-provider";
-import { JSDateTime } from "@anchor-protocol/types";
-import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
+import { useAddress } from "@arthuryeti/terra";
 
-const DEFAULT_API_ENDPOINT = process.env.DEFAULT_API_ENDPOINT || 'https://tequila-api.anchorprotocol.com/api/v1';
+const DEFAULT_API_ENDPOINT =
+  process.env.DEFAULT_API_ENDPOINT ||
+  "https://tequila-api.anchorprotocol.com/api/v1";
 
-export interface MypageTxHistory {
+export interface TxHistory {
   tx_type: string;
   /** html string */
   descriptions: string[];
   address: string;
   tx_hash: string;
-  timestamp: JSDateTime;
+  timestamp: Date;
 }
 
-export interface MypageTxHistoryData {
+export interface FetchTxHistoryResponse {
   next: string | null;
-  history: MypageTxHistory[];
+  history: TxHistory[];
 }
 
-export interface MypageTxHistoryQueryParams {
+export interface FetchTxHistoryParams {
   endpoint: string;
   walletAddress: string;
   offset: string | null;
 }
 
-export async function makeTxHistoryQuery({
+export async function fetchTxHistory({
   endpoint,
   walletAddress,
   offset,
-}: MypageTxHistoryQueryParams): Promise<MypageTxHistoryData> {
+}: FetchTxHistoryParams): Promise<FetchTxHistoryResponse> {
   const offsetQuery = offset ? "?offset=" + offset : "";
-  const data: MypageTxHistoryData = await fetch(
-    `${endpoint}/history/${walletAddress}${offsetQuery}`
-  ).then((res) => res.json());
-
-  return data;
+  const res = await fetch(`${endpoint}/history/${walletAddress}${offsetQuery}`);
+  return res.json();
 }
 
 export const useTxHistoryQuery = () => {
-  const connectedWallet = useConnectedWallet();
-  const [history, setHistory] = useState<MypageTxHistory[]>([]);
+  const address = useAddress();
   const endpoint = DEFAULT_API_ENDPOINT;
 
-  const [next, setNext] = useState<string | null>(null);
-
-  const [inProgress, setInProgress] = useState<boolean>(true);
-
-  const {data: txHistoryData} = useQuery([connectedWallet], () => {
-    // initialize data
-    setHistory([]);
-    setNext(null);
-
-    if (!connectedWallet) {
-      setInProgress(false);
-      return;
-    }
-
-    setInProgress(true);
-
-    makeTxHistoryQuery({
+  return useQuery("txHistory", () => {
+    return fetchTxHistory({
       endpoint,
-      walletAddress: connectedWallet.walletAddress,
+      walletAddress: address,
       offset: null,
-    })
-      .then(({ history, next }) => {
-        setInProgress(false);
-        setHistory(history);
-        setNext(next);
-      })
-      .catch((error) => {
-        console.error(error);
-        setHistory([]);
-        setNext(null);
-        setInProgress(false);
-      });
+    });
   });
-
-  return {
-    history,
-    isLast: !next,
-    reload: txHistoryData,
-    inProgress,
-  };
 };

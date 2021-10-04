@@ -123,8 +123,11 @@ const MyPage: NextPage = () => {
           />
         </GridItem>
       </Grid>
-      <Box mt="12">
-        <TransactionListCard title="Transaction History" />
+      <Heading color="#fff" size="lg" mb="6" mt="24">
+        Transaction History
+      </Heading>
+      <Box>
+        <TransactionListCard />
       </Box>
     </Box>
   );
