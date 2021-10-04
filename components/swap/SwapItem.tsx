@@ -9,7 +9,7 @@ type Props = {
   logo: string;
 };
 
-const SwapItemLine: FC<Props> = ({ value, asset, logo }) => {
+const SwapItem: FC<Props> = ({ value, asset, logo }) => {
   return (
     <Flex
       justifyContent="space-between"
@@ -25,7 +25,10 @@ const SwapItemLine: FC<Props> = ({ value, asset, logo }) => {
           {" "}
           {asset}{" "}
         </Text>
-        <Flex opacity="0.33" display={{base:'none',sm:'none',md:'inherit'}}>
+        <Flex
+          opacity="0.33"
+          display={{ base: "none", sm: "none", md: "inherit" }}
+        >
           <TriangleDownIcon w={3} h={3} />
         </Flex>
       </HStack>
@@ -36,4 +39,4 @@ const SwapItemLine: FC<Props> = ({ value, asset, logo }) => {
   );
 };
 
-export default SwapItemLine;
+export default SwapItem;

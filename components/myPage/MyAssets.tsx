@@ -1,7 +1,6 @@
 import { formatAmount, useTerra } from "@arthuryeti/terra";
 import { NextPage } from "next";
 import numeral from "numeral";
-import { Denom } from "@terra-money/terra.js";
 
 import { useBalance } from "hooks/useBalance";
 import contracts from "constants/contracts.json";
@@ -9,7 +8,7 @@ import { useVault } from "modules/vault";
 
 import PieGraphCard from "components/myPage/PieGraphCard";
 
-const Gov: NextPage = () => {
+const MyAssets: NextPage = () => {
   const {
     networkInfo: { name },
   } = useTerra();
@@ -52,4 +51,4 @@ const Gov: NextPage = () => {
   );
 };
 
-export default Gov;
+export default MyAssets;

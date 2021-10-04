@@ -9,7 +9,7 @@ import contracts from "constants/contracts.json";
 
 import MyAssets from "components/myPage/MyAssets";
 import LineGraphCard from "components/myPage/LineGraphCard";
-import PieGraphCard from "components/myPage/PieGraphCard";
+import TVL from "components/myPage/TVL";
 import { useCirculatingSupply } from "hooks/useCirculatingSupply";
 import { useCommunityFund } from "hooks/useCommunityFund";
 import TransactionListCard from "components/myPage/TransactionListCard";
@@ -42,19 +42,6 @@ const dataChart = [
   {
     label: "Sep",
     value: 7.255,
-  },
-];
-
-const data = [
-  {
-    label: "Arb Vault",
-    value: 389900091,
-    color: "#3CCD64",
-  },
-  {
-    label: "War chest",
-    value: 201000001,
-    color: "#2C8D47",
   },
 ];
 
@@ -115,12 +102,7 @@ const MyPage: NextPage = () => {
           />
         </GridItem>
         <GridItem colSpan={5}>
-          <PieGraphCard
-            title="Total Value Locked"
-            value="--"
-            asset="UST"
-            data={data}
-          />
+          <TVL />
         </GridItem>
       </Grid>
       <Heading color="#fff" size="lg" mb="6" mt="24">

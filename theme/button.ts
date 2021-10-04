@@ -1,7 +1,7 @@
 const button = {
   sizes: {
     lg: {
-      fontSize: "sm",
+      height: "14",
     },
   },
   variants: {

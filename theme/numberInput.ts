@@ -9,7 +9,8 @@ const styles = {
   sizes: {
     lg: {
       field: {
-        borderRadius: "2xl",
+        borderRadius: "full",
+        px: "5",
         fontSize: "xl",
         height: "16",
       },

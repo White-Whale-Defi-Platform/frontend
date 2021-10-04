@@ -3,56 +3,46 @@ import { useQuery } from "react-query";
 import { useTerra } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
-import { minus } from "libs/math";
+import { useWarchest } from "hooks/useWarchest";
+import { plus } from "libs/math";
 
 export const useTVL = () => {
   const {
     client,
     networkInfo: { name },
   } = useTerra();
-  const whaleToken = contracts[name].whaleToken;
-  const aUstToken = contracts[name].aUstToken;
-  const communityFund = contracts[name].communityFund;
+  const { totalInUst: totalInWarchest } = useWarchest();
+  const ustVault = contracts[name].ustVault;
 
-  const { data: balData } = useQuery(["balance", communityFund], () => {
+  const { data: pool } = useQuery(["pool", ustVault], () => {
     return client.wasm.contractQuery<{
-      balance: string;
-    }>(whaleToken, {
-      balance: {
-        address: communityFund,
-      },
+      total_value_in_ust: string;
+      total_share: string;
+    }>(ustVault, {
+      pool: {},
     });
   });
 
-  const whaleAmount = useMemo(() => {
-    if (balData == null) {
+  const totalInVault = useMemo(() => {
+    if (pool == null) {
       return null;
     }
 
-    return balData.balance;
-  }, [balData]);
+    return pool.total_value_in_ust;
+  }, [pool]);
 
-  const { data: balUstData } = useQuery(["balance", communityFund], () => {
-    return client.wasm.contractQuery<{
-      balance: string;
-    }>(aUstToken, {
-      balance: {
-        address: communityFund,
-      },
-    });
-  });
-
-  const ustAmount = useMemo(() => {
-    if (balUstData == null) {
+  const total = useMemo(() => {
+    if (totalInVault == null || totalInWarchest == null) {
       return null;
     }
 
-    return balUstData.balance;
-  }, [balUstData]);
+    return plus(totalInVault, totalInWarchest);
+  }, [totalInVault, totalInWarchest]);
 
   return {
-    ustAmount,
-    whaleAmount,
+    total,
+    totalInVault,
+    totalInWarchest,
   };
 };
 

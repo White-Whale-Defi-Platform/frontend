@@ -1,5 +1,5 @@
-import { useMemo, useCallback } from "react";
-import { Coins, Coin } from "@terra-money/terra.js";
+import { useMemo } from "react";
+import { useQuery } from "react-query";
 import {
   useTerra,
   isValidAmount,
@@ -8,8 +8,7 @@ import {
 } from "@arthuryeti/terra";
 
 import { createDepositMsgs } from "modules/vault";
-import { useQuery } from "react-query";
-import useBalance from "hooks/useBalance";
+import { useBalance } from "hooks/useBalance";
 import { minus } from "libs/math";
 
 type Params = {
@@ -29,6 +28,14 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
       estimate_deposit_fee: { amount: balance },
     });
   });
+
+  const depositedAmount = useMemo(() => {
+    if (data == null) {
+      return null;
+    }
+
+    return minus(amount, data.fee[0].amount);
+  }, [data, amount]);
 
   const maxAmount = useMemo(() => {
     if (data == null) {
@@ -59,6 +66,7 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
   });
 
   return {
+    depositedAmount,
     maxAmount,
     isLoading,
     isReady,

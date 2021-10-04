@@ -1,51 +1,34 @@
 import React from "react";
 import { NextPage } from "next";
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 import Card from "components/Card";
-import SwapStakingCard from "components/swap/SwapStakingCard";
-import SwapItemLine from "components/swap/SwapItemLine";
+import PoolItem from "components/swap/PoolItem";
+import { useTerra } from "@arthuryeti/terra";
+
+import contracts from "constants/contracts.json";
+import SwapForm from "components/swap/SwapForm";
 
 const Swap: NextPage = () => {
+  const {
+    routes,
+    networkInfo: { name },
+  } = useTerra();
+  const whaleToken = contracts[name].whaleToken;
+
   return (
-    <Box mt="16" mx="auto" maxW="container.sm">
-      <Heading color="#fff" size="lg" mb="12">
+    <Box mt="16" mx="auto" maxW="container.xl">
+      <Heading color="#fff" size="lg" mb="8">
         Swap
       </Heading>
+
       <Card>
-        <SwapItemLine
-          value="520.8145454545"
-          asset="LUNA"
-          logo="/logoTerra.svg"
-        />
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          mb="2.75rem"
-          mt="2.75rem"
-        >
-          <Image
-            src="/Vector.svg"
-            alt="Vector"
-            width="2.375rem"
-            height="2.375rem"
-          />
-        </Flex>
-        <SwapItemLine
-          value="520.8145454545"
-          asset="WHALE"
-          logo="/logo-small.svg"
-        />
-        <Flex justify="center" mt="12">
-          <Button variant="primary" size="lg" px="77px">
-            Swap tokens
-          </Button>
-        </Flex>
+        <SwapForm />
       </Card>
 
       <Flex
-        mt="24"
-        mb="12"
+        mt="20"
+        mb="8"
         flexDir={{ base: "column", sm: "column", md: "row" }}
         align="baseline"
       >
@@ -61,25 +44,16 @@ const Swap: NextPage = () => {
         </Text>
       </Flex>
 
-      <Flex
-        align="center"
-        justify="space-between"
-        mb="24"
-        flexDir={{ base: "column", sm: "column", md: "row" }}
-      >
-        <SwapStakingCard
-          label="WHALE-UST LP"
-          asset="TerraSwap"
-          apr="--"
-          totalStaked="--"
-        />
-        <SwapStakingCard
-          label="WHALE-UST LP"
-          asset="Astroport"
-          apr="--"
-          totalStaked="--"
-        />
-      </Flex>
+      <Box mb="24">
+        <Box mb="12">
+          <PoolItem
+            label="WHALE-UST LP"
+            asset="TerraSwap"
+            apr="--"
+            totalStaked="--"
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

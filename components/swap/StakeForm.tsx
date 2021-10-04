@@ -1,18 +1,18 @@
 import React, { FC, useCallback } from "react";
-import { Box, HStack, chakra, Button } from "@chakra-ui/react";
+import { Button, HStack, Box, chakra } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useFeeToString } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
-import { toAmount, format } from "libs/parse";
-import { useDeposit } from "modules/vault";
+import { toAmount } from "libs/parse";
+import { useStake } from "modules/pool";
 import useDebounceValue from "hooks/useDebounceValue";
 
+import InlineStat from "components/InlineStat";
 import AmountInput from "components/AmountInput";
 import LoadingForm from "components/LoadingForm";
-import InlineStat from "components/InlineStat";
 
-type IFormInputs = {
+type Inputs = {
   token: {
     asset: string;
     amount: string;
@@ -20,18 +20,23 @@ type IFormInputs = {
 };
 
 type Props = {
-  token: string;
-  vault: any;
+  stakingContract: string;
+  lpTokenContract: string;
   onClose: () => void;
 };
 
-const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
+const StakeForm: FC<Props> = ({
+  stakingContract,
+  lpTokenContract,
+  onClose,
+}) => {
   const queryClient = useQueryClient();
-  const { control, handleSubmit, watch } = useForm<IFormInputs>({
+
+  const { control, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
       token: {
         amount: undefined,
-        asset: tokenContract ?? "uluna",
+        asset: lpTokenContract,
       },
     },
   });
@@ -44,46 +49,43 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     onClose();
   }, [onClose, queryClient]);
 
-  const depositState = useDeposit({
-    token: token.asset,
-    contract: vault.contract_addr,
+  const handleError = useCallback(() => {
+    queryClient.invalidateQueries("balance");
+    onClose();
+  }, [onClose, queryClient]);
+
+  const stakeStep = useStake({
+    stakingContract: stakingContract,
+    lpTokenContract: lpTokenContract,
     amount: toAmount(debouncedAmount),
     onSuccess: handleSuccess,
+    onError: handleError,
   });
 
   const submit = async () => {
-    depositState.deposit();
+    stakeStep.submit();
   };
 
-  const feeString = useFeeToString(depositState.fee);
+  const feeString = useFeeToString(stakeStep.fee);
 
-  if (depositState.isLoading) {
+  if (stakeStep.isLoading) {
     return <LoadingForm />;
   }
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      <Box width="full">
+      <Box width="full" mt="8">
         <Controller
           name="token"
           control={control}
-          render={({ field }) => (
-            <AmountInput {...field} max={depositState.maxAmount} />
-          )}
+          rules={{ required: true }}
+          render={({ field }) => <AmountInput {...field} />}
         />
       </Box>
 
-      {depositState.isReady && (
+      {stakeStep.isReady && (
         <Box mt="4">
-          <Box mb="3">
-            <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-          </Box>
-          <InlineStat
-            label="Minimum Deposit Amount"
-            value={`${
-              format(depositState.depositedAmount, "uusd") || "0.00"
-            } UST`}
-          />
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
         </Box>
       )}
 
@@ -97,7 +99,7 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           variant="primary"
           size="lg"
           flex="1"
-          isDisabled={!depositState.isReady}
+          isDisabled={!stakeStep.isReady}
         >
           Confirm
         </Button>
@@ -106,4 +108,4 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   );
 };
 
-export default DepositForm;
+export default StakeForm;

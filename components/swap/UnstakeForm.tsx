@@ -1,18 +1,19 @@
 import React, { FC, useCallback } from "react";
-import { Box, HStack, chakra, Button } from "@chakra-ui/react";
+import { Button, HStack, Box, chakra, useToast } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useFeeToString } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
-import { toAmount, format } from "libs/parse";
-import { useDeposit } from "modules/vault";
+import AmountInput from "components/AmountInput";
+import SuccessToast from "components/toasts/SuccessToast";
+import InlineStat from "components/InlineStat";
+import LoadingForm from "components/LoadingForm";
+import { toAmount } from "libs/parse";
+import { useUnstake } from "modules/pool";
+import ArrowUpIcon from "components/icons/ArrowUpIcon";
 import useDebounceValue from "hooks/useDebounceValue";
 
-import AmountInput from "components/AmountInput";
-import LoadingForm from "components/LoadingForm";
-import InlineStat from "components/InlineStat";
-
-type IFormInputs = {
+type Inputs = {
   token: {
     asset: string;
     amount: string;
@@ -20,70 +21,72 @@ type IFormInputs = {
 };
 
 type Props = {
-  token: string;
-  vault: any;
+  pairContract: string;
+  lpTokenContract: string;
+  stakingContract: string;
   onClose: () => void;
 };
 
-const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
+const UnstakeForm: FC<Props> = ({
+  pairContract,
+  lpTokenContract,
+  stakingContract,
+  onClose,
+}) => {
+  const toast = useToast();
   const queryClient = useQueryClient();
-  const { control, handleSubmit, watch } = useForm<IFormInputs>({
+  const { control, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
       token: {
         amount: undefined,
-        asset: tokenContract ?? "uluna",
+        asset: lpTokenContract,
       },
     },
   });
   const token = watch("token");
 
-  const debouncedAmount = useDebounceValue(token.amount, 500);
+  const debouncedAmount = useDebounceValue(token.amount, 200);
 
   const handleSuccess = useCallback(() => {
     queryClient.invalidateQueries("balance");
     onClose();
   }, [onClose, queryClient]);
 
-  const depositState = useDeposit({
-    token: token.asset,
-    contract: vault.contract_addr,
+  const handleError = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
+  const unstakeStep = useUnstake({
+    stakingContract,
     amount: toAmount(debouncedAmount),
     onSuccess: handleSuccess,
+    onError: handleError,
   });
 
   const submit = async () => {
-    depositState.deposit();
+    unstakeStep.submit();
   };
 
-  const feeString = useFeeToString(depositState.fee);
+  const feeString = useFeeToString(unstakeStep.fee);
 
-  if (depositState.isLoading) {
+  if (unstakeStep.isLoading) {
     return <LoadingForm />;
   }
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      <Box width="full">
+      <Box width="full" mt="8">
         <Controller
           name="token"
           control={control}
-          render={({ field }) => (
-            <AmountInput {...field} max={depositState.maxAmount} />
-          )}
+          rules={{ required: true }}
+          render={({ field }) => <AmountInput {...field} />}
         />
       </Box>
 
-      {depositState.isReady && (
+      {unstakeStep.isReady && (
         <Box mt="4">
-          <Box mb="3">
-            <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-          </Box>
-          <InlineStat
-            label="Minimum Deposit Amount"
-            value={`${
-              format(depositState.depositedAmount, "uusd") || "0.00"
-            } UST`}
-          />
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
         </Box>
       )}
 
@@ -97,7 +100,7 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           variant="primary"
           size="lg"
           flex="1"
-          isDisabled={!depositState.isReady}
+          isDisabled={!unstakeStep.isReady}
         >
           Confirm
         </Button>
@@ -106,4 +109,4 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   );
 };
 
-export default DepositForm;
+export default UnstakeForm;

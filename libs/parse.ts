@@ -87,7 +87,7 @@ export const formatAsset: Formatter = (amount, symbol, config) => {
 
 export const toAmount = (value: string | null) => {
   if (!value) {
-    return "0";
+    return null;
   }
 
   return new BigNumber(value).times(SMALLEST).integerValue().toString();
