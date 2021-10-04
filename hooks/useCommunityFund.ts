@@ -4,8 +4,8 @@ import { useTerra } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { div, plus, times } from "libs/math";
-import { useTokenPrice } from "modules/swap";
 import { ONE_TOKEN } from "constants/constants";
+import { useWhalePrice } from "hooks/useWhalePrice";
 
 export const useCommunityFund = () => {
   const {
@@ -15,7 +15,7 @@ export const useCommunityFund = () => {
   const whaleToken = contracts[name].whaleToken;
   const aUstToken = contracts[name].aUstToken;
   const communityFund = contracts[name].communityFund;
-  const price = useTokenPrice(whaleToken);
+  const price = useWhalePrice();
 
   const { data: balData } = useQuery(
     ["balance", whaleToken, communityFund],

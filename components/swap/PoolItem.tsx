@@ -61,8 +61,10 @@ const PoolItem: FC<Props> = ({ label, asset }) => {
 
         <Flex>
           <Box mr="4">
+            {/* @ts-expect-error */}
             <UnstakeModal />
           </Box>
+          {/* @ts-expect-error */}
           <StakeModal />
         </Flex>
       </Flex>

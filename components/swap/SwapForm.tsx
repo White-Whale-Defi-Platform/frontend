@@ -59,11 +59,11 @@ const SwapForm: FC = () => {
   };
 
   const handleSuccess = useCallback(() => {
-    console.log("ouii");
+    // console.log("ouii");
   }, []);
 
   const handleError = useCallback(() => {
-    console.log("ouii");
+    // console.log("ouii");
   }, []);
 
   const swapState = useSwap({
@@ -102,16 +102,6 @@ const SwapForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token2.amount]);
-
-  console.log(swapState.simulated);
-  console.log(
-    minAmountReceive({
-      offerAmount: swapState.simulated?.amount,
-      maxSpread: swapState.simulated?.spread,
-      commission: swapState.simulated?.commission,
-      beliefPrice: swapState.simulated?.price,
-    })
-  );
 
   const submit = async () => {
     swapState.swap();

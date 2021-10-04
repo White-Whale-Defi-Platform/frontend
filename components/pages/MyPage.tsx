@@ -1,11 +1,8 @@
-import { useTerra } from "@arthuryeti/terra";
 import { Box, Heading, Grid, GridItem } from "@chakra-ui/react";
 import { NextPage } from "next";
 
-import { useTokenPrice } from "modules/swap";
 import { useMarketCap } from "hooks/useMarketCap";
 import { formatAmount } from "libs/terra";
-import contracts from "constants/contracts.json";
 
 import MyAssets from "components/myPage/MyAssets";
 import LineGraphCard from "components/myPage/LineGraphCard";
@@ -13,6 +10,7 @@ import TVL from "components/myPage/TVL";
 import { useCirculatingSupply } from "hooks/useCirculatingSupply";
 import { useCommunityFund } from "hooks/useCommunityFund";
 import TransactionListCard from "components/myPage/TransactionListCard";
+import { useWhalePrice } from "hooks/useWhalePrice";
 
 const dataChart = [
   {
@@ -46,11 +44,7 @@ const dataChart = [
 ];
 
 const MyPage: NextPage = () => {
-  const {
-    networkInfo: { name },
-  } = useTerra();
-
-  const price = useTokenPrice(contracts[name].whaleToken);
+  const price = useWhalePrice();
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
   const communityFund = useCommunityFund();
@@ -71,7 +65,7 @@ const MyPage: NextPage = () => {
             cells={[
               {
                 label: "WHALE",
-                value: `${formatAmount(price, "0.000000")} UST`,
+                value: `${formatAmount(price, "0.0000")} UST`,
               },
               { label: "Market Cap", value: `${formatAmount(marketCap)} UST` },
               {

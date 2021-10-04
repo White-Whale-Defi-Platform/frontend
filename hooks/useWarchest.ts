@@ -4,8 +4,8 @@ import { useTerra } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { div, plus, times } from "libs/math";
-import { useTokenPrice } from "modules/swap";
 import { ONE_TOKEN } from "constants/constants";
+import { useWhalePrice } from "hooks/useWhalePrice";
 
 export const useWarchest = () => {
   const {
@@ -14,7 +14,7 @@ export const useWarchest = () => {
   } = useTerra();
   const whaleToken = contracts[name].whaleToken;
   const warchest = contracts[name].warchest;
-  const price = useTokenPrice(whaleToken);
+  const price = useWhalePrice();
 
   const { data: balData } = useQuery(["balance", whaleToken, warchest], () => {
     return client.wasm.contractQuery<{

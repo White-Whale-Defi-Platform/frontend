@@ -5,12 +5,10 @@ import { useFeeToString } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import AmountInput from "components/AmountInput";
-import SuccessToast from "components/toasts/SuccessToast";
 import InlineStat from "components/InlineStat";
 import LoadingForm from "components/LoadingForm";
 import { toAmount } from "libs/parse";
 import { useUnstake } from "modules/pool";
-import ArrowUpIcon from "components/icons/ArrowUpIcon";
 import useDebounceValue from "hooks/useDebounceValue";
 
 type Inputs = {

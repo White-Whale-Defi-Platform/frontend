@@ -1,6 +1,4 @@
 import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import { formatAmount, useTerra } from "@arthuryeti/terra";
 import {
   Box,
   Divider,
@@ -13,13 +11,13 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-
 import { NextPage } from "next";
+
+import { useGovStaked, useGovTotalStaked } from "modules/govern";
+import { useWhalePrice } from "hooks/useWhalePrice";
+import { formatAmount } from "libs/terra";
+
 import Card from "components/Card";
-
-import contracts from "constants/contracts.json";
-import { useTokenPrice } from "modules/swap";
-
 import SimpleStat from "components/SimpleStat";
 import CustomCardPoll from "components/governance/CustomCardPoll";
 import Warchest from "components/governance/Warchest";
@@ -27,7 +25,6 @@ import CardLine from "components/governance/CardLine";
 import LineChart from "components/LineChart";
 import UnstakeModal from "components/governance/UnstakeModal";
 import StakeModal from "components/governance/StakeModal";
-import { useGovStaked, useGovTotalStaked } from "modules/govern";
 import CommunityFund from "components/governance/CommunityFund";
 
 const dataChart = [
@@ -70,12 +67,9 @@ const CustomChevronDownIcon = () => {
 };
 
 const Gov: NextPage = () => {
-  const {
-    networkInfo: { name },
-  } = useTerra();
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
-  const price = useTokenPrice(contracts[name].whaleToken);
+  const price = useWhalePrice();
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
@@ -127,7 +121,7 @@ const Gov: NextPage = () => {
             WHALE
           </Text>
           <SimpleStat
-            value={formatAmount(price)}
+            value={formatAmount(price, "0.0000")}
             asset="UST"
             fontSizeValue="2xl"
             fontSizeAsset="xl"

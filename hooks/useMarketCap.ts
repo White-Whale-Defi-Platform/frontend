@@ -1,17 +1,12 @@
 import { useMemo } from "react";
-import { useTerra } from "@arthuryeti/terra";
 
-import { useTokenPrice } from "modules/swap";
-import contracts from "constants/contracts.json";
-import { useCirculatingSupply } from "hooks/useCirculatingSupply";
-import { div, times } from "libs/math";
 import { ONE_TOKEN } from "constants/constants";
+import { useCirculatingSupply } from "hooks/useCirculatingSupply";
+import { useWhalePrice } from "hooks/useWhalePrice";
+import { div, times } from "libs/math";
 
 export const useMarketCap = () => {
-  const {
-    networkInfo: { name },
-  } = useTerra();
-  const price = useTokenPrice(contracts[name].whaleToken);
+  const price = useWhalePrice();
   const circSupply = useCirculatingSupply();
 
   return useMemo(() => {
