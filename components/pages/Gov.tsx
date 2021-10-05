@@ -13,7 +13,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { NextPage } from "next";
 
-import { useGovStaked, useGovTotalStaked } from "modules/govern";
+import { useGovStaked, useGovTotalStaked, useGovGetPolls } from "modules/govern";
 import { useWhalePrice } from "hooks/useWhalePrice";
 import { formatAmount } from "libs/terra";
 
@@ -70,6 +70,7 @@ const Gov: NextPage = () => {
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
   const price = useWhalePrice();
+  const polls = useGovGetPolls();
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
