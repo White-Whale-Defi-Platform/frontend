@@ -22,7 +22,7 @@ export const findAssetInPool = (pool: Pool, asset: string) => {
   });
 };
 
-export const formatAmount = (value: string, format = "0.0a") => {
+export const fromTerraAmount = (value: string, format = "0.0a") => {
   if (value == null || isNaN(value)) {
     return "0.00";
   }

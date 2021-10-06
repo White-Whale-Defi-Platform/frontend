@@ -1,19 +1,10 @@
 import React, { FC, useEffect, useCallback } from "react";
-import {
-  Box,
-  Flex,
-  chakra,
-  HStack,
-  Button,
-  IconButton,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, chakra, Button, IconButton } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { isValidAmount } from "@arthuryeti/terra";
-import { useSwap, minAmountReceive } from "@arthuryeti/terraswap";
+import { useSwap } from "@arthuryeti/terraswap";
 import numeral from "numeral";
 
-import { DEFAULT_SLIPPAGE, ONE_TOKEN } from "constants/constants";
+import { DEFAULT_SLIPPAGE } from "constants/constants";
 import { toAmount } from "libs/parse";
 import useDebounceValue from "hooks/useDebounceValue";
 
@@ -77,7 +68,7 @@ const SwapForm: FC = () => {
 
   useEffect(() => {
     // @ts-expect-error
-    if (formState.name == "token1" && isValidAmount(token1.amount)) {
+    if (formState.name == "token1" && token1.amount != null) {
       const newAmount = numeral(token1.amount)
         .divide(swapState.simulated?.price)
         .value()
@@ -91,7 +82,7 @@ const SwapForm: FC = () => {
 
   useEffect(() => {
     // @ts-expect-error
-    if (formState.name == "token2" && isValidAmount(token2.amount)) {
+    if (formState.name == "token2" && token2.amount != null) {
       const newAmount = numeral(token2.amount)
         .multiply(swapState.simulated?.price)
         .value()
@@ -107,51 +98,48 @@ const SwapForm: FC = () => {
     swapState.swap();
   };
 
-  if (swapState.isLoading) {
+  if (swapState.isBroadcasting) {
     return <LoadingForm />;
   }
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)}>
-      <Flex align="center">
-        <Flex flex="1" align="center">
-          <Box flex="1">
-            <Controller
-              name="token1"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => <AmountWithSelectInput {...field} />}
-            />
-          </Box>
+      <Flex flexDir="column" align="center" gridGap="6">
+        <Box w="full">
+          <Controller
+            name="token1"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => <AmountWithSelectInput {...field} />}
+          />
+        </Box>
 
-          <Box px="6" mt="6">
-            <IconButton
-              aria-label="Reverse"
-              color="brand.500"
-              icon={<DoubleArrowsIcon />}
-              onClick={reverse}
-              _focus={{
-                boxShadow: "none",
-              }}
-              _hover={{
-                color: "white",
-              }}
-              variant="unstyled"
-            ></IconButton>
-          </Box>
+        <IconButton
+          aria-label="Reverse"
+          color="brand.500"
+          icon={<DoubleArrowsIcon />}
+          onClick={reverse}
+          _focus={{
+            boxShadow: "none",
+          }}
+          _hover={{
+            color: "white",
+          }}
+          variant="unstyled"
+        />
 
-          <Box flex="1">
-            <Controller
-              name="token2"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => <AmountWithSelectInput {...field} />}
-            />
-          </Box>
-        </Flex>
+        <Box w="full">
+          <Controller
+            name="token2"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => <AmountWithSelectInput {...field} />}
+          />
+        </Box>
+      </Flex>
 
-        <Box pl="12">
-          {/* {swapState.error && (
+      <Box>
+        {/* {swapState.error && (
             <Box
               mb="6"
               color="red.500"
@@ -165,19 +153,19 @@ const SwapForm: FC = () => {
             </Box>
           )} */}
 
+        <Flex justify="center" mt="8">
           <Button
             type="submit"
             variant="primary"
-            size="lg"
-            mt="6"
+            size="md"
             isLoading={swapState.isEstimating}
             disabled={!swapState.isReady}
             minW="64"
           >
             Swap
           </Button>
-        </Box>
-      </Flex>
+        </Flex>
+      </Box>
     </chakra.form>
   );
 };

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerra } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 import contracts from "constants/contracts.json";
 import { getAmountsInPool } from "libs/terra";
 import { Pool } from "types/common";
@@ -8,8 +8,8 @@ import { Pool } from "types/common";
 export const useUstPrice = () => {
   const {
     client,
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
   const lunaUstPair = contracts[name].lunaUstPair;
 
   const { data: exchangeRate } = useQuery("exchangeRate", () => {

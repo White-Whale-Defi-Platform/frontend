@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerra } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { useWarchest } from "hooks/useWarchest";
@@ -9,8 +9,8 @@ import { plus } from "libs/math";
 export const useTVL = () => {
   const {
     client,
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
   const { totalInUst: totalInWarchest } = useWarchest();
   const ustVault = contracts[name].ustVault;
 

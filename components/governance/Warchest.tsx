@@ -4,7 +4,7 @@ import { Box, Flex, HStack, Text, Image } from "@chakra-ui/react";
 import { NextPage } from "next";
 
 import { useWarchest } from "hooks/useWarchest";
-import { formatAmount } from "libs/terra";
+import { fromTerraAmount } from "libs/terra";
 
 import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
@@ -43,21 +43,21 @@ const Gov: NextPage = () => {
       {
         color: "#FFDD4D",
         label: "LUNA",
-        value: formatAmount(warchest.lunaAmount),
+        value: fromTerraAmount(warchest.lunaAmount),
         valueForChart: number(warchest.lunaAmount),
         asset: "UST",
       },
       {
         color: "#3CCD64",
         label: "WHALE",
-        value: formatAmount(warchest.whaleAmount),
+        value: fromTerraAmount(warchest.whaleAmount),
         valueForChart: number(warchest.whaleAmount),
         asset: "UST",
       },
       {
         color: "#2E78E9",
         label: "UST",
-        value: formatAmount(warchest.ustAmount),
+        value: fromTerraAmount(warchest.ustAmount),
         valueForChart: number(warchest.ustAmount),
         asset: "UST",
       },
@@ -92,7 +92,7 @@ const Gov: NextPage = () => {
           </Text>
         </HStack>
         <SimpleStat
-          value={formatAmount(warchest.totalInUst)}
+          value={fromTerraAmount(warchest.totalInUst)}
           asset="UST"
           fontSizeValue="2xl"
           fontSizeAsset="xl"

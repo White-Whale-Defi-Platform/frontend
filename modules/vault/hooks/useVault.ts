@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import numeral from "numeral";
-import { useAddress, useTerra } from "@arthuryeti/terra";
+import { useAddress, useTerraWebapp } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
 
 type Params = {
@@ -8,7 +8,7 @@ type Params = {
 };
 
 export const useVault = ({ contract }: Params) => {
-  const { client } = useTerra();
+  const { client } = useTerraWebapp();
   const address = useAddress();
 
   const { data: vault } = useQuery(

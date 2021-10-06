@@ -15,7 +15,7 @@ import { NextPage } from "next";
 
 import { useGovStaked, useGovTotalStaked } from "modules/govern";
 import { useWhalePrice } from "hooks/useWhalePrice";
-import { formatAmount } from "libs/terra";
+import { fromTerraAmount } from "libs/terra";
 
 import Card from "components/Card";
 import SimpleStat from "components/SimpleStat";
@@ -95,7 +95,7 @@ const Gov: NextPage = () => {
                   <Divider borderColor="whiteAlpha.400" />
                 </Box>
                 <CardLine
-                  value={formatAmount(totalStakedAmount)}
+                  value={fromTerraAmount(totalStakedAmount)}
                   asset="WHALE"
                   label="Total Deposits"
                 />
@@ -103,7 +103,7 @@ const Gov: NextPage = () => {
                   <Divider borderColor="whiteAlpha.400" />
                 </Box>
                 <CardLine
-                  value={formatAmount(stakedAmount)}
+                  value={fromTerraAmount(stakedAmount)}
                   asset="WHALE"
                   label="My Deposit"
                 />
@@ -121,7 +121,7 @@ const Gov: NextPage = () => {
             WHALE
           </Text>
           <SimpleStat
-            value={formatAmount(price, "0.0000")}
+            value={fromTerraAmount(price, "0.0000")}
             asset="UST"
             fontSizeValue="2xl"
             fontSizeAsset="xl"

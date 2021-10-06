@@ -1,16 +1,14 @@
 import React, { FC } from "react";
 import { Text } from "@chakra-ui/react";
-import { useTokenInfo } from "@arthuryeti/terra";
+import { useBalance } from "@arthuryeti/terra";
 
 import { formatAsset } from "libs/parse";
-import { useBalance } from "hooks/useBalance";
 
 type Props = {
   asset: string;
 };
 
 const Balance: FC<Props> = ({ asset }) => {
-  const { getSymbol } = useTokenInfo();
   const balance = useBalance(asset);
 
   return (

@@ -1,11 +1,12 @@
 import React, { FC, useCallback } from "react";
 import { Button, HStack, Box, chakra } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useTerra, useFeeToString } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { toAmount } from "libs/parse";
 import { useStake } from "modules/govern";
+import useFeeToString from "hooks/useFeeToString";
 import contracts from "constants/contracts.json";
 import useDebounceValue from "hooks/useDebounceValue";
 
@@ -27,8 +28,8 @@ type IFormInputs = {
 const StakeForm: FC<Props> = ({ onClose }) => {
   const queryClient = useQueryClient();
   const {
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
@@ -61,7 +62,7 @@ const StakeForm: FC<Props> = ({ onClose }) => {
 
   const feeString = useFeeToString(stakeState.fee);
 
-  if (stakeState.isLoading) {
+  if (stakeState.isBroadcasting) {
     return <LoadingForm />;
   }
 

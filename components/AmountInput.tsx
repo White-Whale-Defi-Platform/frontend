@@ -9,20 +9,19 @@ import {
   Divider,
   forwardRef,
   Image,
-  chakra,
 } from "@chakra-ui/react";
-import numeral from "numeral";
-import { useTokenInfo } from "@arthuryeti/terra";
+import { useTokenInfo } from "@arthuryeti/terraswap";
 
+import AmountMaxButton from "components/AmountMaxButton";
 import Balance from "components/Balance";
-import { lookup, lookupSymbol, formatAsset } from "libs/parse";
-import { useBalance } from "hooks/useBalance";
+import { lookupSymbol, formatAsset } from "libs/parse";
+import { div } from "libs/math";
+import { ONE_TOKEN } from "constants/constants";
 
 type Props = {
   onChange: any;
   onBlur: any;
-  balance?: string;
-  max?: string;
+  initialBalance?: string;
   value: {
     amount: string;
     asset: string;
@@ -30,28 +29,23 @@ type Props = {
 };
 
 const AmountInput: FC<Props> = forwardRef(
-  ({ onChange, onBlur, value, balance, max }, ref) => {
+  ({ onChange, onBlur, value, initialBalance, ...field }, ref) => {
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
-    const symbol = lookupSymbol(getSymbol(value.asset));
-    const assetBalance = useBalance(value.asset);
-    const initialMaxAmount = lookup(
-      max || balance || assetBalance,
-      value.asset
-    );
-    const amount = numeral(initialMaxAmount).value();
+    const symbol = getSymbol(value.asset);
+    const max = initialBalance ? div(initialBalance, ONE_TOKEN) : null;
 
     return (
       <Box ref={ref}>
         <Box mb="2">
-          {balance == null && <Balance asset={value.asset} />}
-          {balance != null && (
+          {initialBalance == null && <Balance asset={value.asset} />}
+          {initialBalance != null && (
             <Text>
               <Text as="span" variant="light">
                 Balance:
               </Text>{" "}
               <Text as="span" fontSize="sm" fontWeight="500">
-                {formatAsset(balance, getSymbol(value.asset))}
+                {formatAsset(initialBalance, getSymbol(value.asset))}
               </Text>
             </Text>
           )}
@@ -60,9 +54,11 @@ const AmountInput: FC<Props> = forwardRef(
           <NumberInput
             variant="brand"
             size="lg"
+            precision={6}
             value={value.amount}
             onChange={(a) => onChange({ ...value, amount: a })}
             onBlur={onBlur}
+            {...field}
           >
             <NumberInputField placeholder="0.0" />
           </NumberInput>
@@ -75,19 +71,13 @@ const AmountInput: FC<Props> = forwardRef(
             px="6"
           >
             <HStack spacing="4">
-              {amount > 0 && (
-                <Box>
-                  <chakra.button
-                    type="button"
-                    outline="none"
-                    color="brand.500"
-                    fontWeight="500"
-                    onClick={() => onChange({ ...value, amount })}
-                  >
-                    Max
-                  </chakra.button>
-                </Box>
-              )}
+              <Box>
+                <AmountMaxButton
+                  asset={value.asset}
+                  max={max}
+                  onChange={(v: string) => onChange({ ...value, amount: v })}
+                />
+              </Box>
               <Box py="2" height="full">
                 <Divider orientation="vertical" borderColor="brand.600" />
               </Box>

@@ -1,12 +1,12 @@
 import React, { FC, useCallback } from "react";
 import { Box, HStack, chakra, Button } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useFeeToString } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { toAmount, format } from "libs/parse";
 import { useDeposit } from "modules/vault";
 import useDebounceValue from "hooks/useDebounceValue";
+import useFeeToString from "hooks/useFeeToString";
 
 import AmountInput from "components/AmountInput";
 import LoadingForm from "components/LoadingForm";
@@ -57,7 +57,7 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
 
   const feeString = useFeeToString(depositState.fee);
 
-  if (depositState.isLoading) {
+  if (depositState.isBroadcasting) {
     return <LoadingForm />;
   }
 
@@ -68,7 +68,7 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           name="token"
           control={control}
           render={({ field }) => (
-            <AmountInput {...field} max={depositState.maxAmount} />
+            <AmountInput {...field} initialBalance={depositState.maxAmount} />
           )}
         />
       </Box>

@@ -14,7 +14,8 @@ import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-import { TerraProvider } from "@arthuryeti/terra";
+import { TerraWebappProvider } from "@arthuryeti/terra";
+import { TerraswapProvider } from "@arthuryeti/terraswap";
 
 import Layout from "components/Layout";
 import whitelist from "constants/whitelist.json";
@@ -53,12 +54,14 @@ const App = ({ Component, pageProps }: AppProps) => {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ChakraProvider theme={theme}>
-            <TerraProvider data={whitelist}>
-              <CSSReset />
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </TerraProvider>
+            <TerraWebappProvider>
+              <TerraswapProvider data={whitelist}>
+                <CSSReset />
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </TerraswapProvider>
+            </TerraWebappProvider>
           </ChakraProvider>
         </Hydrate>
       </QueryClientProvider>

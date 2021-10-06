@@ -1,4 +1,4 @@
-import { useTerra } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
 
 type Params = {
@@ -7,7 +7,7 @@ type Params = {
 };
 
 export const useGetBalance: any = ({ contract, address }: Params) => {
-  const { client } = useTerra();
+  const { client } = useTerraWebapp();
 
   return useQuery(["balance", contract], () => {
     return client.wasm.contractQuery(contract, {

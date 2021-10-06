@@ -1,11 +1,12 @@
 import React, { FC, useCallback } from "react";
 import { Button, HStack, Box, chakra } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useTerra, useFeeToString } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { useGovStaked, useUnstake } from "modules/govern";
 import { toAmount } from "libs/parse";
+import useFeeToString from "hooks/useFeeToString";
 import contracts from "constants/contracts.json";
 
 import LoadingForm from "components/LoadingForm";
@@ -27,8 +28,8 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
   const queryClient = useQueryClient();
   const stakedAmount = useGovStaked();
   const {
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
@@ -58,7 +59,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
 
   const feeString = useFeeToString(unstakeState.fee);
 
-  if (unstakeState.isLoading) {
+  if (unstakeState.isBroadcasting) {
     return <LoadingForm />;
   }
 
@@ -70,7 +71,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <AmountInput balance={stakedAmount} {...field} />
+            <AmountInput initialBalance={stakedAmount} {...field} />
           )}
         />
       </Box>

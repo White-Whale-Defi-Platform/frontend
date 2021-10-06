@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { isValidAmount, useAddress, useTransaction } from "@arthuryeti/terra";
+import { useAddress, useTransaction } from "@arthuryeti/terra";
 import { createStakeMsgs } from "modules/govern";
 
 type Params = {
@@ -19,7 +19,7 @@ export const useStake = ({
   const address = useAddress();
 
   const msgs = useMemo(() => {
-    if (!isValidAmount(amount)) {
+    if (amount == null) {
       return;
     }
 

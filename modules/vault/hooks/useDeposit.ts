@@ -1,14 +1,13 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import {
-  useTerra,
-  isValidAmount,
+  useTerraWebapp,
   useAddress,
   useTransaction,
+  useBalance,
 } from "@arthuryeti/terra";
 
 import { createDepositMsgs } from "modules/vault";
-import { useBalance } from "hooks/useBalance";
 import { minus } from "libs/math";
 
 type Params = {
@@ -20,7 +19,7 @@ type Params = {
 
 export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
   const address = useAddress();
-  const { client } = useTerra();
+  const { client } = useTerraWebapp();
   const balance = useBalance("uusd");
 
   const { data } = useQuery("feeToDeposit", () => {
@@ -46,7 +45,7 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
   }, [data, balance]);
 
   const msgs = useMemo(() => {
-    if (!isValidAmount(amount) || !contract || !token) {
+    if (amount == null || !contract || !token) {
       return;
     }
 
@@ -60,7 +59,7 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
     );
   }, [token, contract, amount, address]);
 
-  const { fee, submit, result, error, isReady, isLoading } = useTransaction({
+  const { submit, ...rest } = useTransaction({
     msgs,
     onSuccess,
   });
@@ -68,11 +67,7 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
   return {
     depositedAmount,
     maxAmount,
-    isLoading,
-    isReady,
-    fee,
-    result,
-    error,
+    ...rest,
     deposit: submit,
   };
 };

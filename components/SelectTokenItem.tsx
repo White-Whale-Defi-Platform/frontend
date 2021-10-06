@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 import { Text, HStack, MenuItem, Image } from "@chakra-ui/react";
-import { useTokenInfo } from "@arthuryeti/terra";
-
-import { lookupSymbol } from "libs/parse";
+import { useTokenInfo } from "@arthuryeti/terraswap";
 
 type Props = {
   asset: string;
@@ -12,7 +10,7 @@ type Props = {
 const SelectTokenItem: FC<Props> = ({ asset, onClick }) => {
   const { getIcon, getSymbol } = useTokenInfo();
   const icon = getIcon(asset);
-  const symbol = lookupSymbol(getSymbol(asset));
+  const symbol = getSymbol(asset);
 
   return (
     <MenuItem onClick={() => onClick(asset)}>

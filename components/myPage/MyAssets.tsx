@@ -1,8 +1,7 @@
-import { formatAmount, useTerra } from "@arthuryeti/terra";
+import { fromTerraAmount, useTerraWebapp, useBalance } from "@arthuryeti/terra";
 import { NextPage } from "next";
 import numeral from "numeral";
 
-import { useBalance } from "hooks/useBalance";
 import contracts from "constants/contracts.json";
 import { useVault } from "modules/vault";
 
@@ -10,8 +9,8 @@ import PieGraphCard from "components/myPage/PieGraphCard";
 
 const MyAssets: NextPage = () => {
   const {
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
   const { balance } = useVault({
     contract: contracts[name].ustVault,
   });
@@ -44,7 +43,7 @@ const MyAssets: NextPage = () => {
   return (
     <PieGraphCard
       title="My Assets"
-      value={formatAmount(total)}
+      value={fromTerraAmount(total)}
       asset="UST"
       data={data}
     />

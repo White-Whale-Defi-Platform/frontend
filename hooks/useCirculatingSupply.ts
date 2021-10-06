@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerra } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { minus } from "libs/math";
@@ -8,8 +8,8 @@ import { minus } from "libs/math";
 export const useCirculatingSupply = () => {
   const {
     client,
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
   const whaleToken = contracts[name].whaleToken;
   const wallet = contracts[name].wallet;
 

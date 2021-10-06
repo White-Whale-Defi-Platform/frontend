@@ -1,17 +1,18 @@
 import React, { FC, useCallback } from "react";
 import { Box, HStack, chakra, Button } from "@chakra-ui/react";
+import { useBalance } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
 import numeral from "numeral";
-import { useFeeToString } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
+
+import useFeeToString from "hooks/useFeeToString";
+import { toAmount } from "libs/parse";
+import { useWithdraw } from "modules/vault";
+import { ONE_TOKEN } from "constants/constants";
 
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
 import InlineStat from "components/InlineStat";
-import { toAmount } from "libs/parse";
-import { useWithdraw } from "modules/vault";
-import { useBalance } from "hooks/useBalance";
-import { ONE_TOKEN } from "constants/constants";
 
 type IFormInputs = {
   token: {
@@ -58,15 +59,9 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
 
   const feeString = useFeeToString(withdrawState.fee);
 
-  if (withdrawState.isLoading) {
+  if (withdrawState.isBroadcasting) {
     return <LoadingForm />;
   }
-
-  const initialBalance = numeral(balance)
-    .divide(ONE_TOKEN)
-    .multiply(withdrawState.ratio)
-    .value()
-    .toFixed();
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
@@ -75,7 +70,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           name="token"
           control={control}
           render={({ field }) => (
-            <AmountInput balance={initialBalance} {...field} />
+            <AmountInput initialBalance={balance} {...field} />
           )}
         />
       </Box>

@@ -14,12 +14,12 @@ import {
   forwardRef,
   chakra,
 } from "@chakra-ui/react";
-import { useTokenInfo } from "@arthuryeti/terra";
+import { useTokenInfo } from "@arthuryeti/terraswap";
+import { useBalance } from "@arthuryeti/terra";
 
-import { lookup, toNumber, formatAsset, lookupSymbol } from "libs/parse";
+import { lookup, toNumber, formatAsset } from "libs/parse";
 import ChevronDownIcon from "components/icons/ChevronDownIcon";
 import SelectTokenItem from "components/SelectTokenItem";
-import { useBalance } from "hooks/useBalance";
 
 type Props = {
   onChange: any;
@@ -50,7 +50,7 @@ const AmountWithSelectInput: FC<Props> = forwardRef(
               />
             </Box>
             <Text variant="light" fontWeight="500">
-              {lookupSymbol(getSymbol(value.asset))}
+              {getSymbol(value.asset)}
             </Text>
             <Box>
               <ChevronDownIcon width="1rem" height="1rem" />

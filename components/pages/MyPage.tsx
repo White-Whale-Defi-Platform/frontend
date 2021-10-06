@@ -2,7 +2,7 @@ import { Box, Heading, Grid, GridItem } from "@chakra-ui/react";
 import { NextPage } from "next";
 
 import { useMarketCap } from "hooks/useMarketCap";
-import { formatAmount } from "libs/terra";
+import { fromTerraAmount } from "libs/terra";
 
 import MyAssets from "components/myPage/MyAssets";
 import LineGraphCard from "components/myPage/LineGraphCard";
@@ -65,12 +65,15 @@ const MyPage: NextPage = () => {
             cells={[
               {
                 label: "WHALE",
-                value: `${formatAmount(price, "0.0000")} UST`,
+                value: `${fromTerraAmount(price, "0.0000")} UST`,
               },
-              { label: "Market Cap", value: `${formatAmount(marketCap)} UST` },
+              {
+                label: "Market Cap",
+                value: `${fromTerraAmount(marketCap)} UST`,
+              },
               {
                 label: "Circulating Supply",
-                value: `${formatAmount(circSupply)} WHALE`,
+                value: `${fromTerraAmount(circSupply)} WHALE`,
               },
             ]}
             data={dataChart}
@@ -81,15 +84,15 @@ const MyPage: NextPage = () => {
             cells={[
               {
                 label: "Community Fund",
-                value: `${formatAmount(communityFund.totalInUst)} UST`,
+                value: `${fromTerraAmount(communityFund.totalInUst)} UST`,
               },
               {
                 label: "Total UST",
-                value: `${formatAmount(communityFund.ustAmount)} UST`,
+                value: `${fromTerraAmount(communityFund.ustAmount)} UST`,
               },
               {
                 label: "Total WHALE",
-                value: `${formatAmount(communityFund.whaleAmount)} UST`,
+                value: `${fromTerraAmount(communityFund.whaleAmount)} UST`,
               },
             ]}
             data={dataChart}

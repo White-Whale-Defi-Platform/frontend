@@ -1,10 +1,5 @@
 import { useMemo } from "react";
-import {
-  isValidAmount,
-  useAddress,
-  useTransaction,
-  useTerra,
-} from "@arthuryeti/terra";
+import { useAddress, useTransaction, useTerraWebapp } from "@arthuryeti/terra";
 import numeral from "numeral";
 import { useQuery } from "react-query";
 
@@ -24,7 +19,7 @@ export const useWithdraw = ({
   onSuccess,
 }: Params) => {
   const address = useAddress();
-  const { client } = useTerra();
+  const { client } = useTerraWebapp();
 
   const { data: pool } = useQuery(
     ["pool", contract],
@@ -69,7 +64,7 @@ export const useWithdraw = ({
   }, [balData, pool]);
 
   const msgs = useMemo(() => {
-    if (!isValidAmount(amount) || !contract) {
+    if (amount == null || !contract) {
       return;
     }
 
@@ -83,18 +78,14 @@ export const useWithdraw = ({
     );
   }, [contract, amount, lpToken, address]);
 
-  const { fee, submit, result, error, isLoading, isReady } = useTransaction({
+  const { submit, ...rest } = useTransaction({
     msgs,
     onSuccess,
   });
 
   return {
+    ...rest,
     ratio,
-    isLoading,
-    isReady,
-    fee,
-    result,
-    error,
     withdraw: submit,
   };
 };

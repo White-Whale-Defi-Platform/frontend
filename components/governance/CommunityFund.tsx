@@ -2,7 +2,7 @@ import React, { FC, useMemo } from "react";
 import { Box, HStack, Flex, Text } from "@chakra-ui/react";
 
 import { useCommunityFund } from "hooks/useCommunityFund";
-import { formatAmount } from "libs/terra";
+import { fromTerraAmount } from "libs/terra";
 import { number } from "libs/math";
 
 import Card from "components/Card";
@@ -22,13 +22,13 @@ const CommunityFund: FC = () => {
         label: "UST",
         color: "#2E78E9",
         value: ustAmountInNumber / totalInUstAmountInNumber,
-        valueCount: formatAmount(communityFund.ustAmount),
+        valueCount: fromTerraAmount(communityFund.ustAmount),
       },
       {
         label: "WHALE",
         color: "#3CCD64",
         value: whaleAmountInNumber / totalInUstAmountInNumber,
-        valueCount: formatAmount(communityFund.whaleAmount),
+        valueCount: fromTerraAmount(communityFund.whaleAmount),
       },
     ];
   }, [
@@ -66,7 +66,7 @@ const CommunityFund: FC = () => {
             fontSize="3xl"
             lineHeight="1"
           >
-            {formatAmount(communityFund.totalInUst)} UST
+            {fromTerraAmount(communityFund.totalInUst)} UST
           </Text>
         </HStack>
         <Box flex="1">

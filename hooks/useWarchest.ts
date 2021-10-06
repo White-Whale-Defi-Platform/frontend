@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerra } from "@arthuryeti/terra";
+import { useTerraWebapp } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { div, plus, times } from "libs/math";
@@ -10,8 +10,8 @@ import { useWhalePrice } from "hooks/useWhalePrice";
 export const useWarchest = () => {
   const {
     client,
-    networkInfo: { name },
-  } = useTerra();
+    network: { name },
+  } = useTerraWebapp();
   const whaleToken = contracts[name].whaleToken;
   const warchest = contracts[name].warchest;
   const price = useWhalePrice();

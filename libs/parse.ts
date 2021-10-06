@@ -92,11 +92,3 @@ export const toAmount = (value: string | null) => {
 
   return new BigNumber(value).times(SMALLEST).integerValue().toString();
 };
-
-export const getIsTokenNative = (token = "") => {
-  return token.startsWith("u");
-};
-
-export const parseResult = <Parsed>(params: { result: string } | null) => {
-  return params ? (JSON.parse(params.result) as Parsed) : undefined;
-};

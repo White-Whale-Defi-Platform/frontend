@@ -1,7 +1,5 @@
 import { Coin, MsgExecuteContract } from "@terra-money/terra.js";
-import { toToken } from "@arthuryeti/terra";
-
-import { getIsTokenNative } from "libs/parse";
+import { toAsset, isNativeToken } from "@arthuryeti/terraswap";
 
 type CreateDepositMsgsOptions = {
   contract: string;
@@ -14,8 +12,8 @@ export const createDepositMsgs = (
   sender: string
 ): MsgExecuteContract[] => {
   const { token, contract, amount } = options;
-  const isNative = getIsTokenNative(token);
-  const asset = toToken({ amount, token });
+  const isNative = isNativeToken(token);
+  const asset = toAsset({ amount, token });
 
   if (isNative) {
     return [
