@@ -6,6 +6,7 @@ import contracts from "constants/contracts.json";
 import { useVault } from "modules/vault";
 
 import PieGraphCard from "components/myPage/PieGraphCard";
+import { useGovStaked } from "modules/govern";
 
 const MyAssets: NextPage = () => {
   const {
@@ -15,6 +16,7 @@ const MyAssets: NextPage = () => {
     contract: contracts[name].ustVault,
   });
   const ustBalance = useBalance("uusd");
+  const stakedAmount = useGovStaked();
   const total = numeral(balance).add(ustBalance).value().toString();
 
   const data = [
@@ -25,7 +27,7 @@ const MyAssets: NextPage = () => {
     },
     {
       label: "War Chest",
-      value: 0,
+      value: Number(stakedAmount),
       color: "#194325",
     },
     {
