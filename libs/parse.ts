@@ -92,3 +92,9 @@ export const toAmount = (value: string | null) => {
 
   return new BigNumber(value).times(SMALLEST).integerValue().toString();
 };
+
+export const decimal = (value = "0", dp = 6) =>
+  new BigNumber(value).decimalPlaces(dp, rm).toString();
+
+export const toFixed = (value = "0", dp = 6) =>
+  new BigNumber(value).toFixed(dp, rm).toString();

@@ -19,13 +19,14 @@ import { fromTerraAmount } from "libs/terra";
 
 import Card from "components/Card";
 import SimpleStat from "components/SimpleStat";
-import CustomCardPoll from "components/governance/CustomCardPoll";
-import Warchest from "components/governance/Warchest";
-import CardLine from "components/governance/CardLine";
+import CustomCardPoll from "components/gov/CustomCardPoll";
+import Warchest from "components/gov/Warchest";
+import Polls from "components/gov/Polls";
+import CardLine from "components/gov/CardLine";
 import LineChart from "components/LineChart";
-import UnstakeModal from "components/governance/UnstakeModal";
-import StakeModal from "components/governance/StakeModal";
-import CommunityFund from "components/governance/CommunityFund";
+import UnstakeModal from "components/gov/UnstakeModal";
+import StakeModal from "components/gov/StakeModal";
+import CommunityFund from "components/gov/CommunityFund";
 
 const dataChart = [
   {
@@ -140,24 +141,6 @@ const Gov: NextPage = () => {
         </Heading>
         <HStack>
           <Box
-            w="208px"
-            mr="19px"
-            border="2px solid rgba(255, 255, 255, 0.1)"
-            borderRadius="77px"
-            display={{ base: "none", sm: "none", md: "initial" }}
-          >
-            <Select
-              placeholder="All"
-              color="#FFF"
-              border="none"
-              focusBorderColor="none"
-              size="sm"
-              icon={<CustomChevronDownIcon />}
-            >
-              <option value="option1">All</option>
-            </Select>
-          </Box>
-          <Box
             as="button"
             mr="17px"
             borderRadius="full"
@@ -181,29 +164,7 @@ const Gov: NextPage = () => {
           </Box>
         </HStack>
       </Flex>
-      <Card>
-        <Stack
-          direction={{ base: "column", sm: "column", md: "row" }}
-          spacing="44px"
-        >
-          <Box w="100%">
-            <CustomCardPoll
-              number="1"
-              status="In progress"
-              information="Adjust bot parameters"
-              endTime="Wed, Aug 08, 15:40 PM"
-            />
-          </Box>
-          <Box w="100%">
-            <CustomCardPoll
-              number="2"
-              status="In progress"
-              information="Burn Whale tokens"
-              endTime="Wed, Aug 04, 19:20 PM"
-            />
-          </Box>
-        </Stack>
-      </Card>
+      <Polls />
     </Box>
   );
 };

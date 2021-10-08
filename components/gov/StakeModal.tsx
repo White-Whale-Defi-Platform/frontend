@@ -12,23 +12,23 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import ArrowUpIcon from "components/icons/ArrowUpIcon";
-import UnstakeForm from "components/governance/UnstakeForm";
+import ArrowDownIcon from "components/icons/ArrowDownIcon";
+import StakeForm from "components/gov/StakeForm";
 
-const UnstakeModal: FC = () => {
+const StakeModal: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Button
         type="button"
-        leftIcon={<ArrowUpIcon width="1.25rem" height="1.25rem" />}
-        variant="secondary"
+        leftIcon={<ArrowDownIcon width="1.25rem" height="1.25rem" />}
+        variant="primary"
         size="sm"
         onClick={onOpen}
         isFullWidth
       >
-        Unstake
+        Stake
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -37,13 +37,14 @@ const UnstakeModal: FC = () => {
           <ModalBody>
             <Flex align="center" direction="column">
               <Heading size="md" mb="4">
-                Unstake
+                Stake
               </Heading>
               <Text variant="light" textAlign="center" fontWeight="500">
-                Unstake WHALE from WhiteWhale Governance
+                Stake WHALE to WhiteWhale Governance to earn rewards from
+                protocol fee and exercise voting rights
               </Text>
 
-              <UnstakeForm onClose={onClose} />
+              <StakeForm onClose={onClose} />
             </Flex>
           </ModalBody>
         </ModalContent>
@@ -52,4 +53,4 @@ const UnstakeModal: FC = () => {
   );
 };
 
-export default UnstakeModal;
+export default StakeModal;

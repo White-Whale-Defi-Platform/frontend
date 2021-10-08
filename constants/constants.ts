@@ -1,7 +1,5 @@
-import { Denom } from "@terra-money/terra.js";
-
-/* terra:wasm */
-export const WASMQUERY = "WasmContractsContractAddressStore";
+/* terra */
+export const FINDER = "https://finder.terra.money";
 
 /* terra:unit */
 export const SMALLEST = 1e6;

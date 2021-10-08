@@ -7,7 +7,7 @@ type Params = {
   tokenContract: string;
   govContract: string;
   amount: string;
-  onSuccess: () => void;
+  onSuccess: (txHash: string) => void;
 };
 
 export const useStake = ({

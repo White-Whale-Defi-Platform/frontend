@@ -70,7 +70,6 @@ const VaultItem: FC<Props> = ({ data }) => {
       <Box p="8">
         <Box>
           <VaultItemLine label="APY" value="--" asset="%" />
-          <VaultItemLine label="Daily Yield" value="--" asset="%" />
           <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
           <VaultItemLine label="My Deposit" value={balanceAmount} />
         </Box>

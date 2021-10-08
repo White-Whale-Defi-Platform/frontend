@@ -1,15 +1,14 @@
 import React, { FC, useCallback } from "react";
-import { Box, HStack, chakra, Button } from "@chakra-ui/react";
-import { useBalance } from "@arthuryeti/terra";
+import { Box, HStack, chakra, Button, Text } from "@chakra-ui/react";
+import { TxStep, useBalance } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
-import numeral from "numeral";
 import { useQueryClient } from "react-query";
 
 import useFeeToString from "hooks/useFeeToString";
 import { toAmount } from "libs/parse";
 import { useWithdraw } from "modules/vault";
-import { ONE_TOKEN } from "constants/constants";
 
+import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
 import InlineStat from "components/InlineStat";
@@ -59,8 +58,12 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
 
   const feeString = useFeeToString(withdrawState.fee);
 
-  if (withdrawState.isBroadcasting) {
-    return <LoadingForm />;
+  if (withdrawState.txStep == TxStep.Posting) {
+    return <PendingForm />;
+  }
+
+  if (withdrawState.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={withdrawState.txHash} />;
   }
 
   return (
@@ -75,9 +78,21 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
         />
       </Box>
 
-      {withdrawState.isReady && (
-        <Box mt="4">
-          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+      <Box mt="4">
+        <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+      </Box>
+
+      {withdrawState.error && (
+        <Box
+          my="6"
+          color="red.500"
+          borderColor="red.500"
+          borderWidth="1px"
+          px="4"
+          py="2"
+          borderRadius="2xl"
+        >
+          <Text>{withdrawState.error}</Text>
         </Box>
       )}
 
@@ -91,7 +106,8 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           variant="primary"
           size="lg"
           flex="1"
-          isDisabled={!withdrawState.isReady}
+          isLoading={withdrawState.txStep == TxStep.Estimating}
+          disabled={withdrawState.txStep != TxStep.Ready}
         >
           Confirm
         </Button>

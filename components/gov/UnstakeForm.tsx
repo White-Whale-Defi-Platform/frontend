@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from "react";
-import { Button, HStack, Box, chakra } from "@chakra-ui/react";
+import { Button, HStack, Box, chakra, Text } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { useGovStaked, useUnstake } from "modules/govern";
@@ -9,6 +9,7 @@ import { toAmount } from "libs/parse";
 import useFeeToString from "hooks/useFeeToString";
 import contracts from "constants/contracts.json";
 
+import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
 import InlineStat from "components/InlineStat";
@@ -59,8 +60,12 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
 
   const feeString = useFeeToString(unstakeState.fee);
 
-  if (unstakeState.isBroadcasting) {
-    return <LoadingForm />;
+  if (unstakeState.txStep == TxStep.Posting) {
+    return <PendingForm />;
+  }
+
+  if (unstakeState.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={unstakeState.txHash} />;
   }
 
   return (
@@ -80,6 +85,20 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
         <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
       </Box>
 
+      {unstakeState.error && (
+        <Box
+          my="6"
+          color="red.500"
+          borderColor="red.500"
+          borderWidth="1px"
+          px="4"
+          py="2"
+          borderRadius="2xl"
+        >
+          <Text>{unstakeState.error}</Text>
+        </Box>
+      )}
+
       <HStack spacing="6" width="full" mt="8">
         <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
           Cancel
@@ -90,7 +109,8 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
           variant="primary"
           size="lg"
           flex="1"
-          isDisabled={!unstakeState.isReady}
+          isLoading={unstakeState.txStep == TxStep.Estimating}
+          disabled={unstakeState.txStep != TxStep.Ready}
         >
           Confirm
         </Button>

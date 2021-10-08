@@ -36,14 +36,6 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
     return minus(amount, data.fee[0].amount);
   }, [data, amount]);
 
-  const maxAmount = useMemo(() => {
-    if (data == null) {
-      return null;
-    }
-
-    return minus(minus(balance, data.fee[0].amount), 2000000);
-  }, [data, balance]);
-
   const msgs = useMemo(() => {
     if (amount == null || !contract || !token) {
       return;
@@ -66,7 +58,6 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
 
   return {
     depositedAmount,
-    maxAmount,
     ...rest,
     deposit: submit,
   };

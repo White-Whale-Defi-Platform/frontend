@@ -16,26 +16,30 @@ const AmountMaxButton: FC<Props> = ({ onChange, max, asset }) => {
   const balance = useBalance(asset);
 
   const amount = useMemo(() => {
-    const formattedTaxRate = taxRate.toFixed(6);
-    const formattedTaxCap = taxCap.amount.div(ONE_TOKEN).toFixed(6);
-    const formattedBalance = BN(balance).div(ONE_TOKEN).toFixed(6);
-    const balanceTaxRate = BN(formattedBalance)
-      .minus("2")
-      .div(BN("1").plus(formattedTaxRate));
+    if (taxRate == null || taxCap == null) {
+      return null;
+    }
 
     if (max != null) {
       return max;
     }
 
+    const formattedTaxCap = taxCap.amount.div(ONE_TOKEN).toString();
+    const formattedTaxRate = taxRate.toString();
+    const balanceWithBuffer = BN(balance).div(ONE_TOKEN).minus(2);
+    const taxRateFormula = BN("1")
+      .plus(formattedTaxRate)
+      .times(formattedTaxRate);
+
     if (asset == "uusd") {
-      if (balanceTaxRate.isGreaterThan(formattedTaxCap)) {
-        return balanceTaxRate;
+      if (balanceWithBuffer.div(taxRateFormula).lt(formattedTaxCap)) {
+        return balanceWithBuffer.div(BN(formattedTaxRate).plus("1"));
       }
 
-      return BN(formattedBalance).minus(2).minus(formattedTaxCap);
+      return balanceWithBuffer.minus(formattedTaxCap);
     }
 
-    return formattedBalance;
+    return BN(balance).div(ONE_TOKEN).toFixed(6);
   }, [asset, balance, max, taxCap, taxRate]);
 
   if (amount == "0") {

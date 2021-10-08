@@ -1,17 +1,35 @@
 import React, { FC } from "react";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, Text, Box, Link } from "@chakra-ui/react";
 
-const LoadingForm: FC = () => {
+import { truncate } from "libs/text";
+import useFinder from "hooks/useFinder";
+
+import Loader from "components/Loader";
+
+type Props = {
+  txHash: string;
+};
+
+const LoadingForm: FC<Props> = ({ txHash }) => {
+  const finder = useFinder();
+
   return (
-    <Flex flexDir="column" align="center">
-      <Spinner
-        mt="6"
-        thickness="2rem"
-        speed="0.65s"
-        emptyColor="whiteAlpha.100"
-        color="brand.500"
-        size="xl"
-      />
+    <Flex flexDir="column" align="center" w="full">
+      <Box mt="6">
+        <Loader />
+      </Box>
+
+      <Heading fontSize="xl" mt="8">
+        Waiting for receipt...
+      </Heading>
+      <Flex justify="space-between" align="center" mt="12" w="full">
+        <Text variant="light" fontSize="md">
+          Tx Hash
+        </Text>
+        <Link fontWeight="bold" href={finder(txHash, "tx")} target="_blank">
+          {truncate(txHash)}
+        </Link>
+      </Flex>
     </Flex>
   );
 };

@@ -1,16 +1,20 @@
 import React, { FC, useEffect, useCallback } from "react";
-import { Box, Flex, chakra, Button, IconButton } from "@chakra-ui/react";
+import { Box, Flex, chakra, Button, IconButton, Text } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useSwap } from "@arthuryeti/terraswap";
+import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import numeral from "numeral";
 
 import { DEFAULT_SLIPPAGE } from "constants/constants";
+import contracts from "constants/contracts.json";
 import { toAmount } from "libs/parse";
 import useDebounceValue from "hooks/useDebounceValue";
 
 import DoubleArrowsIcon from "components/icons/DoubleArrowsIcon";
+import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
 import AmountWithSelectInput from "components/AmountWithSelectInput";
+import SwapFormInfos from "components/swap/SwapFormInfos";
 // import SwapFormInfos from "components/swap/SwapFormInfos";
 
 type Inputs = {
@@ -22,25 +26,31 @@ type Inputs = {
     asset: string;
     amount: string;
   };
+  slippage: string;
 };
 
 const SwapForm: FC = () => {
+  const {
+    network: { name },
+  } = useTerraWebapp();
   const { control, handleSubmit, watch, setValue, formState } = useForm<Inputs>(
     {
       defaultValues: {
         token1: {
           amount: undefined,
-          asset: "uluna",
+          asset: contracts[name].whaleToken,
         },
         token2: {
           amount: undefined,
           asset: "uusd",
         },
+        slippage: String(DEFAULT_SLIPPAGE),
       },
     }
   );
   const token1 = watch("token1");
   const token2 = watch("token2");
+  const slippage = watch("slippage");
 
   const debouncedAmount1 = useDebounceValue(token1.amount, 500);
 
@@ -61,7 +71,7 @@ const SwapForm: FC = () => {
     token1: token1.asset,
     token2: token2.asset,
     amount: toAmount(debouncedAmount1),
-    slippage: String(DEFAULT_SLIPPAGE),
+    slippage,
     onSuccess: handleSuccess,
     onError: handleError,
   });
@@ -98,8 +108,12 @@ const SwapForm: FC = () => {
     swapState.swap();
   };
 
-  if (swapState.isBroadcasting) {
-    return <LoadingForm />;
+  if (swapState.txStep == TxStep.Posting) {
+    return <PendingForm />;
+  }
+
+  if (swapState.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={swapState.txHash} />;
   }
 
   return (
@@ -138,34 +152,44 @@ const SwapForm: FC = () => {
         </Box>
       </Flex>
 
-      <Box>
-        {/* {swapState.error && (
-            <Box
-              mb="6"
-              color="red.500"
-              borderColor="red.500"
-              borderWidth="1px"
-              px="4"
-              py="2"
-              borderRadius="2xl"
-            >
-              <Text>{swapState.error}</Text>
-            </Box>
-          )} */}
-
-        <Flex justify="center" mt="8">
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            isLoading={swapState.isEstimating}
-            disabled={!swapState.isReady}
-            minW="64"
-          >
-            Swap
-          </Button>
-        </Flex>
+      <Box mt="6">
+        <SwapFormInfos
+          token1={token1.asset}
+          token2={token2.asset}
+          fee={swapState.fee}
+          slippage={slippage}
+          exchangeRate={swapState.simulated?.price}
+          minimumReceive={swapState.minReceive}
+          onSlippageChange={(s) => setValue("slippage", s)}
+        />
       </Box>
+
+      {swapState.error && (
+        <Box
+          my="6"
+          color="red.500"
+          borderColor="red.500"
+          borderWidth="1px"
+          px="4"
+          py="2"
+          borderRadius="2xl"
+        >
+          <Text>{swapState.error}</Text>
+        </Box>
+      )}
+
+      <Flex justify="center" mt="8">
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          isLoading={swapState.txStep == TxStep.Estimating}
+          disabled={swapState.txStep != TxStep.Ready}
+          minW="64"
+        >
+          Swap
+        </Button>
+      </Flex>
     </chakra.form>
   );
 };

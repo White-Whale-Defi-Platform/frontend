@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from "react";
-import { Box, HStack, chakra, Button } from "@chakra-ui/react";
+import { Box, HStack, chakra, Button, Text } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 
@@ -11,6 +11,8 @@ import useFeeToString from "hooks/useFeeToString";
 import AmountInput from "components/AmountInput";
 import LoadingForm from "components/LoadingForm";
 import InlineStat from "components/InlineStat";
+import { TxStep } from "@arthuryeti/terra";
+import PendingForm from "components/PendingForm";
 
 type IFormInputs = {
   token: {
@@ -57,8 +59,12 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
 
   const feeString = useFeeToString(depositState.fee);
 
-  if (depositState.isBroadcasting) {
-    return <LoadingForm />;
+  if (depositState.txStep == TxStep.Posting) {
+    return <PendingForm />;
+  }
+
+  if (depositState.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={depositState.txHash} />;
   }
 
   return (
@@ -67,23 +73,35 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
         <Controller
           name="token"
           control={control}
-          render={({ field }) => (
-            <AmountInput {...field} initialBalance={depositState.maxAmount} />
-          )}
+          render={({ field }) => <AmountInput {...field} />}
         />
       </Box>
 
-      {depositState.isReady && (
-        <Box mt="4">
-          <Box mb="3">
-            <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-          </Box>
+      <Box mt="4">
+        <Box mb="4">
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        </Box>
+        {depositState.txStep == TxStep.Ready && (
           <InlineStat
             label="Minimum Deposit Amount"
             value={`${
               format(depositState.depositedAmount, "uusd") || "0.00"
             } UST`}
           />
+        )}
+      </Box>
+
+      {depositState.error && (
+        <Box
+          my="6"
+          color="red.500"
+          borderColor="red.500"
+          borderWidth="1px"
+          px="4"
+          py="2"
+          borderRadius="2xl"
+        >
+          <Text>{depositState.error}</Text>
         </Box>
       )}
 
@@ -97,7 +115,8 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           variant="primary"
           size="lg"
           flex="1"
-          isDisabled={!depositState.isReady}
+          isLoading={depositState.txStep == TxStep.Estimating}
+          disabled={depositState.txStep != TxStep.Ready}
         >
           Confirm
         </Button>

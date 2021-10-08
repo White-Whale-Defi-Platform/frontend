@@ -34,8 +34,6 @@ const AmountWithSelectInput: FC<Props> = forwardRef(
   ({ onChange, onBlur, value }, ref) => {
     const { getIcon, getSymbol } = useTokenInfo();
     const balance = useBalance(value.asset);
-    const amount = lookup(balance, value.asset);
-    const maxAmount = toNumber(amount);
 
     const renderButton = () => {
       if (value) {

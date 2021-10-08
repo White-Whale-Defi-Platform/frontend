@@ -14,9 +14,10 @@ import { useTokenInfo } from "@arthuryeti/terraswap";
 
 import AmountMaxButton from "components/AmountMaxButton";
 import Balance from "components/Balance";
-import { lookupSymbol, formatAsset } from "libs/parse";
+import { formatAsset } from "libs/parse";
 import { div } from "libs/math";
 import { ONE_TOKEN } from "constants/constants";
+import { BN } from "@arthuryeti/terra";
 
 type Props = {
   onChange: any;
@@ -33,7 +34,9 @@ const AmountInput: FC<Props> = forwardRef(
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
     const symbol = getSymbol(value.asset);
-    const max = initialBalance ? div(initialBalance, ONE_TOKEN) : null;
+    const max = BN(initialBalance).gt("0")
+      ? div(initialBalance, ONE_TOKEN)
+      : null;
 
     return (
       <Box ref={ref}>
