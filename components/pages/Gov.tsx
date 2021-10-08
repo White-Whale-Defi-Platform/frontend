@@ -122,7 +122,7 @@ const Gov: NextPage = () => {
             WHALE
           </Text>
           <SimpleStat
-            value={fromTerraAmount(price, "0.0000")}
+            value={fromTerraAmount(price, "0,0.0[00000]")}
             asset="UST"
             fontSizeValue="2xl"
             fontSizeAsset="xl"

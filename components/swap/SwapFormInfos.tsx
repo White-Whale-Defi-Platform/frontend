@@ -53,7 +53,7 @@ const SwapFormInfos: FC<Props> = ({
           <Box mb="4">
             <InlineStat
               label="Minimum Received"
-              value={fromTerraAmount(minimumReceive, "0.000000")}
+              value={fromTerraAmount(minimumReceive, "0,0.0[00000]")}
               name={token2Symbol}
               tooltip="Expected minimum quantity to be received based on the current price, maximum spread, and trading fee"
             />

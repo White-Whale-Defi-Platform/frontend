@@ -4,7 +4,7 @@ import { fromTerraAmount } from "@arthuryeti/terra";
 import { useTerraswap, Tokens } from "@arthuryeti/terraswap";
 
 const coinToString = (coin: any, tokens: Tokens) => {
-  const amount = fromTerraAmount(coin.amount.toString(), "0.0000");
+  const amount = fromTerraAmount(coin.amount.toString(), "0,0.0[00000]");
   const symbol = tokens[coin.denom]?.symbol || "LP"; // TODO: <<= refactoring
 
   return `${amount} ${symbol}`;

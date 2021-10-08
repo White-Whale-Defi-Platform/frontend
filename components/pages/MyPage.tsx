@@ -65,7 +65,7 @@ const MyPage: NextPage = () => {
             cells={[
               {
                 label: "WHALE",
-                value: `${fromTerraAmount(price, "0.0000")} UST`,
+                value: `${fromTerraAmount(price, "0,0.0[00000]")} UST`,
               },
               {
                 label: "Market Cap",

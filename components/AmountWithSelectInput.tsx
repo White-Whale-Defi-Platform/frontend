@@ -15,7 +15,7 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import { useTokenInfo } from "@arthuryeti/terraswap";
-import { useBalance } from "@arthuryeti/terra";
+import { fromTerraAmount, useBalance } from "@arthuryeti/terra";
 
 import { lookup, toNumber, formatAsset } from "libs/parse";
 import ChevronDownIcon from "components/icons/ChevronDownIcon";
@@ -73,12 +73,14 @@ const AmountWithSelectInput: FC<Props> = forwardRef(
       <Box ref={ref}>
         {value && (
           <Box mb="2" ml="6">
-            <Text fontSize="sm">
+            <Text fontSize="xl">
               <Text as="span" variant="light">
                 Available:
               </Text>{" "}
               <Text as="span" fontSize="sm" fontWeight="500">
-                {formatAsset(balance, getSymbol(value.asset))}
+                {`${fromTerraAmount(balance, "0,0.0[00000]")} ${getSymbol(
+                  value.asset
+                )}`}
               </Text>
             </Text>
           </Box>
