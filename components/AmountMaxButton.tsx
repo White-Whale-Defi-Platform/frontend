@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from "react";
 import { chakra } from "@chakra-ui/react";
-import { BN, useTerraWebapp, useBalance } from "@arthuryeti/terra";
+import { num, useTerraWebapp, useBalance } from "@arthuryeti/terra";
 
 import { ONE_TOKEN } from "constants/constants";
 
@@ -26,20 +26,20 @@ const AmountMaxButton: FC<Props> = ({ onChange, max, asset }) => {
 
     const formattedTaxCap = taxCap.amount.div(ONE_TOKEN).toString();
     const formattedTaxRate = taxRate.toString();
-    const balanceWithBuffer = BN(balance).div(ONE_TOKEN).minus(2);
-    const taxRateFormula = BN("1")
+    const balanceWithBuffer = num(balance).div(ONE_TOKEN).minus(2);
+    const taxRateFormula = num("1")
       .plus(formattedTaxRate)
       .times(formattedTaxRate);
 
     if (asset == "uusd") {
       if (balanceWithBuffer.div(taxRateFormula).lt(formattedTaxCap)) {
-        return balanceWithBuffer.div(BN(formattedTaxRate).plus("1"));
+        return balanceWithBuffer.div(num(formattedTaxRate).plus("1"));
       }
 
       return balanceWithBuffer.minus(formattedTaxCap);
     }
 
-    return BN(balance).div(ONE_TOKEN).toFixed(6);
+    return num(balance).div(ONE_TOKEN).toFixed(6);
   }, [asset, balance, max, taxCap, taxRate]);
 
   if (amount == "0") {

@@ -5,7 +5,7 @@ export const FINDER = "https://finder.terra.money";
 export const SMALLEST = 1e6;
 
 /* terra:configs */
-export const DEFAULT_SLIPPAGE = 0.01;
+export const DEFAULT_SLIPPAGE = 0.3;
 export const COMMISSION = 0.003;
 export const ESTIMATE_TOKEN = "uusd";
 

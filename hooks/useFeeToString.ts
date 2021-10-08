@@ -4,7 +4,7 @@ import { fromTerraAmount } from "@arthuryeti/terra";
 import { useTerraswap, Tokens } from "@arthuryeti/terraswap";
 
 const coinToString = (coin: any, tokens: Tokens) => {
-  const amount = fromTerraAmount(coin.amount.toString(), "0,0.0[00000]");
+  const amount = fromTerraAmount(coin.amount.toString(), "0.0000");
   const symbol = tokens[coin.denom]?.symbol || "LP"; // TODO: <<= refactoring
 
   return `${amount} ${symbol}`;
@@ -17,7 +17,7 @@ const coinsToString = (coins: any, tokens: Tokens) => {
     .join(" / ");
 };
 
-const useFeeToString = (fee: StdFee) => {
+export const useFeeToString = (fee: StdFee) => {
   const { tokens } = useTerraswap();
 
   return useMemo(() => {
@@ -25,7 +25,6 @@ const useFeeToString = (fee: StdFee) => {
       return null;
     }
 
-    // @ts-expect-error
     return coinsToString(fee.amount, tokens);
   }, [fee, tokens]);
 };

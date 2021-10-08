@@ -10,19 +10,22 @@ import {
   forwardRef,
   Image,
 } from "@chakra-ui/react";
+import { num } from "@arthuryeti/terra";
 import { useTokenInfo } from "@arthuryeti/terraswap";
 
-import AmountMaxButton from "components/AmountMaxButton";
-import Balance from "components/Balance";
 import { formatAsset } from "libs/parse";
 import { div } from "libs/math";
 import { ONE_TOKEN } from "constants/constants";
-import { BN } from "@arthuryeti/terra";
+
+import AmountMaxButton from "components/AmountMaxButton";
+import Balance from "components/Balance";
 
 type Props = {
   onChange: any;
   onBlur: any;
   initialBalance?: string;
+  isMaxDisabled?: boolean;
+  hideBalance?: boolean;
   value: {
     amount: string;
     asset: string;
@@ -30,34 +33,46 @@ type Props = {
 };
 
 const AmountInput: FC<Props> = forwardRef(
-  ({ onChange, onBlur, value, initialBalance, ...field }, ref) => {
+  (
+    {
+      onChange,
+      onBlur,
+      value,
+      initialBalance,
+      isMaxDisabled = false,
+      hideBalance = false,
+      ...field
+    },
+    ref
+  ) => {
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
     const symbol = getSymbol(value.asset);
-    const max = BN(initialBalance).gt("0")
+    const max = num(initialBalance).gt("0")
       ? div(initialBalance, ONE_TOKEN)
       : null;
 
     return (
       <Box ref={ref}>
-        <Box mb="2">
-          {initialBalance == null && <Balance asset={value.asset} />}
-          {initialBalance != null && (
-            <Text>
-              <Text as="span" variant="light">
-                Balance:
-              </Text>{" "}
-              <Text as="span" fontSize="sm" fontWeight="500">
-                {formatAsset(initialBalance, getSymbol(value.asset))}
+        {!hideBalance && (
+          <Box mb="2">
+            {initialBalance == null && <Balance asset={value.asset} />}
+            {initialBalance != null && (
+              <Text>
+                <Text as="span" variant="light">
+                  Balance:
+                </Text>{" "}
+                <Text as="span" fontSize="sm" fontWeight="500">
+                  {formatAsset(initialBalance, getSymbol(value.asset))}
+                </Text>
               </Text>
-            </Text>
-          )}
-        </Box>
+            )}
+          </Box>
+        )}
         <Box position="relative">
           <NumberInput
             variant="brand"
             size="lg"
-            precision={6}
             value={value.amount}
             onChange={(a) => onChange({ ...value, amount: a })}
             onBlur={onBlur}
@@ -74,13 +89,15 @@ const AmountInput: FC<Props> = forwardRef(
             px="6"
           >
             <HStack spacing="4">
-              <Box>
-                <AmountMaxButton
-                  asset={value.asset}
-                  max={max}
-                  onChange={(v: string) => onChange({ ...value, amount: v })}
-                />
-              </Box>
+              {!isMaxDisabled && (
+                <Box>
+                  <AmountMaxButton
+                    asset={value.asset}
+                    max={max}
+                    onChange={(v: string) => onChange({ ...value, amount: v })}
+                  />
+                </Box>
+              )}
               <Box py="2" height="full">
                 <Divider orientation="vertical" borderColor="brand.600" />
               </Box>

@@ -4,6 +4,7 @@ import { useTerraWebapp } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { div, plus, times } from "libs/math";
+import { useGovTotalStaked } from "modules/govern";
 import { ONE_TOKEN } from "constants/constants";
 import { useWhalePrice } from "hooks/useWhalePrice";
 
@@ -12,27 +13,17 @@ export const useWarchest = () => {
     client,
     network: { name },
   } = useTerraWebapp();
-  const whaleToken = contracts[name].whaleToken;
   const warchest = contracts[name].warchest;
+  const totalStakedAmount = useGovTotalStaked();
   const price = useWhalePrice();
 
-  const { data: balData } = useQuery(["balance", whaleToken, warchest], () => {
-    return client.wasm.contractQuery<{
-      balance: string;
-    }>(whaleToken, {
-      balance: {
-        address: warchest,
-      },
-    });
-  });
-
   const whaleAmount = useMemo(() => {
-    if (balData == null) {
+    if (totalStakedAmount == null) {
       return null;
     }
 
-    return balData.balance;
-  }, [balData]);
+    return times(totalStakedAmount, div(price, ONE_TOKEN));
+  }, [totalStakedAmount, price]);
 
   const { data: bankData } = useQuery(["balance", "bank", warchest], () => {
     return client.bank.balance(warchest);
@@ -70,10 +61,8 @@ export const useWarchest = () => {
       return null;
     }
 
-    const whaleUst = times(whaleAmount, div(price, ONE_TOKEN));
-
-    return plus(plus(whaleUst, ustAmount), lunaAmount);
-  }, [whaleAmount, ustAmount, price, lunaAmount]);
+    return plus(plus(whaleAmount, ustAmount), lunaAmount);
+  }, [whaleAmount, ustAmount, lunaAmount]);
 
   return {
     totalInUst,

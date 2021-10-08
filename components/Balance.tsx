@@ -13,7 +13,7 @@ const Balance: FC<Props> = ({ asset }) => {
 
   return (
     <Text>
-      <Text as="span" variant="light" fontSize="xl">
+      <Text as="span" variant="light">
         Balance:
       </Text>{" "}
       <Text as="span" fontSize="sm" fontWeight="500">

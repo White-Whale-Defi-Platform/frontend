@@ -1,16 +1,30 @@
 import React, { FC } from "react";
 import { Box, Button, HStack, Flex, Text, Image } from "@chakra-ui/react";
+import { fromTerraAmount } from "@arthuryeti/terra";
 
 import Card from "components/Card";
+import ProvideModal from "components/pool/ProvideModal";
+import WithdrawModal from "components/pool/WithdrawModal";
+import { usePool } from "modules/pool";
 
 type Props = {
   label: string;
   asset: string;
-  apr: string;
-  totalStaked: string;
+  pairContract: string;
+  lpTokenContract: string;
 };
 
-const PoolItem: FC<Props> = ({ label, asset }) => {
+const PoolItem: FC<Props> = ({
+  label,
+  asset,
+  pairContract,
+  lpTokenContract,
+}) => {
+  const pool = usePool({
+    pairContract,
+    lpTokenContract,
+  });
+
   return (
     <Card noPadding>
       <Flex
@@ -47,18 +61,33 @@ const PoolItem: FC<Props> = ({ label, asset }) => {
       </Flex>
 
       <Box fontSize="xl" p="6">
-        <Flex justify="space-between" mb="4">
+        {/* <Flex justify="space-between" mb="4">
           <Text>APR</Text>
           <Text color="brand.500" fontWeight="700">
             0.00%
           </Text>
-        </Flex>
-        <Flex justify="space-between">
-          <Text>Total Staked</Text>
+        </Flex> */}
+        <Flex justify="space-between" mb="4">
+          <Text>Total provided</Text>
           <Text color="brand.500" fontWeight="700">
-            0.00%
+            {fromTerraAmount(pool.totalShareInUST)} UST
           </Text>
         </Flex>
+        <Flex justify="space-between">
+          <Text>Provided</Text>
+          <Text color="brand.500" fontWeight="700">
+            {fromTerraAmount(pool.myShareInUST)} UST
+          </Text>
+        </Flex>
+        <Box mt="6">
+          <WithdrawModal
+            pairContract={pairContract}
+            lpTokenContract={lpTokenContract}
+          />
+        </Box>
+        <Box mt="4">
+          <ProvideModal pool={pool} pairContract={pairContract} />
+        </Box>
       </Box>
     </Card>
   );

@@ -55,6 +55,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Hydrate state={pageProps.dehydratedState}>
           <ChakraProvider theme={theme}>
             <TerraWebappProvider>
+              {/* @ts-expect-error */}
               <TerraswapProvider data={whitelist}>
                 <CSSReset />
                 <Layout>

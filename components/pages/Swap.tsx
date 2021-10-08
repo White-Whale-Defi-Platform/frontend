@@ -1,12 +1,21 @@
 import React from "react";
 import { NextPage } from "next";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { useTerraWebapp } from "@arthuryeti/terra";
+
+import contracts from "constants/contracts.json";
 
 import Card from "components/Card";
 import PoolItem from "components/swap/PoolItem";
 import SwapForm from "components/swap/SwapForm";
 
 const Swap: NextPage = () => {
+  const {
+    network: { name },
+  } = useTerraWebapp();
+  const pairContract = contracts[name].whaleUstPair;
+  const lpTokenContract = contracts[name].whaleUstLpToken;
+
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Flex gridGap="24">
@@ -37,12 +46,12 @@ const Swap: NextPage = () => {
             </Text>
           </Flex>
 
-          <Box maxW="64">
+          <Box maxW="sm">
             <PoolItem
               label="WHALE-UST LP"
-              asset="TerraSwap"
-              apr="--"
-              totalStaked="--"
+              asset="Astroport"
+              pairContract={pairContract}
+              lpTokenContract={lpTokenContract}
             />
           </Box>
         </Box>

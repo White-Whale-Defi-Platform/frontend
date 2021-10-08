@@ -1,22 +1,38 @@
+import { useMemo } from "react";
 import { fromTerraAmount, useTerraWebapp, useBalance } from "@arthuryeti/terra";
 import { NextPage } from "next";
 import numeral from "numeral";
 
 import contracts from "constants/contracts.json";
 import { useVault } from "modules/vault";
+import { useGovStaked } from "modules/govern";
+import { times, div } from "libs/math";
+import { useWhalePrice } from "hooks/useWhalePrice";
+import { ONE_TOKEN } from "constants/constants";
+import { useLpHolding } from "hooks/useLpHolding";
 
 import PieGraphCard from "components/myPage/PieGraphCard";
-import { useGovStaked } from "modules/govern";
 
 const MyAssets: NextPage = () => {
   const {
     network: { name },
   } = useTerraWebapp();
+  const price = useWhalePrice();
+  const stakedAmount = useGovStaked();
+  const lpHolding = useLpHolding();
   const { balance } = useVault({
     contract: contracts[name].ustVault,
   });
+
+  const whaleAmount = useMemo(() => {
+    if (stakedAmount == null) {
+      return null;
+    }
+
+    return times(stakedAmount, div(price, ONE_TOKEN));
+  }, [stakedAmount, price]);
+
   const ustBalance = useBalance("uusd");
-  const stakedAmount = useGovStaked();
   const total = numeral(balance).add(ustBalance).value().toString();
 
   const data = [
@@ -27,12 +43,12 @@ const MyAssets: NextPage = () => {
     },
     {
       label: "War Chest",
-      value: Number(stakedAmount),
+      value: Number(whaleAmount),
       color: "#194325",
     },
     {
       label: "LP holding",
-      value: 0,
+      value: Number(lpHolding),
       color: "#111111",
     },
     {

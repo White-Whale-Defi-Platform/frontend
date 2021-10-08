@@ -99,6 +99,9 @@ const Gov: NextPage = () => {
         />
       </Flex>
 
+      <Text variant="light" mb="2">
+        Total assets
+      </Text>
       <Flex align="center">
         <Box flex="1" pr="8">
           {data.map((item) => (

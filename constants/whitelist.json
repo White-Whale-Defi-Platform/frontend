@@ -67,8 +67,14 @@
       },
       "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh": {
         "protocol": "WhiteWhale",
-        "symbol": "Whale",
+        "symbol": "WHALE",
         "token": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",
+        "icon": "/whale.svg"
+      },
+      "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv": {
+        "protocol": "WhiteWhale",
+        "symbol": "WHALE-UST LP",
+        "token": "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv",
         "icon": "/whale.svg"
       }
     },
@@ -106,9 +112,5 @@
         ]
       }
     ]
-  },
-  "bombay": {
-    "tokens": {},
-    "pairs": {}
   }
 }
