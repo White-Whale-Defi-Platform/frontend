@@ -5,6 +5,7 @@ export * from "./hooks/useStake";
 export * from "./hooks/useUnstake";
 export * from "./hooks/useGetGovState";
 export * from "./hooks/usePolls";
+export * from "./hooks/usePoll";
 
 export * from "./createStakeMsgs";
 export * from "./createUnstakeMsgs";

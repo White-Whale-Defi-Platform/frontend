@@ -59,20 +59,20 @@ const PollVote: FC<Props> = ({ poll }) => {
         <HStack justify="space-between">
           <Box>
             <Text variant="light">Total</Text>
-            <Text fontSize="sm">{parsed.total} Psi</Text>
+            <Text fontSize="sm">{parsed.total} WHALE</Text>
           </Box>
           <HStack spacing="6">
             <StatWithIcon
               icon={<ThumbsUpIcon />}
               value={percent(parsed.yes)}
-              label={`${parsed.yesCount} Psi`}
+              label={`${parsed.yesCount} WHALE`}
             />
             <StatWithIcon
               icon={<ThumbsDownIcon />}
               color="red.500"
               bgColor="rgba(237, 116, 112, 0.4)"
               value={percent(parsed.no)}
-              label={`${parsed.noCount} Psi`}
+              label={`${parsed.noCount} WHALE`}
             />
           </HStack>
         </HStack>

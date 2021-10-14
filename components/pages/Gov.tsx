@@ -59,14 +59,6 @@ const dataChart = [
   },
 ];
 
-const CustomChevronDownIcon = () => {
-  return (
-    <Flex opacity="0.33">
-      <ChevronDownIcon />
-    </Flex>
-  );
-};
-
 const Gov: NextPage = () => {
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
@@ -85,7 +77,7 @@ const Gov: NextPage = () => {
               <Warchest />
             </Box>
 
-            <Box p="8" flex="1">
+            <Flex p="8" flex="1" justify="space-between" direction="column">
               <Box>
                 <CardLine value="--" asset="%" label="APY" />
                 <Box py="3">
@@ -109,11 +101,11 @@ const Gov: NextPage = () => {
                   label="My Deposit"
                 />
               </Box>
-              <HStack mt="5">
+              <HStack>
                 <UnstakeModal />
                 <StakeModal />
               </HStack>
-            </Box>
+            </Flex>
           </Flex>
         </Card>
 
