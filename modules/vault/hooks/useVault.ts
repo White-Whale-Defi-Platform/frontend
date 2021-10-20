@@ -1,6 +1,5 @@
-import { useMemo, useState, useEffect } from "react";
-import numeral from "numeral";
-import { useAddress, useTerraWebapp } from "@arthuryeti/terra";
+import { useMemo } from "react";
+import { num, useAddress, useTerraWebapp } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
 
 type Params = {
@@ -51,21 +50,24 @@ export const useVault = ({ contract }: Params) => {
       );
     },
     {
-      enabled: vault != null && contract != null,
+      enabled: vault != null,
     }
   );
 
   const balance = useMemo(() => {
-    if (balData == null || pool == null) {
+    if (
+      balData == null ||
+      pool == null ||
+      num(pool.total_share).eq("0") ||
+      num(balData.balance).eq("0")
+    ) {
       return "0";
     }
 
-    return numeral(balData.balance)
-      .multiply(pool.total_value_in_ust)
-      .divide(pool.total_share)
-      .value()
-      .toFixed()
-      .toString();
+    return num(balData.balance)
+      .times(pool.total_value_in_ust)
+      .div(pool.total_share)
+      .toFixed();
   }, [balData, pool]);
 
   const totalBalance = useMemo(() => {

@@ -1,7 +1,8 @@
 import React from "react";
 import {
   Box,
-  Divider,
+  Grid,
+  GridItem,
   Heading,
   Flex,
   HStack,
@@ -70,79 +71,20 @@ const Gov: NextPage = () => {
         Governance
       </Heading>
 
-      <Flex justify="space-between" gridGap="12">
-        <Card flex="2" noPadding>
-          <Flex justify="space-between" h="full">
-            <Box p="8" bg="blackAlpha.400" flex="1.3" h="full">
-              <Warchest />
-            </Box>
-
-            <Flex p="8" flex="1" justify="space-between" direction="column">
-              <Box>
-                <CardLine value="--" asset="%" label="APY" />
-                <Box py="3">
-                  <Divider borderColor="whiteAlpha.400" />
-                </Box>
-                <CardLine value="--" asset="%" label="Daily Yield" />
-                <Box py="3">
-                  <Divider borderColor="whiteAlpha.400" />
-                </Box>
-                <CardLine
-                  value={fromTerraAmount(totalStakedAmount)}
-                  asset="WHALE"
-                  label="Total Deposits"
-                />
-                <Box py="3">
-                  <Divider borderColor="whiteAlpha.400" />
-                </Box>
-                <CardLine
-                  value={fromTerraAmount(stakedAmount)}
-                  asset="WHALE"
-                  label="My Deposit"
-                />
-              </Box>
-              <HStack>
-                <UnstakeModal />
-                <StakeModal />
-              </HStack>
-            </Flex>
-          </Flex>
-        </Card>
-
-        <Card flex="1">
-          <Text fontSize="xl" mb="4" fontWeight="bold">
-            WHALE
-          </Text>
-          <SimpleStat
-            value={fromTerraAmount(price, "0,0.0[00000]")}
-            asset="UST"
-            fontSizeValue="2xl"
-            fontSizeAsset="xl"
-          />
-          <Box height="150" mt="6">
-            <LineChart data={dataChart} />
-          </Box>
-        </Card>
-      </Flex>
-
-      <CommunityFund />
+      <Grid templateColumns="repeat(12, 1fr)" gridAutoRows="1fr" gap={12}>
+        <GridItem colSpan={6}>
+          <Warchest />
+        </GridItem>
+        <GridItem colSpan={6}>
+          <CommunityFund />
+        </GridItem>
+      </Grid>
 
       <Flex justify="space-between" mt="24" mb="6">
         <Heading color="#fff" size="lg">
           Polls
         </Heading>
         <HStack>
-          <Box
-            as="button"
-            mr="17px"
-            borderRadius="full"
-            color="white"
-            border="1px solid #fff"
-            alignSelf="center"
-            padding="2px 20px"
-          >
-            <Text>Forum</Text>
-          </Box>
           <Box
             as="button"
             mr="17px"

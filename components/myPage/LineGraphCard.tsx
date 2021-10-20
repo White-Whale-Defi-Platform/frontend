@@ -55,7 +55,7 @@ const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
           );
         })}
       </Flex>
-      <Box height="200" mt="12">
+      <Box height="240" mt="8">
         <LineChart data={data} />
       </Box>
     </Card>

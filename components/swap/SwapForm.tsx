@@ -33,31 +33,39 @@ const SwapForm: FC = () => {
     network: { name },
   } = useTerraWebapp();
 
-  const { control, handleSubmit, watch, setValue, formState } = useForm<Inputs>(
-    {
-      defaultValues: {
-        token1: {
-          amount: undefined,
-          asset: contracts[name].whaleToken,
-        },
-        token2: {
-          amount: undefined,
-          asset: "uusd",
-        },
-        slippage: String(DEFAULT_SLIPPAGE),
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState,
+    reset: resetForm,
+  } = useForm<Inputs>({
+    defaultValues: {
+      token1: {
+        amount: undefined,
+        asset: contracts[name].whaleToken,
       },
-    }
-  );
+      token2: {
+        amount: undefined,
+        asset: "uusd",
+      },
+      slippage: String(DEFAULT_SLIPPAGE),
+    },
+  });
   const token1 = watch("token1");
   const token2 = watch("token2");
   const slippage = watch("slippage");
 
   const debouncedAmount = useDebounceValue(token1.amount, 200);
 
-  const handleSuccess = useCallback((txHash) => {
-    // eslint-disable-next-line no-console
-    console.log("ouii");
-  }, []);
+  const handleSuccess = useCallback(
+    (txHash) => {
+      setValue("token1.amount", "");
+      setValue("token2.amount", "");
+    },
+    [setValue]
+  );
 
   const handleError = useCallback((txHash) => {
     if (txHash) {
@@ -111,7 +119,7 @@ const SwapForm: FC = () => {
       swapState.simulated != null
     ) {
       const newAmount = numeral(token2.amount)
-        .multiply(swapState.simulated?.price)
+        .multiply(swapState.simulated?.price2)
         .value()
         .toFixed(6);
 

@@ -1,13 +1,24 @@
 import React, { useMemo } from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Box, Flex, HStack, Text, Image } from "@chakra-ui/react";
-import { NextPage } from "next";
+import { fromTerraAmount } from "@arthuryeti/terra";
+import {
+  Box,
+  Flex,
+  HStack,
+  Text,
+  Image,
+  Center,
+  Divider,
+} from "@chakra-ui/react";
 
 import { useWarchest } from "hooks/useWarchest";
-import { fromTerraAmount } from "libs/terra";
+import { useGovStaked } from "modules/govern";
 
+import UnstakeModal from "components/gov/UnstakeModal";
+import StakeModal from "components/gov/StakeModal";
 import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
+import Card from "components/Card";
 import { number } from "libs/math";
 
 const options = {
@@ -35,8 +46,9 @@ const options = {
   },
 };
 
-const Gov: NextPage = () => {
+const Warchest = () => {
   const warchest = useWarchest();
+  const stakedAmount = useGovStaked();
 
   const data = useMemo(() => {
     return [
@@ -55,7 +67,7 @@ const Gov: NextPage = () => {
         asset: "UST",
       },
       {
-        color: "#2E78E9",
+        color: "#2EB0E9",
         label: "UST",
         value: fromTerraAmount(warchest.ustAmount),
         valueForChart: number(warchest.ustAmount),
@@ -64,7 +76,7 @@ const Gov: NextPage = () => {
       {
         color: "#525252",
         label: "Others",
-        value: "0.00",
+        value: "0.0",
         valueForChart: 0,
         asset: "UST",
       },
@@ -83,11 +95,11 @@ const Gov: NextPage = () => {
   };
 
   return (
-    <>
-      <Flex justify="space-between" align="center" mb="6">
+    <Card noPadding>
+      <Flex justify="space-between" align="center" pt="8" px="8">
         <HStack spacing="4">
           <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
-          <Text color="#fff" fontSize="xl" fontWeight="700">
+          <Text color="#fff" fontSize="2xl" fontWeight="700">
             War Chest
           </Text>
         </HStack>
@@ -99,22 +111,46 @@ const Gov: NextPage = () => {
         />
       </Flex>
 
-      <Text variant="light" mb="2">
-        Total assets
-      </Text>
-      <Flex align="center">
-        <Box flex="1" pr="8">
-          {data.map((item) => (
-            <AssetLine key={item.label} data={item} />
-          ))}
-        </Box>
-
+      <Flex align="center" py="12" px="8">
         <Box w="35%">
           <Doughnut data={formattedData} options={options} />
         </Box>
+        <Flex ml="16" flexWrap="wrap" gridGap="8">
+          {data.map((item) => (
+            <AssetLine key={item.label} data={item} />
+          ))}
+        </Flex>
       </Flex>
-    </>
+
+      <HStack bg="blackAlpha.400" px="8" py="2">
+        <Box flex="1">
+          <Flex justify="space-between">
+            <Text>APY</Text>
+            <Text color="brand.500" fontWeight="600">
+              18.2%
+            </Text>
+          </Flex>
+          <Divider borderColor="rgba(255, 255, 255, 0.1)" my="2" />
+          <Flex justify="space-between">
+            <Text>My Deposit</Text>
+            <Text color="brand.500" fontWeight="600">
+              {fromTerraAmount(stakedAmount, "0.00a")} WHALE
+            </Text>
+          </Flex>
+        </Box>
+        <Center h="14" px="6">
+          <Divider
+            orientation="vertical"
+            borderColor="rgba(255, 255, 255, 0.1)"
+          />
+        </Center>
+        <HStack flex="1" spacing="4">
+          <UnstakeModal />
+          <StakeModal />
+        </HStack>
+      </HStack>
+    </Card>
   );
 };
 
-export default Gov;
+export default Warchest;

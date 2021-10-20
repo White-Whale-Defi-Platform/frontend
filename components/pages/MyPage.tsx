@@ -65,49 +65,30 @@ const MyPage: NextPage = () => {
             cells={[
               {
                 label: "WHALE",
-                value: `${fromTerraAmount(price, "0,0.0[00000]")} UST`,
+                value: `${fromTerraAmount(price, "0.000")} UST`,
               },
               {
                 label: "Market Cap",
-                value: `${fromTerraAmount(marketCap)} UST`,
+                value: `${fromTerraAmount(marketCap, "0,0")} UST`,
               },
               {
                 label: "Circulating Supply",
-                value: `${fromTerraAmount(circSupply)} WHALE`,
+                value: `${fromTerraAmount(circSupply, "0,0")} WHALE`,
               },
             ]}
             data={dataChart}
           />
         </GridItem>
-        <GridItem colSpan={7}>
-          <LineGraphCard
-            cells={[
-              {
-                label: "Community Fund",
-                value: `${fromTerraAmount(communityFund.totalInUst)} UST`,
-              },
-              {
-                label: "Total UST",
-                value: `${fromTerraAmount(communityFund.ustAmount)} UST`,
-              },
-              {
-                label: "Total WHALE",
-                value: `${fromTerraAmount(communityFund.whaleAmount)} UST`,
-              },
-            ]}
-            data={dataChart}
-          />
-        </GridItem>
-        <GridItem colSpan={5}>
+        <GridItem colSpan={12}>
           <TVL />
         </GridItem>
       </Grid>
-      <Heading color="#fff" size="lg" mb="6" mt="24">
+      {/* <Heading color="#fff" size="lg" mb="6" mt="24">
         Transaction History
       </Heading>
       <Box>
         <TransactionListCard />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

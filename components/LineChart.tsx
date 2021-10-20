@@ -1,48 +1,84 @@
-import React, { FC } from "react";
+import React, { FC, useRef } from "react";
 import { Line } from "react-chartjs-2";
+import { Box, Text } from "@chakra-ui/react";
 
 type Props = {
   data: any;
 };
 
-const options = {
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  },
-  scales: {
-    x: {
-      grid: {
-        display: false,
-        drawBorder: false,
-      },
-      ticks: {
-        autoSkip: false,
-        maxRotation: 0,
-        font: {
-          size: 16,
-        },
-        color: "rgba(255,255,255,0.6)",
-      },
-    },
-    y: {
-      grace: 5,
-      display: false,
-    },
-  },
-  elements: {
-    point: {
-      radius: 0,
-    },
-  },
-};
-
 const LineChart: FC<Props> = ({ data }) => {
+  const tooltipRef = useRef();
+
+  const options = {
+    tension: 0.3,
+    maintainAspectRatio: false,
+    interaction: {
+      intersect: false,
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+        external: function ({ tooltip }) {
+          let element: any = tooltipRef.current!;
+
+          // Create element on first render
+          if (tooltip.opacity === 0) {
+            element.style.opacity = "0";
+            return;
+          }
+
+          const value = element.querySelector(".value");
+
+          if (value) {
+            try {
+              const item = tooltip.dataPoints[0];
+              value.innerHTML = item.raw;
+            } catch {}
+          }
+
+          element.style.opacity = "1";
+          element.style.transform = `translate(${tooltip.caretX}px, ${tooltip.caretY}px)`;
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 0,
+          font: {
+            size: 14,
+          },
+          color: "rgba(255,255,255,0.6)",
+        },
+      },
+      y: {
+        grace: "50%",
+        display: true,
+        ticks: {
+          display: false,
+        },
+        grid: {
+          drawTicks: false,
+          display: true,
+          drawBorder: false,
+          color: "#252525",
+        },
+      },
+    },
+    elements: {
+      point: {
+        radius: 0,
+      },
+    },
+  };
+
   const formattedData = {
     labels: data.map((data) => data.label),
     datasets: [
@@ -55,7 +91,36 @@ const LineChart: FC<Props> = ({ data }) => {
     ],
   };
 
-  return <Line data={formattedData} options={options} />;
+  return (
+    <Box position="relative" h="full">
+      <Line data={formattedData} options={options} />
+      <Box
+        ref={tooltipRef}
+        position="absolute"
+        pointerEvents="none"
+        opacity="0"
+        left="0"
+        top="0"
+        transition="opacity 0.1s ease-out, transform 0.2s ease-in-out"
+      >
+        <Box
+          bg="blackAlpha.700"
+          color="brand.500"
+          px="4"
+          py="2"
+          borderRadius="full"
+          transform="translate(-50%, -70px)"
+        >
+          <Box>
+            <Text as="span" fontWeight="500" className="value" />{" "}
+            <Text as="span" fontSize="xs">
+              UST
+            </Text>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
 };
 
 export default LineChart;

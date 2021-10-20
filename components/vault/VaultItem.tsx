@@ -45,6 +45,7 @@ const VaultItem: FC<Props> = ({ data }) => {
   const balanceAmount = format(balance, "uusd");
   const totalBalanceAmount = format(totalBalance, "uusd");
   const ustPrice = useUstPrice();
+  const isComing = data.contract == null;
 
   return (
     <Card
@@ -53,30 +54,34 @@ const VaultItem: FC<Props> = ({ data }) => {
         scale: 1.05,
       }}
     >
-      <Box bg="rgba(0,0,0,0.2)" p="8" borderBottomRadius="2xl">
-        <Flex justify="space-between">
-          <HStack spacing="2" mb="4">
-            <Image src={data.logo} alt={data.logo} boxSize="1.875rem" />
-            <Text color="#fff" fontSize="xl" fontWeight="bold">
-              {data.name}
+      <Box filter={isComing && "blur(3px)"}>
+        <Box bg="rgba(0,0,0,0.2)" p="8" borderBottomRadius="2xl">
+          <Flex justify="space-between">
+            <HStack spacing="2" mb="4">
+              <Image src={data.logo} alt={data.logo} boxSize="1.875rem" />
+              <Text color="#fff" fontSize="xl" fontWeight="bold">
+                {data.name}
+              </Text>
+            </HStack>
+            <Text color="brand.500" fontSize="2xl" fontWeight="bold">
+              {data.name == "UST" ? `$${ustPrice}` : "--"}
             </Text>
-          </HStack>
-          <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-            {data.name == "UST" ? `$${ustPrice}` : "--"}
-          </Text>
-        </Flex>
-        <ChartVault value={data.name == "UST" ? Number(ustPrice) : 0} />
-      </Box>
-      <Box p="8">
-        <Box>
-          <VaultItemLine label="APY" value="--" asset="%" />
-          <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
-          <VaultItemLine label="My Deposit" value={balanceAmount} />
+          </Flex>
+          <ChartVault value={data.name == "UST" ? Number(ustPrice) : 0} />
         </Box>
-        <HStack mt="6">
-          <WithdrawModal vault={vault} />
-          <DepositModal token="uusd" vault={vault} />
-        </HStack>
+        <Box p="8">
+          <Box>
+            <VaultItemLine label="APY" value="--" asset="%" />
+            <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
+            <VaultItemLine label="My Deposit" value={balanceAmount} />
+          </Box>
+          {!isComing && (
+            <HStack mt="6">
+              <WithdrawModal vault={vault} />
+              <DepositModal token="uusd" vault={vault} />
+            </HStack>
+          )}
+        </Box>
       </Box>
     </Card>
   );

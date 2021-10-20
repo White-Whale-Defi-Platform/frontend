@@ -14,14 +14,23 @@ import {
 
 import VoteForm from "components/gov/VoteForm";
 
-type Props = {};
+type Props = {
+  pollId: number;
+  isDisabled: boolean;
+};
 
-const VoteModal: FC<Props> = () => {
+const VoteModal: FC<Props> = ({ pollId, isDisabled }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button type="button" variant="primary" size="lg" onClick={onOpen}>
+      <Button
+        type="button"
+        variant="primary"
+        size="lg"
+        onClick={onOpen}
+        isDisabled={isDisabled}
+      >
         Vote now
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -38,7 +47,7 @@ const VoteModal: FC<Props> = () => {
                 select side, set the amount and sumbit your vote.
               </Text>
 
-              <VoteForm onClose={onClose} />
+              <VoteForm pollId={pollId} onClose={onClose} />
             </Flex>
           </ModalBody>
         </ModalContent>

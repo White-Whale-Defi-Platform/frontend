@@ -19,10 +19,10 @@
         "token": "uusd",
         "icon": "https://whitelist.mirror.finance/images/UST.png"
       },
-      "terra1759jepndfjyfzzgexa5vmkhhaq7vyn8tq8gf5z": {
+      "terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76": {
         "protocol": "WhiteWhale",
         "symbol": "Whale",
-        "token": "terra1759jepndfjyfzzgexa5vmkhhaq7vyn8tq8gf5z",
+        "token": "terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76",
         "icon": "/whale.svg"
       }
     },

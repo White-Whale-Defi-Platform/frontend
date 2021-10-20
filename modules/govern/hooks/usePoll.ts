@@ -1,17 +1,28 @@
+import { useMemo } from "react";
 import { useQuery } from "react-query";
+import { num, useTerraWebapp } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
 import { Poll } from "types/poll";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import {
+  useGovWhaleBalance,
+  useGovState,
+  useGovConfig,
+  usePollVoters,
+} from "modules/govern";
 
-export const usePoll = (pollId: number) => {
+export const usePoll = (pollId: number): null | any => {
   const {
     client,
     network: { name },
   } = useTerraWebapp();
   const govContract = contracts[name].gov;
+  const balance = useGovWhaleBalance();
+  const govConfig = useGovConfig();
+  const govState = useGovState();
+  const voters = usePollVoters(pollId);
 
-  const { data, isLoading, isError } = useQuery<Poll>(
+  const { data } = useQuery<Poll>(
     ["poll", pollId],
     () => {
       return client.wasm.contractQuery(govContract, {
@@ -23,11 +34,60 @@ export const usePoll = (pollId: number) => {
     }
   );
 
-  return {
-    data,
-    isLoading,
-    isError,
-  };
+  return useMemo(() => {
+    if (
+      data == null ||
+      govConfig == null ||
+      govState == null ||
+      voters == null
+    ) {
+      return null;
+    }
+
+    const total: number =
+      data.status !== "in_progress" && data.total_balance_at_end_poll
+        ? +data.total_balance_at_end_poll
+        : data.staked_amount
+        ? +data.staked_amount
+        : num(balance).minus(govState.total_deposit).toNumber();
+
+    const yes: number = +data.yes_votes;
+    const no: number = +data.no_votes;
+
+    const quorum = {
+      current: (yes + no) / total,
+      gov: +govConfig.quorum,
+    };
+
+    const threshold = num(data.yes_votes)
+      .plus(data.no_votes)
+      .times(govConfig.threshold)
+      .toNumber();
+
+    const baseline =
+      quorum.current > quorum.gov
+        ? {
+            value: (threshold / total) * total,
+            label: "Pass Threshold",
+          }
+        : {
+            value: quorum.gov * total,
+            label: `Quorum ${quorum.gov * 100}%`,
+          };
+
+    return {
+      data,
+      voters,
+      baseline,
+      quorum,
+      vote: {
+        yes,
+        no,
+        total,
+        threshold,
+      },
+    };
+  }, [data, govConfig, voters, balance, govState]);
 };
 
 export default usePoll;

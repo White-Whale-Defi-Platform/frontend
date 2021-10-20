@@ -54,10 +54,27 @@ const PieGraphCard: NextPage<Props> = ({ title, value, asset, data }) => {
   return (
     <Card h="full">
       <Flex flexDir="column" justify="space-between" h="full">
-        <CardTitle label={title} value={value} asset={asset} />
+        <Flex align="baseline" justify="space-between">
+          <Text fontSize="2xl" fontWeight="bold">
+            {title}
+          </Text>
+          <HStack align="baseline">
+            <Text
+              color="brand.500"
+              fontWeight="700"
+              fontSize="2xl"
+              lineHeight="1"
+            >
+              {value}
+            </Text>
+            <Text color="brand.500" fontWeight="700" lineHeight="1">
+              {asset}
+            </Text>
+          </HStack>
+        </Flex>
 
         <Flex mt="8" align="center">
-          <Box w="45%">
+          <Box w="55%">
             <Doughnut data={formattedData} options={options} />
           </Box>
 

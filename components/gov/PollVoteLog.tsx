@@ -12,30 +12,11 @@ import {
 import Card from "components/Card";
 import PollVoteLogItem from "components/gov/PollVoteLogItem";
 
-import { VoteType } from "types/poll";
+type Props = {
+  voters: any;
+};
 
-const data = [
-  {
-    address: "terra1sdaga244824ju27s0gsospa01",
-    voteType: VoteType.Yes,
-  },
-  {
-    address: "terra1sdaga24482919sdjsjdospa0vz",
-    voteType: VoteType.Yes,
-  },
-  {
-    address: "terra1sdsgU244824ju27s0gsos556u",
-    voteType: VoteType.No,
-  },
-  {
-    address: "terra1sdaga24482919sdjsjrospa0vz",
-    voteType: VoteType.Yes,
-  },
-];
-
-type Props = {};
-
-const PollVoteLog: FC<Props> = () => {
+const PollVoteLog: FC<Props> = ({ voters }) => {
   return (
     <Card>
       <Text variant="light" mb="4">
@@ -44,15 +25,15 @@ const PollVoteLog: FC<Props> = () => {
       <Tabs variant="soft-rounded">
         <TabList>
           <Tab>All</Tab>
-          <Tab>Yes</Tab>
-          <Tab>No</Tab>
+          {/* <Tab>Yes</Tab>
+          <Tab>No</Tab> */}
         </TabList>
         <TabPanels>
           <TabPanel>
-            {data.map((vote) => {
+            {voters.map((vote) => {
               return (
-                <Box key={vote.address} mb="6" _last={{ mb: "0" }}>
-                  <PollVoteLogItem vote={vote} />
+                <Box key={vote.voter} mb="6" _last={{ mb: "0" }}>
+                  <PollVoteLogItem data={vote} />
                 </Box>
               );
             })}

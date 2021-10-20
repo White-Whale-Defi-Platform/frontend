@@ -1,11 +1,18 @@
 import React, { FC } from "react";
 import Link from "next/link";
-import { Flex, Box, HStack, Image } from "@chakra-ui/react";
+import { Flex, Box, HStack, Image, Text } from "@chakra-ui/react";
+import { fromTerraAmount } from "@arthuryeti/terra";
+import { useTokenInfo, useTokenPriceInUst } from "@arthuryeti/terraswap";
 
 import TerraWallet from "components/TerraWallet";
 import NavbarLink from "components/NavbarLink";
+import useContracts from "hooks/useContracts";
 
 const Navbar: FC = () => {
+  const { whaleToken } = useContracts();
+  const whalePrice = useTokenPriceInUst(whaleToken);
+  const { getIcon } = useTokenInfo();
+
   return (
     <Box px="10" borderBottomWidth="2px" borderColor="brand.100">
       <Flex justifyContent="space-between" mx="auto" maxWidth="container.xl">
@@ -23,6 +30,25 @@ const Navbar: FC = () => {
           </HStack>
         </Box>
         <HStack flex="1" spacing="6" justify="flex-end">
+          <HStack
+            bg="blackAlpha.700"
+            borderRadius="full"
+            py="3"
+            px="4"
+            spacing="6"
+          >
+            <HStack>
+              <Image
+                src={getIcon(whaleToken)}
+                alt="WhiteWhale Logo"
+                boxSize="6"
+              />
+              <Text color="white">WHALE price</Text>
+            </HStack>
+            <Text color="brand.500" fontWeight="bold">
+              {fromTerraAmount(whalePrice, "0.000")} UST
+            </Text>
+          </HStack>
           <TerraWallet />
         </HStack>
       </Flex>

@@ -4,21 +4,22 @@ import Link from "next/link";
 import dayjs from "dayjs";
 
 import { truncate } from "libs/text";
-import { percent } from "libs/num";
+import { Poll } from "types/poll";
+import { usePoll } from "modules/govern";
+
 import Card from "components/Card";
 import PollBadge from "components/gov/PollBadge";
-import { parseVotes } from "components/gov/PollVote";
 import PollProgress from "components/gov/PollProgress";
 import CalendarIcon from "components/icons/CalendarIcon";
 
 type Props = {
-  poll: any;
+  poll: Poll;
 };
 
 const PollItem: FC<Props> = ({ poll }) => {
-  const { id, title, creator, end_time, status, progress = 0.05 } = poll;
+  const { id, title, creator, end_time, status } = poll;
+  const details = usePoll(id);
   const formattedEndTime = dayjs.unix(end_time).format("LLL z");
-  const parsed = parseVotes(poll);
 
   return (
     <Link href={`/gov/poll/${id}`} passHref>
@@ -28,49 +29,34 @@ const PollItem: FC<Props> = ({ poll }) => {
         borderRadius="2xl"
         overflow="hidden"
         border="2px solid transparent"
-        _hover={{ borderColor: "brand.600" }}
+        borderColor="whiteAlpha.200"
+        _hover={{ borderColor: "brand.500" }}
       >
-        <Card noPadding>
-          <Box p="6">
-            <HStack justify="space-between">
-              <Box maxWidth="75%">
-                <Heading size="md" isTruncated>
-                  {title}
-                </Heading>
-                <Text variant="light">Submitted by {truncate(creator)}</Text>
-              </Box>
-              <Box>
-                <PollBadge status={status} />
-              </Box>
-            </HStack>
+        <Card>
+          <Box>
+            <Text mb="4">#{id}</Text>
+            <Text color="brand.500" textTransform="capitalize" mb="1">
+              {status.replace("_", " ")}
+            </Text>
+            <Heading size="md" isTruncated>
+              {title}
+            </Heading>
           </Box>
-          <Box p="6" borderTop="1px" borderTopColor="brand.800">
-            <HStack spacing="6">
-              <Text variant="light">ID {id}</Text>
-              <HStack spacing="2" justify="space-between">
-                <Text variant="light" lineHeight="1">
-                  Ends In
-                </Text>
-                <CalendarIcon />
-                <Text variant="light" lineHeight="1">
-                  {formattedEndTime}
-                </Text>
-              </HStack>
-            </HStack>
+          <Box my="4">
+            <PollProgress
+              vote={details?.vote}
+              baseline={details?.baseline}
+              status={status}
+            />
           </Box>
-          <Box p="6" color="white" borderTop="1px" borderTopColor="brand.800">
-            <Box mb="4">
-              <Text>
-                <Text as="span" variant="light">
-                  Quorum
-                </Text>
-                <Text as="span" ml="2">
-                  {percent("0.05")}
-                </Text>
+          <HStack spacing="2">
+            <Text variant="light" lineHeight="1">
+              End time:{" "}
+              <Text as="span" color="brand.500" fontWeight="bold">
+                {formattedEndTime}
               </Text>
-            </Box>
-            <PollProgress voted={parsed.voted} status={status} />
-          </Box>
+            </Text>
+          </HStack>
         </Card>
       </chakra.a>
     </Link>

@@ -14,12 +14,13 @@ import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { toAmount } from "libs/parse";
-import { useStake } from "modules/govern";
-import useFeeToString from "hooks/useFeeToString";
+import { useGovStaker, useVote } from "modules/govern";
+import { useFeeToString } from "hooks/useFeeToString";
 import contracts from "constants/contracts.json";
 import useFinder from "hooks/useFinder";
 import { VoteType } from "types/poll";
 
+import ArrowDownIcon from "components/icons/ArrowDownIcon";
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
@@ -36,12 +37,14 @@ type Inputs = {
 };
 
 type Props = {
+  pollId: number;
   onClose: () => void;
 };
 
-const VoteForm: FC<Props> = ({ onClose }) => {
+const VoteForm: FC<Props> = ({ pollId, onClose }) => {
   const toast = useToast();
   const finder = useFinder();
+  const staker = useGovStaker();
   const queryClient = useQueryClient();
   const {
     network: { name },
@@ -52,11 +55,12 @@ const VoteForm: FC<Props> = ({ onClose }) => {
       voteType: VoteType.Yes,
       token: {
         amount: undefined,
-        asset: contracts[name].psiToken,
+        asset: contracts[name].whaleToken,
       },
     },
   });
   const token = watch("token");
+  const voteType = watch("voteType");
 
   const handleSuccess = useCallback(
     (txHash) => {
@@ -66,15 +70,16 @@ const VoteForm: FC<Props> = ({ onClose }) => {
     [onClose, queryClient]
   );
 
-  const voteState = useStake({
-    tokenContract: token.asset,
+  const voteState = useVote({
     govContract: contracts[name].gov,
+    pollId,
+    vote: voteType,
     amount: toAmount(token.amount),
     onSuccess: handleSuccess,
   });
 
   const submit = async () => {
-    voteState.deposit();
+    voteState.vote();
   };
 
   const feeString = useFeeToString(voteState.fee);
@@ -104,38 +109,29 @@ const VoteForm: FC<Props> = ({ onClose }) => {
           name="token"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => <AmountInput {...field} />}
+          render={({ field }) => (
+            <AmountInput initialBalance={staker?.balance} {...field} />
+          )}
         />
+      </Box>
 
-        <Box mt="4">
-          <InlineStat
-            label="Tx Fee"
-            value={feeString}
-            name="UST"
-            tooltip="Fee paid to execute this transaction"
-          />
+      <Box mt="4">
+        <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+      </Box>
+
+      {voteState.error && (
+        <Box
+          my="6"
+          color="red.500"
+          borderColor="red.500"
+          borderWidth="1px"
+          px="4"
+          py="2"
+          borderRadius="2xl"
+        >
+          <Text>{voteState.error}</Text>
         </Box>
-      </Box>
-
-      <Divider my="8" borderColor="brand.800" />
-
-      <Box
-        bg="linear-gradient(180deg, rgba(222, 146, 167, 0) 0%, rgba(222, 146, 167, 0.15) 100%);"
-        px="6"
-        py="4"
-        mb="8"
-        borderRadius="2xl"
-      >
-        <HStack spacing="6">
-          <Box>
-            <InfoIcon width="1.5rem" height="1.5rem" />
-          </Box>
-          <Text fontSize="xs">
-            Votes cannot be changed after submission. Staked PSI used to vote in
-            polls are locked and cannot be withdrawn until the poll finishes.
-          </Text>
-        </HStack>
-      </Box>
+      )}
 
       <HStack spacing="6" width="full" mt="8">
         <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
@@ -147,6 +143,7 @@ const VoteForm: FC<Props> = ({ onClose }) => {
           variant="primary"
           size="lg"
           flex="1"
+          isLoading={voteState.txStep == TxStep.Estimating}
           isDisabled={voteState.txStep != TxStep.Ready}
         >
           Confirm

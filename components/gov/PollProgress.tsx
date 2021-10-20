@@ -1,29 +1,50 @@
 import React, { FC } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 import { percent, percentage } from "libs/num";
 
-import { Poll, PollStatus } from "types/poll";
+import { PollStatus } from "types/poll";
+import { Vote } from "@terra-money/terra.js";
 
 type Props = {
-  voted: string;
+  vote: any;
+  baseline: any;
   status: PollStatus;
+  showLabel?: boolean;
 };
 
-const PollProgress: FC<Props> = ({ voted, status }) => {
-  const getColor = () => {
-    if (status === PollStatus.Passed) {
-      return "green";
-    }
-    if (status === PollStatus.Rejected) {
-      return "red";
-    }
-    return "white";
-  };
+const PollProgress: FC<Props> = ({ vote, baseline, showLabel = false }) => {
+  const yesWidth = vote?.yes / vote?.total;
+  const noWidth = vote?.no / vote?.total;
+  const baselineLeft = baseline?.value / vote?.total;
 
   return (
-    <Box height="4" bg="brand.600" borderRadius="full" overflow="hidden">
-      <Box width={percent(voted)} bg={`${getColor()}.500`} height="full" />
+    <Box position="relative" mt={showLabel ? "9" : "0"}>
+      {showLabel && (
+        <Box
+          position="absolute"
+          transform="translateX(-50%)"
+          left={percent(String(baselineLeft))}
+          top="-10"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <Text variant="light">{baseline?.label}</Text>
+          <Box h="2" w="1px" bg="#515262" mt="1" />
+        </Box>
+      )}
+      <Box
+        height="2"
+        bg="brand.900"
+        borderRadius="full"
+        overflow="hidden"
+        width="full"
+        display="flex"
+      >
+        <Box width={percent(String(yesWidth))} bg="green.500" height="full" />
+        <Box width={percent(String(noWidth))} bg="red.500" height="full" />
+      </Box>
     </Box>
   );
 };

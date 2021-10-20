@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import { fromTerraAmount, useTerraWebapp, useBalance } from "@arthuryeti/terra";
+import {
+  fromTerraAmount,
+  useTerraWebapp,
+  useBalance,
+  num,
+} from "@arthuryeti/terra";
 import { NextPage } from "next";
 import numeral from "numeral";
 
@@ -33,35 +38,42 @@ const MyAssets: NextPage = () => {
   }, [stakedAmount, price]);
 
   const ustBalance = useBalance("uusd");
-  const total = numeral(balance).add(ustBalance).value().toString();
+
+  const total = useMemo(() => {
+    return num(balance)
+      .plus(ustBalance)
+      .plus(whaleAmount)
+      .plus(lpHolding)
+      .toString();
+  }, [balance, lpHolding, whaleAmount, ustBalance]);
 
   const data = [
     {
-      label: "Arb Vault holdings",
+      label: "Arb Vault",
       value: Number(balance),
-      color: "#3CCD64",
+      color: "#30FF6A",
     },
     {
       label: "War Chest",
       value: Number(whaleAmount),
-      color: "#194325",
+      color: "#298F46",
     },
     {
       label: "LP holding",
       value: Number(lpHolding),
-      color: "#111111",
+      color: "#194325",
     },
     {
       label: "Liquid UST",
       value: Number(ustBalance),
-      color: "#2E78E9",
+      color: "#2EB1E9",
     },
   ];
 
   return (
     <PieGraphCard
       title="My Assets"
-      value={fromTerraAmount(total)}
+      value={fromTerraAmount(total, "0,0")}
       asset="UST"
       data={data}
     />

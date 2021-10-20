@@ -8,9 +8,10 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
+import { usePoll } from "modules/govern";
+
 import BackButton from "components/BackButton";
 import PollVote from "components/gov/PollVote";
-import { usePoll } from "modules/govern";
 import PollDetails from "components/gov/PollDetails";
 import PollSummary from "components/gov/PollSummary";
 import PollVoteLog from "components/gov/PollVoteLog";
@@ -20,40 +21,28 @@ type Props = {
 };
 
 const Poll: FC<Props> = ({ pollId }) => {
-  const { data, isLoading } = usePoll(pollId);
+  const poll = usePoll(pollId);
 
-  if (isLoading || !data) {
+  if (poll == null) {
     return null;
   }
 
   return (
-    <Box>
+    <Box mt="16" mx="auto" maxW="container.xl">
+      <BackButton />
       <HStack spacing="4" mb="10">
-        <BackButton />
-        <Box h="8">
-          <Divider orientation="vertical" borderColor="brand.800" />
-        </Box>
         <Heading color="#fff" size="lg">
-          Proposal Details
+          Poll #{pollId}
         </Heading>
       </HStack>
+      <Box mb="6">
+        <PollSummary poll={poll.data} />
+      </Box>
+      <Box mb="6">
+        <PollVote poll={poll} />
+      </Box>
       <Box>
-        <Grid templateColumns="repeat(12, 1fr)" gap={6}>
-          <GridItem colSpan={8}>
-            <Box mb="6">
-              <PollSummary poll={data} />
-            </Box>
-            <Box mb="6">
-              <PollVote poll={data} />
-            </Box>
-            <Box>
-              <PollVoteLog />
-            </Box>
-          </GridItem>
-          <GridItem colSpan={4}>
-            <PollDetails poll={data} />
-          </GridItem>
-        </Grid>
+        <PollVoteLog voters={poll.voters} />
       </Box>
     </Box>
   );

@@ -98,3 +98,11 @@ export const decimal = (value = "0", dp = 6) =>
 
 export const toFixed = (value = "0", dp = 6) =>
   new BigNumber(value).toFixed(dp, rm).toString();
+
+export const formatRate = (value: string | number | null) => {
+  if (!value) {
+    return "0";
+  }
+
+  return new BigNumber(value).times(100).toFixed(2);
+};

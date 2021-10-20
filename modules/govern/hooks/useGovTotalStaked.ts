@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTerraWebapp } from "@arthuryeti/terra";
 
 import contracts from "constants/contracts.json";
-import { useGetBalance } from "hooks/useGetBalance";
+import { useGetBalance } from "modules/pool";
 
 export const useGovTotalStaked = () => {
   const {

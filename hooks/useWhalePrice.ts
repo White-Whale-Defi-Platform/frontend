@@ -26,7 +26,7 @@ export const useWhalePrice = () => {
 
     const { uusd, other } = getAmountsInPool(pool);
 
-    return ((Number(uusd) / Number(other)) * 100000).toFixed();
+    return ((Number(uusd) / Number(other)) * 1000000).toFixed();
   }, [pool]);
 };
 

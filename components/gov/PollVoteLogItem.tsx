@@ -3,29 +3,32 @@ import { Box, Text, Flex, HStack } from "@chakra-ui/react";
 
 import ThumbsDownIcon from "components/icons/ThumbsDownIcon";
 import ThumbsUpIcon from "components/icons/ThumbsUpIcon";
-import { VoteType } from "types/poll";
 
 type Props = {
-  vote: any;
+  data: {
+    voter: string;
+    vote: string;
+    balance: string;
+  };
 };
 
-const PollVoteLogItem: FC<Props> = ({ vote }) => {
-  const { address, voteType } = vote;
+const PollVoteLogItem: FC<Props> = ({ data }) => {
+  const { voter, vote } = data;
   let iconContent = <ThumbsDownIcon width="1rem" height="1rem" />;
 
-  if (voteType === VoteType.Yes) {
+  if (vote === "yes") {
     iconContent = <ThumbsUpIcon width="1rem" height="1rem" />;
   }
 
   return (
     <Flex justify="space-between" align="center">
       <Box>
-        <Text variant="light">{address}</Text>
+        <Text variant="light">{voter}</Text>
       </Box>
       <Box>
         <HStack>
-          <Text variant="light" lineHeight="1">
-            {VoteType[voteType]}
+          <Text variant="light" lineHeight="1" textTransform="capitalize">
+            {vote}
           </Text>
           {iconContent}
         </HStack>

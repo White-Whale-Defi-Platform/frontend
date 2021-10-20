@@ -42,17 +42,17 @@ const SwapFormSlippage: FC<Props> = forwardRef(
       <ButtonGroup variant="secondary" size="sm">
         <Button
           type="button"
+          isActive={isSelected("0.01")}
+          onClick={() => onChange("0.01")}
+        >
+          1%
+        </Button>
+        <Button
+          type="button"
           isActive={isSelected("0.05")}
           onClick={() => onChange("0.05")}
         >
           5%
-        </Button>
-        <Button
-          type="button"
-          isActive={isSelected("0.15")}
-          onClick={() => onChange("0.15")}
-        >
-          15%
         </Button>
         <Button
           type="button"

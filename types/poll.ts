@@ -6,8 +6,8 @@ export enum PollStatus {
 }
 
 export enum VoteType {
-  Yes = 0,
-  No = 1,
+  Yes = "yes",
+  No = "no",
 }
 
 export enum PollType {
@@ -15,7 +15,7 @@ export enum PollType {
 }
 
 export type Poll = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   creator: string;
@@ -27,6 +27,7 @@ export type Poll = {
   type: PollType;
   progress: number;
   amount: string;
+  staked_amount: string;
   total: string;
   yes_votes: string;
   no_votes: string;

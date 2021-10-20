@@ -10,7 +10,7 @@ import {
   forwardRef,
   Image,
 } from "@chakra-ui/react";
-import { num } from "@arthuryeti/terra";
+import { fromTerraAmount, num } from "@arthuryeti/terra";
 import { useTokenInfo } from "@arthuryeti/terraswap";
 
 import { formatAsset } from "libs/parse";
@@ -63,7 +63,7 @@ const AmountInput: FC<Props> = forwardRef(
                   Balance:
                 </Text>{" "}
                 <Text as="span" fontSize="sm" fontWeight="500">
-                  {formatAsset(initialBalance, getSymbol(value.asset))}
+                  {fromTerraAmount(initialBalance, "0.000")}
                 </Text>
               </Text>
             )}
