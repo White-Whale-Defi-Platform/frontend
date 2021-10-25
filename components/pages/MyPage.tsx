@@ -4,50 +4,34 @@ import { NextPage } from "next";
 import { useMarketCap } from "hooks/useMarketCap";
 import { fromTerraAmount } from "libs/terra";
 
+import { useCirculatingSupply } from "hooks/useCirculatingSupply";
+import { useWhalePrice } from "hooks/useWhalePrice";
+import { useWhalePriceTimes } from "hooks/useWhalePriceTimes";
+
 import MyAssets from "components/myPage/MyAssets";
 import LineGraphCard from "components/myPage/LineGraphCard";
 import TVL from "components/myPage/TVL";
-import { useCirculatingSupply } from "hooks/useCirculatingSupply";
-import { useCommunityFund } from "hooks/useCommunityFund";
-import TransactionListCard from "components/myPage/TransactionListCard";
-import { useWhalePrice } from "hooks/useWhalePrice";
-
-const dataChart = [
-  {
-    label: "Apr",
-    value: 1.32,
-  },
-  {
-    label: "May",
-    value: 4.12,
-  },
-  {
-    label: "Jun",
-    value: 2.22,
-  },
-  {
-    label: "Jul",
-    value: 3.22,
-  },
-  {
-    label: "Aug",
-    value: 1.22,
-  },
-  {
-    label: "Sep",
-    value: 7.22,
-  },
-  {
-    label: "Sep",
-    value: 7.255,
-  },
-];
+import dayjs from "dayjs";
 
 const MyPage: NextPage = () => {
   const price = useWhalePrice();
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
-  const communityFund = useCommunityFund();
+  const data = useWhalePriceTimes();
+
+  const dataChart = data
+    .map((item) => {
+      return {
+        label: dayjs(item.createdAt).format("h A"),
+        value: item.token1,
+      };
+    })
+    .slice(0, 10);
+
+  // dataChart.push({
+  //   label: dayjs(dayjs.unix()).format("h A"),
+  //   value: fromTerraAmount(price, "0.000000"),
+  // });
 
   return (
     <Box my="16" mx="auto" maxW="container.xl">
