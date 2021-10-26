@@ -28,8 +28,10 @@ export const useWhalePriceTimes = () => {
   } = useTerraWebapp();
   const whaleUstPair = contracts[name].whaleUstPair;
 
+  // TODO: change to env variable
   const { data } = useQuery("whaleUstPriceTimes", () => {
     return request(
+      // "http://localhost:4000/dev/graphql",
       "https://022rzgdsz2.execute-api.us-east-1.amazonaws.com/dev/graphql",
       query,
       { contractAddress: whaleUstPair }

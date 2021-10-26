@@ -19,19 +19,17 @@ const MyPage: NextPage = () => {
   const circSupply = useCirculatingSupply();
   const data = useWhalePriceTimes();
 
-  const dataChart = data
-    .map((item) => {
-      return {
-        label: dayjs(item.createdAt).format("h A"),
-        value: item.token1,
-      };
-    })
-    .slice(0, 10);
+  const dataChart = data.map((item) => {
+    return {
+      label: dayjs(item.createdAt).format("h A"),
+      value: item.token1,
+    };
+  });
 
-  // dataChart.push({
-  //   label: dayjs(dayjs.unix()).format("h A"),
-  //   value: fromTerraAmount(price, "0.000000"),
-  // });
+  dataChart.push({
+    label: dayjs().format("h A"),
+    value: fromTerraAmount(price, "0.000000"),
+  });
 
   return (
     <Box my="16" mx="auto" maxW="container.xl">
