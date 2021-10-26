@@ -10,8 +10,8 @@ const data = [
     logo: "/ust.png",
   },
   {
-    contract: null,
-    name: "LUNA/bLUNA",
+    contract: "dss",
+    name: "LUNA",
     logo: "/terraCrypto.png",
   },
   {
