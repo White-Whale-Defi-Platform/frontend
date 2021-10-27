@@ -39,7 +39,7 @@ const SwapFormSlippage: FC<Props> = forwardRef(
     };
 
     return (
-      <ButtonGroup variant="secondary" size="sm">
+      <ButtonGroup variant="third" size="sm">
         <Button
           type="button"
           isActive={isSelected("0.01")}

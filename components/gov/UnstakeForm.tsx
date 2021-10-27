@@ -6,8 +6,8 @@ import { useQueryClient } from "react-query";
 
 import { useGovStaked, useUnstake } from "modules/govern";
 import { toAmount } from "libs/parse";
+import useContracts from "hooks/useContracts";
 import useFeeToString from "hooks/useFeeToString";
-import contracts from "constants/contracts.json";
 
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
@@ -27,16 +27,14 @@ type IFormInputs = {
 
 const UnstakeForm: FC<Props> = ({ onClose }) => {
   const queryClient = useQueryClient();
+  const { whaleToken, gov } = useContracts();
   const stakedAmount = useGovStaked();
-  const {
-    network: { name },
-  } = useTerraWebapp();
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
       token: {
         amount: undefined,
-        asset: contracts[name].whaleToken,
+        asset: whaleToken,
       },
     },
   });
@@ -49,7 +47,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
   }, [onClose, queryClient]);
 
   const unstakeState = useUnstake({
-    govContract: contracts[name].gov,
+    govContract: gov,
     amount: toAmount(token.amount),
     onSuccess: handleSuccess,
   });

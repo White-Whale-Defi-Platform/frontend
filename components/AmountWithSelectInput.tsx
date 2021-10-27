@@ -119,12 +119,6 @@ const AmountWithSelectInput: FC<Props> = forwardRef(
                     }}
                   />
                   <SelectTokenItem
-                    asset="terra18nle009rtynpjgleh2975rleu5zts0zdtqryte"
-                    onClick={(asset) => {
-                      onChange({ ...value, asset });
-                    }}
-                  />
-                  <SelectTokenItem
                     asset="uusd"
                     onClick={(asset) => {
                       onChange({ ...value, asset });

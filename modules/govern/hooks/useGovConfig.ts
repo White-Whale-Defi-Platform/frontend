@@ -1,21 +1,17 @@
 import { useTerraWebapp } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 
 export const useGovConfig = () => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
+  const { client } = useTerraWebapp();
+  const { gov } = useContracts();
 
-  const govContract = contracts[name].gov;
-
-  const { data, isLoading } = useQuery(["govConfig", govContract], () => {
+  const { data, isLoading } = useQuery(["govConfig", gov], () => {
     return client.wasm.contractQuery<{
       quorum: string;
       threshold: string;
-    }>(govContract, {
+    }>(gov, {
       config: {},
     });
   });

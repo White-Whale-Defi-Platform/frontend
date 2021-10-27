@@ -36,6 +36,23 @@ const button = {
         boxShadow: "none",
       },
     },
+    third: {
+      outline: "none",
+      borderRadius: "full",
+      borderWidth: "1px",
+      borderColor: "brand.900",
+      color: "white",
+      _hover: {
+        color: "white",
+        borderColor: "brand.500",
+      },
+      _active: {
+        borderColor: "brand.500",
+      },
+      _focus: {
+        boxShadow: "none",
+      },
+    },
     navbar: {
       outline: "none",
       color: "white",

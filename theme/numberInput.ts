@@ -12,7 +12,7 @@ const styles = {
         borderRadius: "full",
         px: "5",
         fontSize: "xl",
-        height: "16",
+        height: "14",
       },
     },
   },
@@ -25,6 +25,8 @@ const styles = {
           border: "1px solid",
           borderColor: "brand.100",
           bg: "inherit",
+          color: "brand.500",
+          fontWeight: "700",
           _hover: {
             borderColor: "brand.500",
           },

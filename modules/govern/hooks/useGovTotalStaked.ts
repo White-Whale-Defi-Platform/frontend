@@ -1,25 +1,11 @@
-import { useMemo } from "react";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { useBalance } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
-import { useGetBalance } from "modules/pool";
+import useContracts from "hooks/useContracts";
 
 export const useGovTotalStaked = () => {
-  const {
-    network: { name },
-  } = useTerraWebapp();
-  const { data: balanceData } = useGetBalance({
-    contract: contracts[name].whaleToken,
-    address: contracts[name].gov,
-  });
+  const { whaleToken, gov } = useContracts();
 
-  return useMemo(() => {
-    if (balanceData == null) {
-      return "0";
-    }
-
-    return balanceData.balance;
-  }, [balanceData]);
+  return useBalance(whaleToken, gov);
 };
 
 export default useGovTotalStaked;

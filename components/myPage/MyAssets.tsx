@@ -6,9 +6,8 @@ import {
   num,
 } from "@arthuryeti/terra";
 import { NextPage } from "next";
-import numeral from "numeral";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 import { useVault } from "modules/vault";
 import { useGovStaked } from "modules/govern";
 import { times, div } from "libs/math";
@@ -19,14 +18,12 @@ import { useLpHolding } from "hooks/useLpHolding";
 import PieGraphCard from "components/myPage/PieGraphCard";
 
 const MyAssets: NextPage = () => {
-  const {
-    network: { name },
-  } = useTerraWebapp();
+  const { ustVault } = useContracts();
   const price = useWhalePrice();
   const stakedAmount = useGovStaked();
   const lpHolding = useLpHolding();
   const { balance } = useVault({
-    contract: contracts[name].ustVault,
+    contract: ustVault,
   });
 
   const whaleAmount = useMemo(() => {

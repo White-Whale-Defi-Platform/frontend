@@ -15,7 +15,7 @@ const InlineStat: FC<Props> = ({ label, value, name, tooltip }) => {
     <Box lineHeight="1">
       <HStack>
         <Flex color="brand.200" align="center">
-          <Text variant="light" mr="1">
+          <Text fontSize="md" mr="1" color="white">
             {label}
           </Text>
           {tooltip && (
@@ -30,9 +30,8 @@ const InlineStat: FC<Props> = ({ label, value, name, tooltip }) => {
               </Box>
             </Tooltip>
           )}
-          <Text variant="light">:</Text>
         </Flex>
-        <Text fontWeight="500" fontSize="sm">
+        <Text fontWeight="500" fontSize="md">
           {value} {name}
         </Text>
       </HStack>

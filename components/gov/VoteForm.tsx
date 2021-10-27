@@ -16,17 +16,14 @@ import { useQueryClient } from "react-query";
 import { toAmount } from "libs/parse";
 import { useGovStaker, useVote } from "modules/govern";
 import { useFeeToString } from "hooks/useFeeToString";
-import contracts from "constants/contracts.json";
-import useFinder from "hooks/useFinder";
+import useContracts from "hooks/useContracts";
 import { VoteType } from "types/poll";
 
-import ArrowDownIcon from "components/icons/ArrowDownIcon";
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
 import InlineStat from "components/InlineStat";
 import PollVoteButtons from "components/gov/PollVoteButtons";
-import InfoIcon from "components/icons/InfoIcon";
 
 type Inputs = {
   voteType: VoteType;
@@ -42,20 +39,16 @@ type Props = {
 };
 
 const VoteForm: FC<Props> = ({ pollId, onClose }) => {
-  const toast = useToast();
-  const finder = useFinder();
+  const { whaleToken, gov } = useContracts();
   const staker = useGovStaker();
   const queryClient = useQueryClient();
-  const {
-    network: { name },
-  } = useTerraWebapp();
 
   const { control, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
       voteType: VoteType.Yes,
       token: {
         amount: undefined,
-        asset: contracts[name].whaleToken,
+        asset: whaleToken,
       },
     },
   });
@@ -71,7 +64,7 @@ const VoteForm: FC<Props> = ({ pollId, onClose }) => {
   );
 
   const voteState = useVote({
-    govContract: contracts[name].gov,
+    govContract: gov,
     pollId,
     vote: voteType,
     amount: toAmount(token.amount),

@@ -1,57 +1,50 @@
 import { NextPage } from "next";
+import dayjs from "dayjs";
+import { fromTerraAmount } from "@arthuryeti/terra";
+import { Box, Flex, Text, HStack, Circle } from "@chakra-ui/react";
 
 import { useTVL } from "hooks/useTVL";
-import { Box, Flex, Text, HStack, Circle } from "@chakra-ui/react";
 
 import Card from "components/Card";
 import LineChart from "components/LineChart";
-import { fromTerraAmount } from "@arthuryeti/terra";
 
 const TVL: NextPage = () => {
-  const { total, totalInVault, totalInWarchest } = useTVL();
+  const { total, graph } = useTVL();
 
-  const data = [
-    {
-      label: "Arb Vault",
-      value: totalInVault,
-      color: "#3CCD64",
-    },
-    {
-      label: "War chest",
-      value: totalInWarchest,
-      color: "#194325",
-    },
-  ];
+  const dataChart = graph.map((item) => {
+    return {
+      label: dayjs(item.createdAt).format("MMM D"),
+      value: item.value,
+    };
+  });
+
+  dataChart.push({
+    label: "Now",
+    value: fromTerraAmount(total, "0.00"),
+  });
 
   return (
     <Card h="full">
-      <Flex align="center" justify="space-between">
-        <Box>
-          <Text fontSize="xl" mb="4" fontWeight="bold">
-            Total Value Locked
+      <Flex align="baseline" justify="space-between">
+        <Text fontSize="2xl" fontWeight="bold">
+          Total Value Locked
+        </Text>
+        <HStack align="baseline">
+          <Text
+            color="brand.500"
+            fontWeight="700"
+            fontSize="2xl"
+            lineHeight="1"
+          >
+            {fromTerraAmount(total, "0,0")}
           </Text>
-          <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-            {fromTerraAmount(total, "0,0")} UST
+          <Text color="brand.500" fontWeight="700" lineHeight="1">
+            UST
           </Text>
-        </Box>
-        <HStack spacing="6">
-          {data.map((item) => {
-            return (
-              <Box key={item.label}>
-                <HStack spacing="2">
-                  <Circle size="18" bgColor={item.color} />
-                  <Text whiteSpace="nowrap">{item.label}</Text>
-                </HStack>
-                <Text color="#8b8b8c" fontWeight="700">
-                  {fromTerraAmount(item.value, "0,0")} UST
-                </Text>
-              </Box>
-            );
-          })}
         </HStack>
       </Flex>
-      <Box height="225" mt="12">
-        <LineChart data={data} />
+      <Box height="275" mt="12">
+        <LineChart data={dataChart} />
       </Box>
     </Card>
   );

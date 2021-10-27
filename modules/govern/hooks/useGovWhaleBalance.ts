@@ -1,15 +1,11 @@
-import { useBalance, useTerraWebapp } from "@arthuryeti/terra";
+import { useBalance } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 
 export const useGovWhaleBalance = () => {
-  const {
-    network: { name },
-  } = useTerraWebapp();
-  const whaleToken = contracts[name].whaleToken;
-  const govContract = contracts[name].gov;
+  const { whaleToken, gov } = useContracts();
 
-  return useBalance(whaleToken, govContract);
+  return useBalance(whaleToken, gov);
 };
 
 export default useGovWhaleBalance;

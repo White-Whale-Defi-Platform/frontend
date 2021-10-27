@@ -1,13 +1,13 @@
 import React, { FC, useCallback } from "react";
 import { Button, HStack, Box, chakra, Text } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useTerraWebapp, TxStep } from "@arthuryeti/terra";
+import { TxStep } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { toAmount } from "libs/parse";
 import { useStake } from "modules/govern";
 import useFeeToString from "hooks/useFeeToString";
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 import useDebounceValue from "hooks/useDebounceValue";
 
 import LoadingForm from "components/LoadingForm";
@@ -28,15 +28,13 @@ type IFormInputs = {
 
 const StakeForm: FC<Props> = ({ onClose }) => {
   const queryClient = useQueryClient();
-  const {
-    network: { name },
-  } = useTerraWebapp();
+  const { whaleToken, gov } = useContracts();
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
       token: {
         amount: undefined,
-        asset: contracts[name].whaleToken,
+        asset: whaleToken,
       },
     },
   });
@@ -52,7 +50,7 @@ const StakeForm: FC<Props> = ({ onClose }) => {
 
   const stakeState = useStake({
     tokenContract: token.asset,
-    govContract: contracts[name].gov,
+    govContract: gov,
     amount: toAmount(debouncedAmount),
     onSuccess: handleSuccess,
   });

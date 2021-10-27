@@ -58,9 +58,9 @@ const AmountInput: FC<Props> = forwardRef(
           <Box mb="2">
             {initialBalance == null && <Balance asset={value.asset} />}
             {initialBalance != null && (
-              <Text>
+              <Text ml="6">
                 <Text as="span" variant="light">
-                  Balance:
+                  Available:
                 </Text>{" "}
                 <Text as="span" fontSize="sm" fontWeight="500">
                   {fromTerraAmount(initialBalance, "0.000")}
@@ -102,10 +102,10 @@ const AmountInput: FC<Props> = forwardRef(
                 <Divider orientation="vertical" borderColor="brand.600" />
               </Box>
               <HStack>
-                <Image src={icon} width="1.5rem" height="1.5rem" alt="Logo" />
-                <Text variant="light" fontWeight="500">
+                <Text color="white" fontWeight="500">
                   {symbol}
                 </Text>
+                <Image src={icon} width="1.5rem" height="1.5rem" alt="Logo" />
               </HStack>
             </HStack>
           </Flex>

@@ -43,7 +43,7 @@ const SwapFormInfos: FC<Props> = ({
           render={({ field }) => <SwapFormSlippage {...field} />}
         />
       </HStack>
-      <Box mb="4">
+      {/* <Box mb="4">
         <InlineStat
           label="Rate"
           value={exchangeRate}
@@ -58,7 +58,7 @@ const SwapFormInfos: FC<Props> = ({
           name={token2Symbol}
           tooltip="Expected minimum quantity to be received based on the current price, maximum spread, and trading fee"
         />
-      </Box>
+      </Box> */}
       <Box mb="6">
         <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
       </Box>

@@ -2,16 +2,13 @@ import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useTerraWebapp } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 import { getAmountsInPool } from "libs/terra";
 import { Pool } from "types/common";
 
 export const useWhalePrice = () => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
-  const whaleUstPair = contracts[name].whaleUstPair;
+  const { client } = useTerraWebapp();
+  const { whaleUstPair } = useContracts();
 
   const { data: pool } = useQuery("pool", () => {
     return client.wasm.contractQuery<Pool>(whaleUstPair, {

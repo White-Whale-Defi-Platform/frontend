@@ -6,8 +6,8 @@ import { useSwap } from "@arthuryeti/terraswap";
 import numeral from "numeral";
 
 import { DEFAULT_SLIPPAGE } from "constants/constants";
-import contracts from "constants/contracts.json";
 import { toAmount } from "libs/parse";
+import useContracts from "hooks/useContracts";
 import useDebounceValue from "hooks/useDebounceValue";
 
 import DoubleArrowsIcon from "components/icons/DoubleArrowsIcon";
@@ -29,30 +29,23 @@ type Inputs = {
 };
 
 const SwapForm: FC = () => {
-  const {
-    network: { name },
-  } = useTerraWebapp();
+  const { whaleToken } = useContracts();
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState,
-    reset: resetForm,
-  } = useForm<Inputs>({
-    defaultValues: {
-      token1: {
-        amount: undefined,
-        asset: contracts[name].whaleToken,
+  const { control, handleSubmit, watch, setValue, formState } = useForm<Inputs>(
+    {
+      defaultValues: {
+        token1: {
+          amount: undefined,
+          asset: "uusd",
+        },
+        token2: {
+          amount: undefined,
+          asset: whaleToken,
+        },
+        slippage: String(DEFAULT_SLIPPAGE),
       },
-      token2: {
-        amount: undefined,
-        asset: "uusd",
-      },
-      slippage: String(DEFAULT_SLIPPAGE),
-    },
-  });
+    }
+  );
   const token1 = watch("token1");
   const token2 = watch("token2");
   const slippage = watch("slippage");
@@ -179,11 +172,14 @@ const SwapForm: FC = () => {
         />
       </Box>
 
-      <Flex justify="center" align="center" color="brand.600" my="6">
+      <Flex justify="center" align="center" color="brand.500" my="8">
         <IconButton
           aria-label="Reverse"
-          variant="primary"
-          icon={<DoubleArrowsIcon width="1rem" height="1rem" />}
+          variant="ghost"
+          _focus={{ boxShadow: "none" }}
+          _active={{ background: "transparent" }}
+          _hover={{ background: "transparent", color: "white" }}
+          icon={<DoubleArrowsIcon width="2rem" height="2rem" />}
           onClick={reverse}
         />
       </Flex>
@@ -199,7 +195,7 @@ const SwapForm: FC = () => {
         />
       </Box>
 
-      <Box mt="6">
+      <Box mt="8">
         <SwapFormInfos
           token1={token1.asset}
           token2={token2.asset}

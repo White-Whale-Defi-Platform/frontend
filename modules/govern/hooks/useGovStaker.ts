@@ -2,22 +2,20 @@ import { useMemo } from "react";
 import { useTerraWebapp, useAddress } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 
 export const useGovStaker = () => {
   const address = useAddress();
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
+  const { client } = useTerraWebapp();
+  const { gov } = useContracts();
 
   const { data, isLoading } = useQuery(
-    ["staker", contracts[name].gov],
+    ["staker", gov],
     () => {
       return client.wasm.contractQuery<{
         balance: string;
         locked_balance: any[];
-      }>(contracts[name].gov, {
+      }>(gov, {
         staker: {
           address,
         },

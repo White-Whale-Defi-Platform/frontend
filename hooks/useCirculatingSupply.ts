@@ -1,43 +1,30 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { useBalance, useTerraWebapp } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 import { minus } from "libs/math";
 
 export const useCirculatingSupply = () => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
-  const whaleToken = contracts[name].whaleToken;
-  const wallet = contracts[name].wallet;
+  const { client } = useTerraWebapp();
+  const { wallet, whaleToken } = useContracts();
+  const balance = useBalance(whaleToken, wallet);
 
-  const { data: tokenInfo } = useQuery<any>("tokenInfo", () => {
+  const { data: tokenInfo } = useQuery("tokenInfo", () => {
     return client.wasm.contractQuery<{
-      token_supply: string;
+      total_supply: string;
     }>(whaleToken, {
       token_info: {},
     });
   });
 
-  const { data: balData } = useQuery(["balance", wallet], () => {
-    return client.wasm.contractQuery<{
-      balance: string;
-    }>(whaleToken, {
-      balance: {
-        address: wallet,
-      },
-    });
-  });
-
   return useMemo(() => {
-    if (balData == null || tokenInfo == null) {
+    if (balance == null || tokenInfo == null) {
       return null;
     }
 
-    return minus(tokenInfo.total_supply, balData.balance);
-  }, [balData, tokenInfo]);
+    return minus(tokenInfo.total_supply, balance);
+  }, [balance, tokenInfo]);
 };
 
 export default useCirculatingSupply;

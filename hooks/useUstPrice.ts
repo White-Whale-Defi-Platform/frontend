@@ -1,16 +1,14 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useTerraWebapp } from "@arthuryeti/terra";
-import contracts from "constants/contracts.json";
+
+import useContracts from "hooks/useContracts";
 import { getAmountsInPool } from "libs/terra";
 import { Pool } from "types/common";
 
 export const useUstPrice = () => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
-  const lunaUstPair = contracts[name].lunaUstPair;
+  const { client } = useTerraWebapp();
+  const { lunaUstPair } = useContracts();
 
   const { data: exchangeRate } = useQuery("exchangeRate", () => {
     return client.oracle.exchangeRate("uusd");

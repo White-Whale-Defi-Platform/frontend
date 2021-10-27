@@ -1,21 +1,20 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { useBalance, useTerraWebapp } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 import { div, plus, times } from "libs/math";
 import { useGovTotalStaked } from "modules/govern";
 import { ONE_TOKEN } from "constants/constants";
 import { useWhalePrice } from "hooks/useWhalePrice";
 
 export const useWarchest = () => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
-  const warchest = contracts[name].warchest;
+  const { client } = useTerraWebapp();
+  const { warchest } = useContracts();
   const totalStakedAmount = useGovTotalStaked();
   const price = useWhalePrice();
+  const ustBalance = useBalance("uusd", warchest);
+  const lunaBalance = useBalance("uluna", warchest);
 
   const whaleAmount = useMemo(() => {
     if (totalStakedAmount == null) {
@@ -25,48 +24,31 @@ export const useWarchest = () => {
     return times(totalStakedAmount, div(price, ONE_TOKEN));
   }, [totalStakedAmount, price]);
 
-  const { data: bankData } = useQuery(["balance", "bank", warchest], () => {
-    return client.bank.balance(warchest);
-  });
-
   const { data: exchangeRate } = useQuery(["exchangeRate", "uusd"], () => {
     return client.oracle.exchangeRate("uusd");
   });
 
-  const ustAmount = useMemo(() => {
-    if (bankData == null || bankData.get("uusd") == null) {
-      return null;
-    }
-
-    return bankData.get("uusd").amount.toString();
-  }, [bankData]);
-
   const lunaAmount = useMemo(() => {
-    if (
-      bankData == null ||
-      exchangeRate == null ||
-      bankData.get("uluna") == null
-    ) {
+    if (exchangeRate == null || lunaBalance == null) {
       return "0.00";
     }
 
     const lunaPrice = exchangeRate.amount.toString();
-    const amount = bankData.get("uluna").amount.toString();
 
-    return times(lunaPrice, amount);
-  }, [bankData, exchangeRate]);
+    return times(lunaPrice, lunaBalance);
+  }, [lunaBalance, exchangeRate]);
 
   const totalInUst = useMemo(() => {
-    if (whaleAmount == null) {
+    if (whaleAmount == null || ustBalance == null || lunaAmount == null) {
       return null;
     }
 
-    return plus(plus(whaleAmount, ustAmount), lunaAmount);
-  }, [whaleAmount, ustAmount, lunaAmount]);
+    return plus(plus(whaleAmount, ustBalance), lunaAmount);
+  }, [whaleAmount, ustBalance, lunaAmount]);
 
   return {
     totalInUst,
-    ustAmount,
+    ustAmount: ustBalance,
     lunaAmount,
     whaleAmount,
   };

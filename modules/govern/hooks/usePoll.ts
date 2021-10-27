@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { num, useTerraWebapp } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
+import useContracts from "hooks/useContracts";
 import { Poll } from "types/poll";
 import {
   useGovWhaleBalance,
@@ -12,11 +12,9 @@ import {
 } from "modules/govern";
 
 export const usePoll = (pollId: number): null | any => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
-  const govContract = contracts[name].gov;
+  const { client } = useTerraWebapp();
+  const { gov } = useContracts();
+
   const balance = useGovWhaleBalance();
   const govConfig = useGovConfig();
   const govState = useGovState();
@@ -25,7 +23,7 @@ export const usePoll = (pollId: number): null | any => {
   const { data } = useQuery<Poll>(
     ["poll", pollId],
     () => {
-      return client.wasm.contractQuery(govContract, {
+      return client.wasm.contractQuery(gov, {
         poll: { poll_id: pollId },
       });
     },

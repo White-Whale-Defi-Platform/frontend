@@ -47,10 +47,7 @@ const options = {
 };
 
 const CommunityFund: FC = () => {
-  const communityFund = useCommunityFund();
-  const ustAmountInNumber = number(communityFund.ustAmount) / 1000000;
-  const whaleAmountInNumber = number(communityFund.whaleAmount) / 1000000;
-  const totalInUstAmountInNumber = number(communityFund.totalInUst) / 1000000;
+  const { totalInUst, ustBalance, whaleInUst } = useCommunityFund();
 
   const data = useMemo(() => {
     return [
@@ -58,23 +55,18 @@ const CommunityFund: FC = () => {
         label: "UST",
         asset: "UST",
         color: "#2EB0E9",
-        value: ustAmountInNumber / totalInUstAmountInNumber,
-        valueCount: fromTerraAmount(communityFund.ustAmount),
+        value: +ustBalance,
+        valueCount: fromTerraAmount(ustBalance),
       },
       {
         label: "WHALE",
         asset: "UST",
         color: "#3CCD64",
-        value: whaleAmountInNumber / totalInUstAmountInNumber,
-        valueCount: fromTerraAmount(communityFund.whaleAmount),
+        value: +whaleInUst,
+        valueCount: fromTerraAmount(whaleInUst),
       },
     ];
-  }, [
-    communityFund,
-    whaleAmountInNumber,
-    ustAmountInNumber,
-    totalInUstAmountInNumber,
-  ]);
+  }, [whaleInUst, ustBalance]);
 
   const formattedData = {
     labels: data.map((d) => d.label),
@@ -97,7 +89,7 @@ const CommunityFund: FC = () => {
           </Text>
         </HStack>
         <SimpleStat
-          value={fromTerraAmount(communityFund.totalInUst)}
+          value={totalInUst}
           asset="UST"
           fontSizeValue="2xl"
           fontSizeAsset="xl"

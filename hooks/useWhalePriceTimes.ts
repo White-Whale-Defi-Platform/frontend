@@ -1,11 +1,9 @@
 import { useMemo } from "react";
 import { request, gql } from "graphql-request";
 import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
-import { getAmountsInPool } from "libs/terra";
-import { Pool } from "types/common";
+import { GRAPHQL_URL } from "constants/constants";
+import useContracts from "hooks/useContracts";
 
 const query = gql`
   query ($contractAddress: ID!) {
@@ -23,16 +21,13 @@ const query = gql`
 `;
 
 export const useWhalePriceTimes = () => {
-  const {
-    network: { name },
-  } = useTerraWebapp();
-  const whaleUstPair = contracts[name].whaleUstPair;
+  const { whaleUstPair } = useContracts();
 
   // TODO: change to env variable
   const { data } = useQuery("whaleUstPriceTimes", () => {
     return request(
-      // "http://localhost:4000/dev/graphql",
-      "https://022rzgdsz2.execute-api.us-east-1.amazonaws.com/dev/graphql",
+      GRAPHQL_URL,
+      // "https://022rzgdsz2.execute-api.us-east-1.amazonaws.com/dev/graphql",
       query,
       { contractAddress: whaleUstPair }
     );
@@ -43,7 +38,7 @@ export const useWhalePriceTimes = () => {
       return [];
     }
 
-    return data.pair.prices;
+    return data.pair.prices.reverse();
   }, [data]);
 };
 

@@ -1,76 +1,49 @@
 import { useMemo } from "react";
-import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { num, useBalance } from "@arthuryeti/terra";
 
-import contracts from "constants/contracts.json";
-import { div, plus, times } from "libs/math";
+import { plus } from "libs/math";
 import { ONE_TOKEN } from "constants/constants";
 import { useWhalePrice } from "hooks/useWhalePrice";
+import useContracts from "hooks/useContracts";
 
 export const useCommunityFund = () => {
-  const {
-    client,
-    network: { name },
-  } = useTerraWebapp();
-  const whaleToken = contracts[name].whaleToken;
-  const aUstToken = contracts[name].aUstToken;
-  const communityFund = contracts[name].communityFund;
+  const { whaleToken, aUstToken, communityFund } = useContracts();
   const price = useWhalePrice();
+  const whaleBalance = useBalance(whaleToken, communityFund);
+  const aUstBalance = useBalance(aUstToken, communityFund);
+  const ustBalance = useBalance("uusd", communityFund);
 
-  const { data: balData } = useQuery(
-    ["balance", whaleToken, communityFund],
-    () => {
-      return client.wasm.contractQuery<{
-        balance: string;
-      }>(whaleToken, {
-        balance: {
-          address: communityFund,
-        },
-      });
-    }
-  );
-
-  const whaleAmount = useMemo(() => {
-    if (balData == null) {
-      return null;
+  const whaleInUst = useMemo(() => {
+    if (whaleBalance == null || price == null) {
+      return "0";
     }
 
-    return times(balData.balance, div(price, ONE_TOKEN));
-  }, [balData, price]);
-
-  const { data: balUstData } = useQuery(
-    ["balance", aUstToken, communityFund],
-    () => {
-      return client.wasm.contractQuery<{
-        balance: string;
-      }>(aUstToken, {
-        balance: {
-          address: communityFund,
-        },
-      });
-    }
-  );
+    return num(whaleBalance)
+      .div(ONE_TOKEN)
+      .times(num(price).div(ONE_TOKEN))
+      .toFixed(2);
+  }, [whaleBalance, price]);
 
   const ustAmount = useMemo(() => {
-    if (balUstData == null) {
-      return null;
+    if (ustBalance == null || aUstBalance == null) {
+      return "0";
     }
 
-    return balUstData.balance;
-  }, [balUstData]);
+    return num(ustBalance).plus(aUstBalance).div(ONE_TOKEN).toFixed(2);
+  }, [ustBalance, aUstBalance]);
 
   const totalInUst = useMemo(() => {
-    if (whaleAmount == null || ustAmount == null) {
-      return null;
+    if (whaleInUst == null || ustAmount == null) {
+      return "0";
     }
 
-    return plus(whaleAmount, ustAmount);
-  }, [whaleAmount, ustAmount]);
+    return plus(whaleInUst, ustAmount);
+  }, [whaleInUst, ustAmount]);
 
   return {
     totalInUst,
-    ustAmount,
-    whaleAmount,
+    ustBalance: ustAmount,
+    whaleInUst,
   };
 };
 

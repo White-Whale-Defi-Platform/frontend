@@ -1,5 +1,6 @@
 import { Box, Heading, Grid, GridItem } from "@chakra-ui/react";
 import { NextPage } from "next";
+import dayjs from "dayjs";
 
 import { useMarketCap } from "hooks/useMarketCap";
 import { fromTerraAmount } from "libs/terra";
@@ -11,7 +12,6 @@ import { useWhalePriceTimes } from "hooks/useWhalePriceTimes";
 import MyAssets from "components/myPage/MyAssets";
 import LineGraphCard from "components/myPage/LineGraphCard";
 import TVL from "components/myPage/TVL";
-import dayjs from "dayjs";
 
 const MyPage: NextPage = () => {
   const price = useWhalePrice();
@@ -21,13 +21,13 @@ const MyPage: NextPage = () => {
 
   const dataChart = data.map((item) => {
     return {
-      label: dayjs(item.createdAt).format("h A"),
+      label: dayjs(item.createdAt).format("MMM D"),
       value: item.token1,
     };
   });
 
   dataChart.push({
-    label: dayjs().format("h A"),
+    label: "Now",
     value: fromTerraAmount(price, "0.000000"),
   });
 

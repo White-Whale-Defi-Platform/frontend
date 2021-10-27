@@ -2,26 +2,28 @@ import React from "react";
 import { Box, Heading, Flex } from "@chakra-ui/react";
 
 import VaultItem from "components/vault/VaultItem";
-
-const data = [
-  {
-    contract: "terra1la89l08clsk3n9rtzyte6k47dacuvcq7q84k3m",
-    name: "UST",
-    logo: "/ust.png",
-  },
-  {
-    contract: "dss",
-    name: "LUNA",
-    logo: "/terraCrypto.png",
-  },
-  {
-    contract: null,
-    name: "KRT",
-    logo: "/krtCrypto.png",
-  },
-];
+import useContracts from "hooks/useContracts";
 
 const Vaults = () => {
+  const { ustVault } = useContracts();
+
+  const data = [
+    {
+      contract: ustVault,
+      name: "UST",
+      logo: "/ust.png",
+    },
+    {
+      contract: "dss",
+      name: "LUNA",
+      logo: "/terraCrypto.png",
+    },
+    {
+      contract: null,
+      name: "KRT",
+      logo: "/krtCrypto.png",
+    },
+  ];
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Box>

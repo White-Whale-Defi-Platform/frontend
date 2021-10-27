@@ -73,10 +73,16 @@ const PoolItem: FC<Props> = ({
             {fromTerraAmount(pool.totalShareInUST)} UST
           </Text>
         </Flex>
-        <Flex justify="space-between">
+        <Flex justify="space-between" mb="4">
           <Text>Provided</Text>
           <Text color="brand.500" fontWeight="700">
             {fromTerraAmount(pool.myShareInUST)} UST
+          </Text>
+        </Flex>
+        <Flex justify="space-between">
+          <Text>APY</Text>
+          <Text color="brand.500" fontWeight="700">
+            --
           </Text>
         </Flex>
         <Box mt="6">
