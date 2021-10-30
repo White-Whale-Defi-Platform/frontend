@@ -14,7 +14,7 @@ const LoadingForm: FC<Props> = ({ txHash }) => {
   const finder = useFinder();
 
   return (
-    <Flex flexDir="column" align="center" w="full">
+    <Flex flexDir="column" align="center" w="full" py="10">
       <Box mt="6">
         <Loader />
       </Box>

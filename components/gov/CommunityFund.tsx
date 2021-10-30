@@ -1,25 +1,13 @@
 import React, { FC, useMemo } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { fromTerraAmount } from "@arthuryeti/terra";
-import {
-  Box,
-  Flex,
-  HStack,
-  Text,
-  Image,
-  Center,
-  Divider,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, Image } from "@chakra-ui/react";
 
 import { useCommunityFund } from "hooks/useCommunityFund";
 
-import UnstakeModal from "components/gov/UnstakeModal";
-import StakeModal from "components/gov/StakeModal";
 import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
 import Card from "components/Card";
-import { number } from "libs/math";
-import { ONE_TOKEN } from "constants/constants";
 
 const options = {
   cutout: "75%",
@@ -80,44 +68,51 @@ const CommunityFund: FC = () => {
   };
 
   return (
-    <Card noPadding>
-      <Flex justify="space-between" align="center" pt="8" px="8">
-        <HStack spacing="4">
-          <Image src="/communityFund.png" alt="War Chest" boxSize="2.25rem" />
-          <Text color="#fff" fontSize="2xl" fontWeight="700">
-            Community Fund
-          </Text>
-        </HStack>
-        <SimpleStat
-          value={totalInUst}
-          asset="UST"
-          fontSizeValue="2xl"
-          fontSizeAsset="xl"
-        />
-      </Flex>
-
-      <Flex align="center" py="12" px="8">
-        <Box w="35%">
-          <Doughnut data={formattedData} options={options} />
-        </Box>
-        <Flex ml="16" flexWrap="wrap" gridGap="8">
-          {data.map((item) => (
-            <AssetLine key={item.label} data={item} />
-          ))}
+    <Card noPadding h="full">
+      <Flex direction="column" justify="space-between" h="full">
+        <Flex justify="space-between" align="center" pt="8" px="8">
+          <HStack spacing="4">
+            <Image src="/communityFund.png" alt="War Chest" boxSize="2.25rem" />
+            <Text color="#fff" fontSize={["xl", null, "2xl"]} fontWeight="700">
+              Community Fund
+            </Text>
+          </HStack>
+          <SimpleStat
+            value={totalInUst}
+            asset="UST"
+            fontSizeValue="2xl"
+            fontSizeAsset="xl"
+          />
         </Flex>
-      </Flex>
 
-      <HStack bg="blackAlpha.400" px="8" py="4">
-        <Box flex="1">
-          <Text>
-            WHALE holders can submit proposals to utilize the Community Fund for
-            further growth and development of the platform.
-          </Text>
-        </Box>
-        <Box>
-          <StakeModal />
-        </Box>
-      </HStack>
+        <Flex direction={["column", null, "row"]} align="center" py="12" px="8">
+          <Box w={[null, null, "35%"]}>
+            <Doughnut data={formattedData} options={options} />
+          </Box>
+          <Flex
+            ml={[null, null, "16"]}
+            mt={["4", null, "0"]}
+            flexWrap="wrap"
+            gridGap="8"
+          >
+            {data.map((item) => (
+              <AssetLine key={item.label} data={item} />
+            ))}
+          </Flex>
+        </Flex>
+
+        <HStack bg="blackAlpha.400" px="8" py="4">
+          <Box flex="1">
+            <Text>
+              WHALE holders can submit proposals to utilize the Community Fund
+              for further growth and development of the platform.
+            </Text>
+          </Box>
+          {/* <Box>
+            <StakeModal />
+          </Box> */}
+        </HStack>
+      </Flex>
     </Card>
   );
 };

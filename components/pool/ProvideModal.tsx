@@ -44,7 +44,7 @@ const ProvideModal: FC<Props> = ({ pairContract, pool }) => {
           <ModalBody>
             <Flex align="center" direction="column">
               <Heading size="md" mb="4">
-                Farm
+                Provide
               </Heading>
               <Text variant="light" textAlign="center" fontWeight="500">
                 Supply {getSymbol(pool.token1)} & {getSymbol(pool.token2)} to LP

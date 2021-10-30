@@ -11,10 +11,10 @@ const Balance: FC<Props> = ({ asset }) => {
 
   return (
     <Text ml="6">
-      <Text as="span" variant="light" color="white">
+      <Text as="span" variant="light" color="white" fontSize="xs">
         Available:
-      </Text>{" "}
-      <Text as="span" fontSize="sm" fontWeight="700">
+      </Text>
+      <Text as="span" fontSize="xs" fontWeight="700" ml="3">
         {fromTerraAmount(balance, "0,0.0[00]")}
       </Text>
     </Text>

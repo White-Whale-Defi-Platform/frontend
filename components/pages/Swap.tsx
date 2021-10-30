@@ -1,6 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Grid, GridItem } from "@chakra-ui/react";
 
 import useContracts from "hooks/useContracts";
 
@@ -18,11 +18,7 @@ const Swap: NextPage = () => {
           <Heading color="#fff" size="lg" mb="8">
             Swap
           </Heading>
-          <Card>
-            <SwapForm />
-          </Card>
         </Box>
-
         <Box flex="1">
           <Flex
             mb="8"
@@ -40,16 +36,29 @@ const Swap: NextPage = () => {
               by staking WHALE LP
             </Text>
           </Flex>
-
-          <Box maxW="sm">
-            <PoolItem
-              label="WHALE-UST LP"
-              asset="Astroport"
-              pairContract={whaleUstPair}
-              lpTokenContract={whaleUstLpToken}
-            />
-          </Box>
         </Box>
+      </Flex>
+
+      <Grid templateColumns="repeat(12, 1fr)" gridAutoRows="1fr" gap={12}>
+        <GridItem colSpan={[12, null, 6]}>
+          <Card h="full">
+            <SwapForm />
+          </Card>
+        </GridItem>
+        <GridItem colSpan={[12, null, 4]}>
+          <PoolItem
+            label="WHALE-UST LP"
+            asset="Astroport"
+            pairContract={whaleUstPair}
+            lpTokenContract={whaleUstLpToken}
+          />
+        </GridItem>
+      </Grid>
+
+      <Flex gridGap="24">
+        <Box flex="1"></Box>
+
+        <Box flex="1"></Box>
       </Flex>
     </Box>
   );

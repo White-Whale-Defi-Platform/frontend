@@ -11,7 +11,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import ArrowUpIcon from "components/icons/ArrowUpIcon";
 import WithdrawForm from "components/pool/WithdrawForm";
 
 type Props = {

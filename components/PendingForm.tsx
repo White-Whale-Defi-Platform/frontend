@@ -5,7 +5,7 @@ import Loader from "components/Loader";
 
 const PendingForm: FC = () => {
   return (
-    <Flex flexDir="column" align="center">
+    <Flex flexDir="column" align="center" py="10">
       <Box mt="6">
         <Loader />
       </Box>

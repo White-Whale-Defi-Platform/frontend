@@ -75,14 +75,27 @@ const VaultItem: FC<Props> = ({ data }) => {
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
-          {!isComing && (
-            <HStack mt="6">
-              <WithdrawModal vault={vault} />
-              <DepositModal token="uusd" vault={vault} />
-            </HStack>
-          )}
+          <HStack mt="6">
+            <WithdrawModal vault={vault} />
+            <DepositModal token="uusd" vault={vault} />
+          </HStack>
         </Box>
       </Box>
+      {isComing && (
+        <Flex
+          position="absolute"
+          top="0"
+          right="0"
+          bottom="0"
+          left="0"
+          justify="center"
+          align="center"
+        >
+          <Text color="white" fontSize="xl" fontWeight="700">
+            Coming soon...
+          </Text>
+        </Flex>
+      )}
     </Card>
   );
 };

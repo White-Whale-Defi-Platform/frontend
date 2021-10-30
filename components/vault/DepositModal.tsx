@@ -12,7 +12,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import ArrowDownIcon from "components/icons/ArrowDownIcon";
 import DepositForm from "components/vault/DepositForm";
 
 type Props = {
@@ -34,18 +33,12 @@ const DepositModal: FC<Props> = ({ token, vault }) => {
       >
         Deposit
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent py="0">
           <ModalCloseButton />
-          <ModalBody>
-            <Flex align="center" direction="column">
-              <Heading size="md" mb="4">
-                Deposit asset
-              </Heading>
-
-              <DepositForm token={token} vault={vault} onClose={onClose} />
-            </Flex>
+          <ModalBody py="0">
+            <DepositForm token={token} vault={vault} onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>

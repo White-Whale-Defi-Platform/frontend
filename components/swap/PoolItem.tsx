@@ -26,7 +26,7 @@ const PoolItem: FC<Props> = ({
   });
 
   return (
-    <Card noPadding>
+    <Card noPadding h="full">
       <Flex
         flexDir="column"
         align="center"

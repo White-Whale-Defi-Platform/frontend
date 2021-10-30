@@ -1,20 +1,21 @@
-import React, { FC, useEffect, useCallback } from "react";
+import React, { FC, useEffect, useCallback, useState } from "react";
 import { Box, Flex, chakra, IconButton, Button, Text } from "@chakra-ui/react";
-import { num, TxStep, useTerraWebapp } from "@arthuryeti/terra";
+import { num, TxStep, fromTerraAmount } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
 import { useSwap } from "@arthuryeti/terraswap";
-import numeral from "numeral";
 
-import { DEFAULT_SLIPPAGE } from "constants/constants";
+import { DEFAULT_SLIPPAGE, ONE_TOKEN } from "constants/constants";
 import { toAmount } from "libs/parse";
 import useContracts from "hooks/useContracts";
 import useDebounceValue from "hooks/useDebounceValue";
+import { gt } from "libs/math";
 
 import DoubleArrowsIcon from "components/icons/DoubleArrowsIcon";
 import LoadingForm from "components/LoadingForm";
 import PendingForm from "components/PendingForm";
 import AmountInput from "components/AmountInput";
 import SwapFormInfos from "components/swap/SwapFormInfos";
+import SwapFormSuccess from "components/swap/SwapFormSuccess";
 
 type Inputs = {
   token1: {
@@ -30,27 +31,27 @@ type Inputs = {
 
 const SwapForm: FC = () => {
   const { whaleToken } = useContracts();
+  const [currentInput, setCurrentInput] = useState(null);
 
-  const { control, handleSubmit, watch, setValue, formState } = useForm<Inputs>(
-    {
-      defaultValues: {
-        token1: {
-          amount: undefined,
-          asset: "uusd",
-        },
-        token2: {
-          amount: undefined,
-          asset: whaleToken,
-        },
-        slippage: String(DEFAULT_SLIPPAGE),
+  const { control, handleSubmit, watch, setValue } = useForm<Inputs>({
+    defaultValues: {
+      token1: {
+        amount: undefined,
+        asset: "uusd",
       },
-    }
-  );
+      token2: {
+        amount: undefined,
+        asset: whaleToken,
+      },
+      slippage: String(DEFAULT_SLIPPAGE),
+    },
+  });
   const token1 = watch("token1");
   const token2 = watch("token2");
   const slippage = watch("slippage");
 
-  const debouncedAmount = useDebounceValue(token1.amount, 200);
+  const debouncedAmount1 = useDebounceValue(token1.amount, 200);
+  const debouncedAmount2 = useDebounceValue(token2.amount, 200);
 
   const handleSuccess = useCallback(
     (txHash) => {
@@ -70,65 +71,70 @@ const SwapForm: FC = () => {
   const swapState = useSwap({
     token1: token1.asset,
     token2: token2.asset,
-    amount: toAmount(debouncedAmount),
+    amount1: toAmount(debouncedAmount1),
+    amount2: toAmount(debouncedAmount2),
     slippage,
+    reverse: currentInput == "token2",
     onSuccess: handleSuccess,
     onError: handleError,
   });
 
-  useEffect(() => {
+  const handleToken1Change = (
+    value: {
+      asset: string;
+      amount: string;
+    },
+    onChange: (value: { asset: string; amount: string }) => void
+  ) => {
     if (
-      // @ts-expect-error
-      formState.name == "token1" &&
-      token1.amount != null &&
-      num(token1.amount).gt("0") &&
+      value.amount != null &&
+      num(value.amount).gt("0") &&
       swapState.simulated != null
     ) {
-      const newAmount = numeral(token1.amount)
-        .divide(swapState.simulated?.price)
-        .value()
-        .toFixed(6);
+      const amount = num(swapState.simulated?.amount).div(ONE_TOKEN);
+      const newAmount = num(value.amount).times(amount).toFixed(3);
 
       setValue("token2.amount", newAmount);
     }
 
-    if (
-      // @ts-expect-error
-      formState.name == "token1" &&
-      token1.amount.length == 0
-    ) {
+    if (value.amount?.length == 0) {
       setValue("token2.amount", "");
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token1.amount]);
+    setCurrentInput("token1");
+    onChange(value);
 
-  useEffect(() => {
+    if (token1.asset != value.asset) {
+      setValue("token1.amount", "");
+      setValue("token2.amount", "");
+    }
+  };
+
+  const handleToken2Change = (
+    value: {
+      asset: string;
+      amount: string;
+    },
+    onChange: (value: { asset: string; amount: string }) => void
+  ) => {
     if (
-      // @ts-expect-error
-      formState.name == "token2" &&
-      token2.amount != null &&
-      num(token2.amount).gt("0") &&
+      value.amount != null &&
+      num(value.amount).gt("0") &&
       swapState.simulated != null
     ) {
-      const newAmount = numeral(token2.amount)
-        .multiply(swapState.simulated?.price2)
-        .value()
-        .toFixed(6);
+      const amount = num(swapState.simulated?.amount).div(ONE_TOKEN);
+      const newAmount = num(value.amount).div(amount).toFixed(3);
 
       setValue("token1.amount", newAmount);
     }
 
-    if (
-      // @ts-expect-error
-      formState.name == "token2" &&
-      token2.amount.length == 0
-    ) {
+    if (value.amount?.length == 0) {
       setValue("token1.amount", "");
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token2.amount]);
+    setCurrentInput("token2");
+    onChange(value);
+  };
 
   const reverse = () => {
     setValue("token1", {
@@ -141,6 +147,16 @@ const SwapForm: FC = () => {
     });
   };
 
+  useEffect(() => {
+    if (gt(swapState.simulated?.amount, "0")) {
+      const name = currentInput == "token2" ? "token1.amount" : "token2.amount";
+
+      setValue(name, fromTerraAmount(swapState.simulated?.amount, "0.000"));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [swapState.simulated]);
+
   const submit = async () => {
     swapState.swap();
   };
@@ -151,6 +167,13 @@ const SwapForm: FC = () => {
 
   if (swapState.txStep == TxStep.Broadcasting) {
     return <LoadingForm txHash={swapState.txHash} />;
+  }
+
+  if (swapState.txStep == TxStep.Success) {
+    return (
+      //@ts-expect-error
+      <SwapFormSuccess txInfo={swapState.txInfo} onClick={swapState.reset} />
+    );
   }
 
   return (
@@ -168,7 +191,12 @@ const SwapForm: FC = () => {
           name="token1"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => <AmountInput {...field} />}
+          render={({ field }) => (
+            <AmountInput
+              {...field}
+              onChange={(v) => handleToken1Change(v, field.onChange)}
+            />
+          )}
         />
       </Box>
 
@@ -190,7 +218,12 @@ const SwapForm: FC = () => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <AmountInput isMaxDisabled hideBalance {...field} />
+            <AmountInput
+              isMaxDisabled
+              hideBalance
+              {...field}
+              onChange={(v) => handleToken2Change(v, field.onChange)}
+            />
           )}
         />
       </Box>

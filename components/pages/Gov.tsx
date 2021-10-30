@@ -72,10 +72,10 @@ const Gov: NextPage = () => {
       </Heading>
 
       <Grid templateColumns="repeat(12, 1fr)" gridAutoRows="1fr" gap={12}>
-        <GridItem colSpan={6}>
+        <GridItem colSpan={[12, null, 6]}>
           <Warchest />
         </GridItem>
-        <GridItem colSpan={6}>
+        <GridItem colSpan={[12, null, 6]}>
           <CommunityFund />
         </GridItem>
       </Grid>

@@ -1,10 +1,18 @@
 import React, { FC, useCallback } from "react";
-import { Box, HStack, chakra, Button, Text } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  chakra,
+  Button,
+  Text,
+  Flex,
+  Heading,
+} from "@chakra-ui/react";
 import { TxStep, useBalance } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 
-import useFeeToString from "hooks/useFeeToString";
+import { useFeeToString } from "hooks/useFeeToString";
 import { toAmount } from "libs/parse";
 import { useWithdraw } from "modules/vault";
 
@@ -68,50 +76,62 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      <Box width="full">
-        <Controller
-          name="token"
-          control={control}
-          render={({ field }) => (
-            <AmountInput initialBalance={balance} {...field} />
-          )}
-        />
-      </Box>
+      <Box
+        border="2px"
+        borderColor="whiteAlpha.200"
+        borderRadius="3xl"
+        px="4"
+        py="8"
+      >
+        <Flex justify="center" mt="-12" mb="8">
+          <Box bg="rgba(26,26,26,1)" px="8">
+            <Heading size="md">Widthdraw</Heading>
+          </Box>
+        </Flex>
 
-      <Box mt="4">
-        <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-      </Box>
+        <Box width="85%" margin="0 auto">
+          <Controller
+            name="token"
+            control={control}
+            render={({ field }) => (
+              <AmountInput initialBalance={balance} {...field} />
+            )}
+          />
 
-      {withdrawState.error && (
-        <Box
-          my="6"
-          color="red.500"
-          borderColor="red.500"
-          borderWidth="1px"
-          px="4"
-          py="2"
-          borderRadius="2xl"
-        >
-          <Text>{withdrawState.error}</Text>
+          <Flex mt="8" justify="center">
+            <Box mb="4">
+              <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+            </Box>
+          </Flex>
         </Box>
-      )}
 
-      <HStack spacing="6" width="full" mt="8">
-        <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
-          Cancel
-        </Button>
+        {withdrawState.error && (
+          <Box
+            my="6"
+            color="red.500"
+            borderColor="red.500"
+            borderWidth="1px"
+            px="4"
+            py="2"
+            borderRadius="2xl"
+          >
+            <Text>{withdrawState.error}</Text>
+          </Box>
+        )}
 
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          flex="1"
-          isLoading={withdrawState.txStep == TxStep.Estimating}
-          disabled={withdrawState.txStep != TxStep.Ready}
-        >
-          Confirm
-        </Button>
-      </HStack>
+        <Flex mt="4" justify="center">
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            px="12"
+            isLoading={withdrawState.txStep == TxStep.Estimating}
+            disabled={withdrawState.txStep != TxStep.Ready}
+          >
+            Witdhraw
+          </Button>
+        </Flex>
+      </Box>
     </chakra.form>
   );
 };

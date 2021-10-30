@@ -1,12 +1,20 @@
 import React, { FC, useCallback } from "react";
-import { Box, HStack, chakra, Button, Text } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  chakra,
+  Flex,
+  Button,
+  Text,
+  Heading,
+} from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 
 import { toAmount, format } from "libs/parse";
 import { useDeposit } from "modules/vault";
 import useDebounceValue from "hooks/useDebounceValue";
-import useFeeToString from "hooks/useFeeToString";
+import { useFeeToString } from "hooks/useFeeToString";
 
 import AmountInput from "components/AmountInput";
 import LoadingForm from "components/LoadingForm";
@@ -68,59 +76,72 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   }
 
   return (
-    <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      <Box width="full">
-        <Controller
-          name="token"
-          control={control}
-          render={({ field }) => <AmountInput {...field} />}
-        />
-      </Box>
+    <chakra.form onSubmit={handleSubmit(submit)} width="full" py="6" pt="16">
+      <Box
+        border="2px"
+        borderColor="whiteAlpha.200"
+        borderRadius="3xl"
+        px="4"
+        py="8"
+      >
+        <Flex justify="center" mt="-12" mb="8">
+          <Box bg="rgba(26,26,26,1)" px="8">
+            <Heading size="md">Deposit</Heading>
+          </Box>
+        </Flex>
 
-      <Box mt="4">
-        <Box mb="4">
-          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-        </Box>
-        {depositState.txStep == TxStep.Ready && (
-          <InlineStat
-            label="Minimum Deposit Amount"
-            value={`${
-              format(depositState.depositedAmount, "uusd") || "0.00"
-            } UST`}
+        <Box width="85%" margin="0 auto">
+          <Controller
+            name="token"
+            control={control}
+            render={({ field }) => <AmountInput {...field} />}
           />
-        )}
-      </Box>
 
-      {depositState.error && (
-        <Box
-          my="6"
-          color="red.500"
-          borderColor="red.500"
-          borderWidth="1px"
-          px="4"
-          py="2"
-          borderRadius="2xl"
-        >
-          <Text>{depositState.error}</Text>
+          <Flex mt="8" justify="center">
+            <Box mb="4">
+              <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+            </Box>
+            {/* {depositState.txStep == TxStep.Ready && (
+            <InlineStat
+              label="Minimum Deposit Amount"
+              value={`${
+                format(depositState.depositedAmount, "uusd") || "0.00"
+              } UST`}
+            />
+          )} */}
+          </Flex>
         </Box>
-      )}
 
-      <HStack spacing="6" width="full" mt="8">
-        <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
+        {depositState.error && (
+          <Box
+            my="6"
+            color="red.500"
+            borderColor="red.500"
+            borderWidth="1px"
+            px="4"
+            py="2"
+            borderRadius="2xl"
+          >
+            <Text>{depositState.error}</Text>
+          </Box>
+        )}
+
+        {/* <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
           Cancel
-        </Button>
-
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          flex="1"
-          isLoading={depositState.txStep == TxStep.Estimating}
-          disabled={depositState.txStep != TxStep.Ready}
-        >
-          Confirm
-        </Button>
-      </HStack>
+        </Button> */}
+        <Flex mt="4" justify="center">
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            px="12"
+            isLoading={depositState.txStep == TxStep.Estimating}
+            disabled={depositState.txStep != TxStep.Ready}
+          >
+            Deposit UST
+          </Button>
+        </Flex>
+      </Box>
     </chakra.form>
   );
 };

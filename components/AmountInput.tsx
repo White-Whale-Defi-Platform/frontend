@@ -59,10 +59,11 @@ const AmountInput: FC<Props> = forwardRef(
             {initialBalance == null && <Balance asset={value.asset} />}
             {initialBalance != null && (
               <Text ml="6">
-                <Text as="span" variant="light">
+                <Text as="span" variant="light" color="white" fontSize="xs">
                   Available:
                 </Text>{" "}
-                <Text as="span" fontSize="sm" fontWeight="500">
+                <Text as="span" fontSize="xs" fontWeight="700" ml="3">
+                  {fromTerraAmount(initialBalance, "0,0.0[00]")}
                   {fromTerraAmount(initialBalance, "0.000")}
                 </Text>
               </Text>
@@ -78,7 +79,10 @@ const AmountInput: FC<Props> = forwardRef(
             onBlur={onBlur}
             {...field}
           >
-            <NumberInputField placeholder="0.0" />
+            <NumberInputField
+              placeholder="0.0"
+              _placeholder={{ color: "whiteAlpha.300" }}
+            />
           </NumberInput>
           <Flex
             position="absolute"

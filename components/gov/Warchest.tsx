@@ -95,60 +95,67 @@ const Warchest = () => {
   };
 
   return (
-    <Card noPadding>
-      <Flex justify="space-between" align="center" pt="8" px="8">
-        <HStack spacing="4">
-          <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
-          <Text color="#fff" fontSize="2xl" fontWeight="700">
-            War Chest
-          </Text>
-        </HStack>
-        <SimpleStat
-          value={fromTerraAmount(warchest.totalInUst)}
-          asset="UST"
-          fontSizeValue="2xl"
-          fontSizeAsset="xl"
-        />
-      </Flex>
-
-      <Flex align="center" py="12" px="8">
-        <Box w="35%">
-          <Doughnut data={formattedData} options={options} />
-        </Box>
-        <Flex ml="16" flexWrap="wrap" gridGap="8">
-          {data.map((item) => (
-            <AssetLine key={item.label} data={item} />
-          ))}
-        </Flex>
-      </Flex>
-
-      <HStack bg="blackAlpha.400" px="8" py="2">
-        <Box flex="1">
-          <Flex justify="space-between">
-            <Text>APY</Text>
-            <Text color="brand.500" fontWeight="600">
-              18.2%
+    <Card noPadding h="full">
+      <Flex direction="column" justify="space-between" h="full">
+        <Flex justify="space-between" align="center" pt="8" px="8">
+          <HStack spacing="4">
+            <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
+            <Text color="#fff" fontSize="2xl" fontWeight="700">
+              War Chest
             </Text>
-          </Flex>
-          <Divider borderColor="rgba(255, 255, 255, 0.1)" my="2" />
-          <Flex justify="space-between">
-            <Text>My Deposit</Text>
-            <Text color="brand.500" fontWeight="600">
-              {fromTerraAmount(stakedAmount, "0.00a")} WHALE
-            </Text>
-          </Flex>
-        </Box>
-        <Center h="14" px="6">
-          <Divider
-            orientation="vertical"
-            borderColor="rgba(255, 255, 255, 0.1)"
+          </HStack>
+          <SimpleStat
+            value={fromTerraAmount(warchest.totalInUst)}
+            asset="UST"
+            fontSizeValue="2xl"
+            fontSizeAsset="xl"
           />
-        </Center>
-        <HStack flex="1" spacing="4">
-          <UnstakeModal />
-          <StakeModal />
+        </Flex>
+
+        <Flex direction={["column", null, "row"]} align="center" py="12" px="8">
+          <Box w={[null, null, "35%"]}>
+            <Doughnut data={formattedData} options={options} />
+          </Box>
+          <Flex
+            ml={[null, null, "16"]}
+            mt={["4", null, "0"]}
+            flexWrap="wrap"
+            gridGap="8"
+          >
+            {data.map((item) => (
+              <AssetLine key={item.label} data={item} />
+            ))}
+          </Flex>
+        </Flex>
+
+        <HStack bg="blackAlpha.400" px="8" py="2">
+          <Box flex="1">
+            <Flex justify="space-between">
+              <Text>APY</Text>
+              <Text color="brand.500" fontWeight="600">
+                18.2%
+              </Text>
+            </Flex>
+            <Divider borderColor="rgba(255, 255, 255, 0.1)" my="2" />
+            <Flex justify="space-between">
+              <Text>My Deposit</Text>
+              <Text color="brand.500" fontWeight="600">
+                {fromTerraAmount(stakedAmount, "0.00a")} WHALE
+              </Text>
+            </Flex>
+          </Box>
+          <Center h="14" px="6">
+            <Divider
+              orientation="vertical"
+              borderColor="rgba(255, 255, 255, 0.1)"
+            />
+          </Center>
+          <HStack flex="1" spacing="4">
+            <UnstakeModal />
+            <StakeModal />
+          </HStack>
         </HStack>
-      </HStack>
+      </Flex>
     </Card>
   );
 };

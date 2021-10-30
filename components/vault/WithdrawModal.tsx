@@ -3,16 +3,12 @@ import {
   Modal,
   ModalOverlay,
   Button,
-  Text,
   ModalContent,
-  Flex,
   ModalBody,
   ModalCloseButton,
-  Heading,
   useDisclosure,
 } from "@chakra-ui/react";
 
-import ArrowDownIcon from "components/icons/ArrowDownIcon";
 import WithdrawForm from "components/vault/WithdrawForm";
 
 type Props = {
@@ -33,18 +29,12 @@ const WithdrawModal: FC<Props> = ({ vault }) => {
       >
         Withdraw
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Flex align="center" direction="column">
-              <Heading size="md" mb="4">
-                Withdraw asset
-              </Heading>
-
-              <WithdrawForm token="uusd" vault={vault} onClose={onClose} />
-            </Flex>
+            <WithdrawForm token="uusd" vault={vault} onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
