@@ -10,6 +10,7 @@ import SimpleStat from "components/SimpleStat";
 import ChartVault from "components/vault/chart/ChartVault";
 import DepositModal from "components/vault/DepositModal";
 import WithdrawModal from "components/vault/WithdrawModal";
+import useVaultApy from "hooks/useVaultApy";
 
 type Props = {
   data: any;
@@ -46,6 +47,8 @@ const VaultItem: FC<Props> = ({ data }) => {
   const totalBalanceAmount = format(totalBalance, "uusd");
   const ustPrice = useUstPrice();
   const isComing = data.contract == null;
+  const apy = useVaultApy();
+  const apyInPercent = (apy * 100).toFixed(2);
 
   return (
     <Card
@@ -71,7 +74,7 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APY" value="--" asset="%" />
+            <VaultItemLine label="APY" value={apyInPercent} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
