@@ -171,7 +171,6 @@ const SwapForm: FC = () => {
 
   if (swapState.txStep == TxStep.Success) {
     return (
-      //@ts-expect-error
       <SwapFormSuccess txInfo={swapState.txInfo} onClick={swapState.reset} />
     );
   }

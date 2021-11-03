@@ -36,6 +36,7 @@ export const useUnstake = ({ amount, onSuccess }: Params) => {
   }, [address, amount, whaleUstStaking]);
 
   const state = useTransaction({
+    // @ts-expect-error
     msgs,
     onSuccess,
   });

@@ -64,6 +64,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     withdrawState.withdraw();
   };
 
+  // @ts-expect-error
   const feeString = useFeeToString(withdrawState.fee);
 
   if (withdrawState.txStep == TxStep.Posting) {

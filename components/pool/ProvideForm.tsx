@@ -151,6 +151,7 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
     provideState.provideLiquidity();
   };
 
+  // @ts-expect-error
   const feeString = useFeeToString(provideState.fee);
 
   if (provideState.txStep == TxStep.Posting) {

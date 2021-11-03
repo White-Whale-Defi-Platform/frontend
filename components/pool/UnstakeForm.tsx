@@ -59,6 +59,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
     state.submit();
   };
 
+  // @ts-expect-error
   const feeString = useFeeToString(state.fee);
 
   if (state.txStep == TxStep.Posting) {

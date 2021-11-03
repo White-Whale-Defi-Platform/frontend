@@ -26,6 +26,7 @@ export const useStake = ({ lpTokenContract, amount, onSuccess }: Params) => {
   }, [address, lpTokenContract, amount, whaleUstStaking]);
 
   return useTransaction({
+    // @ts-expect-error
     msgs,
     onSuccess,
   });

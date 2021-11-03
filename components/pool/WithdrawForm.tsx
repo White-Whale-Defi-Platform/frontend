@@ -76,6 +76,7 @@ const WithdrawForm: FC<Props> = ({
     withdrawState.withdraw();
   };
 
+  // @ts-expect-error
   const feeString = useFeeToString(withdrawState.fee);
 
   const renderToken = (token) => {

@@ -39,13 +39,14 @@ export const useProvide = ({
         pool,
         coin1: new Coin(token1, amount1),
         coin2: new Coin(token2, amount2),
-        slippage: "0.5",
+        slippage: "0.1",
       },
       address
     );
   }, [address, contract, pool, token1, token2, amount1, amount2]);
 
   const { submit, ...rest } = useTransaction({
+    // @ts-expect-error
     msgs,
     onSuccess,
     onError,

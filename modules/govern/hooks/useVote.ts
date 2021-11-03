@@ -37,6 +37,7 @@ export const useVote = ({
   }, [address, govContract, vote, pollId, amount]);
 
   const { submit, ...rest } = useTransaction({
+    // @ts-expect-error
     msgs,
     onSuccess,
   });
