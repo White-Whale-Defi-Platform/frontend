@@ -64,7 +64,6 @@ const AmountInput: FC<Props> = forwardRef(
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
                   {fromTerraAmount(initialBalance, "0,0.0[00]")}
-                  {fromTerraAmount(initialBalance, "0.000")}
                 </Text>
               </Text>
             )}

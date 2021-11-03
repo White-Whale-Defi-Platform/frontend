@@ -23,7 +23,7 @@ export const useGetStakerInfo = ({ stakingContract, address }: Params) => {
       return client.wasm.contractQuery<Response>(stakingContract, {
         staker_info: {
           staker: address,
-          time_seconds: time,
+          timestamp: time,
         },
       });
     },

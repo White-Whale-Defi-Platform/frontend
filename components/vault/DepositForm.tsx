@@ -54,7 +54,7 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     onClose();
   }, [onClose, queryClient]);
 
-  const depositState = useDeposit({
+  const state = useDeposit({
     token: token.asset,
     contract: vault.contract_addr,
     amount: toAmount(debouncedAmount),
@@ -62,17 +62,18 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   });
 
   const submit = async () => {
-    depositState.deposit();
+    state.deposit();
   };
 
-  const feeString = useFeeToString(depositState.fee);
+  // @ts-expect-error
+  const feeString = useFeeToString(state.fee);
 
-  if (depositState.txStep == TxStep.Posting) {
+  if (state.txStep == TxStep.Posting) {
     return <PendingForm />;
   }
 
-  if (depositState.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={depositState.txHash} />;
+  if (state.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state.txHash} />;
   }
 
   return (
@@ -101,18 +102,18 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             <Box mb="4">
               <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
             </Box>
-            {/* {depositState.txStep == TxStep.Ready && (
+            {/* {state.txStep == TxStep.Ready && (
             <InlineStat
               label="Minimum Deposit Amount"
               value={`${
-                format(depositState.depositedAmount, "uusd") || "0.00"
+                format(state.depositedAmount, "uusd") || "0.00"
               } UST`}
             />
           )} */}
           </Flex>
         </Box>
 
-        {depositState.error && (
+        {state.error && (
           <Box
             my="6"
             color="red.500"
@@ -122,7 +123,7 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             py="2"
             borderRadius="2xl"
           >
-            <Text>{depositState.error}</Text>
+            <Text>{state.error}</Text>
           </Box>
         )}
 
@@ -135,8 +136,8 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             variant="primary"
             size="md"
             px="12"
-            isLoading={depositState.txStep == TxStep.Estimating}
-            disabled={depositState.txStep != TxStep.Ready}
+            isLoading={state.txStep == TxStep.Estimating}
+            disabled={state.txStep != TxStep.Ready}
           >
             Deposit UST
           </Button>

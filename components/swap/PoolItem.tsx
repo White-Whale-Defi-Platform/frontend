@@ -5,6 +5,8 @@ import { fromTerraAmount } from "@arthuryeti/terra";
 import Card from "components/Card";
 import ProvideModal from "components/pool/ProvideModal";
 import WithdrawModal from "components/pool/WithdrawModal";
+import UnstakeModal from "components/pool/UnstakeModal";
+import StakeModal from "components/pool/StakeModal";
 import { usePool } from "modules/pool";
 
 type Props = {
@@ -85,15 +87,24 @@ const PoolItem: FC<Props> = ({
             --
           </Text>
         </Flex>
-        <Box mt="6">
-          <WithdrawModal
-            pairContract={pairContract}
-            lpTokenContract={lpTokenContract}
-          />
-        </Box>
-        <Box mt="4">
-          <ProvideModal pool={pool} pairContract={pairContract} />
-        </Box>
+        <HStack mt="6">
+          <Box flex="1">
+            <Box mb="3">
+              <WithdrawModal
+                pairContract={pairContract}
+                lpTokenContract={lpTokenContract}
+              />
+            </Box>
+            <ProvideModal pool={pool} pairContract={pairContract} />
+          </Box>
+          <Box flex="1">
+            <Box mb="3">
+              <UnstakeModal />
+            </Box>
+            <StakeModal lpTokenContract={lpTokenContract} />
+          </Box>
+        </HStack>
+        <Box mt="4"></Box>
       </Box>
     </Card>
   );
