@@ -14,7 +14,7 @@ const Vaults = () => {
       logo: "/ust.png",
     },
     {
-      contract: "dss",
+      contract: null,
       name: "LUNA",
       logo: "/terraCrypto.png",
     },

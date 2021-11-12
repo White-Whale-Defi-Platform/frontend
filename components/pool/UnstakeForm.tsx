@@ -72,48 +72,35 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      <Box
-        border="2px"
-        borderColor="whiteAlpha.200"
-        borderRadius="3xl"
-        px="4"
-        py="8"
-      >
-        <Flex justify="center" mt="-12" mb="8">
-          <Box bg="rgba(26,26,26,1)" px="8">
-            <Heading size="md">Unstake</Heading>
-          </Box>
-        </Flex>
-        <Box width="full" mt="8">
-          <Controller
-            name="token"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <AmountInput initialBalance={state.staked} {...field} />
-            )}
-          />
-        </Box>
-
-        <Flex mt="8" justify="center">
-          <Box mb="4">
-            <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-          </Box>
-        </Flex>
-
-        <Flex mt="4" justify="center">
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            px="12"
-            isLoading={state.txStep == TxStep.Estimating}
-            isDisabled={state.txStep != TxStep.Ready}
-          >
-            Unstake WHALE-UST
-          </Button>
-        </Flex>
+      <Box width="full" mt="8">
+        <Controller
+          name="token"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <AmountInput initialBalance={state.staked} {...field} />
+          )}
+        />
       </Box>
+
+      <Flex mt="8" justify="center">
+        <Box mb="4">
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        </Box>
+      </Flex>
+
+      <Flex mt="4" justify="center">
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          px="12"
+          isLoading={state.txStep == TxStep.Estimating}
+          isDisabled={state.txStep != TxStep.Ready}
+        >
+          Unstake WHALE-UST
+        </Button>
+      </Flex>
     </chakra.form>
   );
 };

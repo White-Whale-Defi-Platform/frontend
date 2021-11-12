@@ -1,4 +1,4 @@
-export default {
+const style = {
   baseStyle: {
     tabpanel: {
       padding: "0",
@@ -6,6 +6,32 @@ export default {
     },
   },
   variants: {
+    brand: {
+      tablist: {
+        bg: "rgba(26,26,26,1)",
+        px: "8",
+        justifyContent: "center",
+        mt: "-14",
+        gap: "1rem",
+        width: "fit-content",
+        mx: "auto",
+      },
+      tab: {
+        fontWeight: "700",
+        color: "whiteAlpha.600",
+        fontSize: "lg",
+        _selected: {
+          color: "white",
+        },
+        _focus: {
+          boxShadow: "none",
+          outline: "none",
+        },
+      },
+      tabpanel: {
+        pt: 0,
+      },
+    },
     "soft-rounded": {
       tablist: {
         gap: "1rem",
@@ -30,3 +56,5 @@ export default {
     },
   },
 };
+
+export default style;

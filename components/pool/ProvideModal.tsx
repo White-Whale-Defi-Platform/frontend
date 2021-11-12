@@ -1,30 +1,34 @@
 import React, { FC } from "react";
 import {
+  Box,
+  Text,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
   Modal,
   ModalOverlay,
   Button,
-  Text,
   ModalContent,
-  Flex,
   ModalBody,
   ModalCloseButton,
-  Heading,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useTokenInfo } from "@arthuryeti/terraswap";
 
-import PlusIcon from "components/icons/PlusIcon";
 import ProvideForm from "components/pool/ProvideForm";
+import WithdrawForm from "components/pool/WithdrawForm";
 import { Pool } from "types/common";
 
 type Props = {
   pairContract: string;
+  lpTokenContract: string;
   pool: Pool & { token1: string; token2: string };
 };
 
-const ProvideModal: FC<Props> = ({ pairContract, pool }) => {
+const ProvideModal: FC<Props> = ({ pairContract, lpTokenContract, pool }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getSymbol } = useTokenInfo();
 
   return (
     <>
@@ -35,28 +39,43 @@ const ProvideModal: FC<Props> = ({ pairContract, pool }) => {
         onClick={onOpen}
         isFullWidth
       >
-        Provide
+        Pool
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Flex align="center" direction="column">
-              <Heading size="md" mb="4">
-                Provide
-              </Heading>
-              <Text variant="light" textAlign="center" fontWeight="500">
-                Supply {getSymbol(pool.token1)} & {getSymbol(pool.token2)} to LP
-                pool in 50/50 proportion.
-              </Text>
-
-              <ProvideForm
-                pairContract={pairContract}
-                pool={pool}
-                onClose={onClose}
-              />
-            </Flex>
+            <Box
+              border="2px"
+              borderColor="whiteAlpha.200"
+              borderRadius="3xl"
+              px="4"
+              py="8"
+            >
+              <Tabs variant="brand">
+                <TabList justify="center">
+                  <Tab>Provide</Tab>
+                  <Tab>Withdraw</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <ProvideForm
+                      pairContract={pairContract}
+                      pool={pool}
+                      onClose={onClose}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <WithdrawForm
+                      pairContract={pairContract}
+                      lpTokenContract={lpTokenContract}
+                      onClose={onClose}
+                    />
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>

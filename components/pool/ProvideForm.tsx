@@ -84,7 +84,7 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
     [onClose]
   );
 
-  const provideState = useProvide({
+  const state = useProvide({
     contract: pairContract,
     pool: pool,
     token1: token1.asset,
@@ -148,18 +148,18 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
   }, [token2.amount]);
 
   const submit = async () => {
-    provideState.provideLiquidity();
+    state.provideLiquidity();
   };
 
   // @ts-expect-error
-  const feeString = useFeeToString(provideState.fee);
+  const feeString = useFeeToString(state.fee);
 
-  if (provideState.txStep == TxStep.Posting) {
+  if (state.txStep == TxStep.Posting) {
     return <PendingForm />;
   }
 
-  if (provideState.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={provideState.txHash} />;
+  if (state.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state.txHash} />;
   }
 
   return (
@@ -173,7 +173,7 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
         />
       </Box>
 
-      <Flex justify="center" color="brand.600" my="6">
+      <Flex justify="center" color="whiteAlpha.300" my="6">
         <PlusCircleIcon />
       </Flex>
 
@@ -186,11 +186,13 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
         />
       </Box>
 
-      <Box mt="4">
-        <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-      </Box>
+      <Flex mt="8" justify="center">
+        <Box mb="4">
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        </Box>
+      </Flex>
 
-      {provideState.error && (
+      {state.error && (
         <Box
           my="6"
           color="red.500"
@@ -200,26 +202,22 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
           py="2"
           borderRadius="2xl"
         >
-          <Text>{provideState.error}</Text>
+          <Text>{state.error}</Text>
         </Box>
       )}
 
-      <HStack spacing="6" width="full" mt="8">
-        <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
-          Cancel
-        </Button>
-
+      <Flex mt="4" justify="center">
         <Button
           type="submit"
           variant="primary"
-          size="lg"
-          flex="1"
-          isLoading={provideState.txStep == TxStep.Estimating}
-          isDisabled={provideState.txStep != TxStep.Ready}
+          size="md"
+          px="12"
+          isLoading={state.txStep == TxStep.Estimating}
+          isDisabled={state.txStep != TxStep.Ready}
         >
-          Confirm
+          Provide
         </Button>
-      </HStack>
+      </Flex>
     </chakra.form>
   );
 };

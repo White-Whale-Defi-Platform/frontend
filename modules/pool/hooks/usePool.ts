@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAddress, useBalance } from "@arthuryeti/terra";
+import { num, useAddress, useBalance } from "@arthuryeti/terra";
 import {
   getTokenDenom,
   useTokenPriceInUst,
@@ -38,6 +38,14 @@ export const usePool: any = ({
     return stakerInfo.bond_amount;
   }, [stakerInfo]);
 
+  const rewards = useMemo(() => {
+    if (stakerInfo == null) {
+      return "0.00";
+    }
+
+    return stakerInfo.pending_reward;
+  }, [stakerInfo]);
+
   const token1 = useMemo(() => {
     if (pool == null) {
       return null;
@@ -62,13 +70,16 @@ export const usePool: any = ({
       token1Price == null ||
       token2Price == null ||
       balance == null ||
+      stakerInfo == null ||
       pool == null
     ) {
       return "0.00";
     }
 
-    return calculateSharePrice(pool, balance, token1Price, token2Price);
-  }, [pool, balance, token1Price, token2Price]);
+    const amount = num(stakerInfo.bond_amount).plus(balance).toString();
+
+    return calculateSharePrice(pool, amount, token1Price, token2Price);
+  }, [pool, balance, token1Price, stakerInfo, token2Price]);
 
   const tokenAmounts = useLpToTokens({
     pool,
@@ -82,6 +93,7 @@ export const usePool: any = ({
   return {
     ...pool,
     staked,
+    rewards,
     myShareInUST,
     totalShareInUST,
     tokenAmounts,

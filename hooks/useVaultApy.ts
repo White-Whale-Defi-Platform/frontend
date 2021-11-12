@@ -18,8 +18,7 @@ export const useVaultApy = () => {
   });
 
   return useMemo(() => {
-    console.log(data);
-    if (data == null) {
+    if (data == null || data.vault == null) {
       return "0";
     }
 

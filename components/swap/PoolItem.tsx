@@ -1,11 +1,9 @@
 import React, { FC } from "react";
-import { Box, Button, HStack, Flex, Text, Image } from "@chakra-ui/react";
+import { Box, HStack, Flex, Text, Image } from "@chakra-ui/react";
 import { fromTerraAmount } from "@arthuryeti/terra";
 
 import Card from "components/Card";
 import ProvideModal from "components/pool/ProvideModal";
-import WithdrawModal from "components/pool/WithdrawModal";
-import UnstakeModal from "components/pool/UnstakeModal";
 import StakeModal from "components/pool/StakeModal";
 import { usePool } from "modules/pool";
 
@@ -14,6 +12,7 @@ type Props = {
   asset: string;
   pairContract: string;
   lpTokenContract: string;
+  stakingContract: string;
 };
 
 const PoolItem: FC<Props> = ({
@@ -21,10 +20,12 @@ const PoolItem: FC<Props> = ({
   asset,
   pairContract,
   lpTokenContract,
+  stakingContract,
 }) => {
   const pool = usePool({
     pairContract,
     lpTokenContract,
+    stakingContract,
   });
 
   return (
@@ -70,41 +71,41 @@ const PoolItem: FC<Props> = ({
           </Text>
         </Flex> */}
         <Flex justify="space-between" mb="4">
-          <Text>Total provided</Text>
+          <Text>Liquidity</Text>
           <Text color="brand.500" fontWeight="700">
             {fromTerraAmount(pool.totalShareInUST)} UST
           </Text>
         </Flex>
         <Flex justify="space-between" mb="4">
-          <Text>Provided</Text>
+          <Text>My Staked</Text>
           <Text color="brand.500" fontWeight="700">
             {fromTerraAmount(pool.myShareInUST)} UST
           </Text>
         </Flex>
-        <Flex justify="space-between">
-          <Text>APY</Text>
+        <Flex justify="space-between" mb="4">
+          <Text>APR</Text>
           <Text color="brand.500" fontWeight="700">
             --
           </Text>
         </Flex>
+        <Flex justify="space-between">
+          <Text>My Rewards</Text>
+          <Text color="brand.500" fontWeight="700">
+            {fromTerraAmount(pool.rewards)} WHALE
+          </Text>
+        </Flex>
         <HStack mt="6">
           <Box flex="1">
-            <Box mb="3">
-              <WithdrawModal
-                pairContract={pairContract}
-                lpTokenContract={lpTokenContract}
-              />
-            </Box>
-            <ProvideModal pool={pool} pairContract={pairContract} />
+            <ProvideModal
+              pool={pool}
+              lpTokenContract={lpTokenContract}
+              pairContract={pairContract}
+            />
           </Box>
           <Box flex="1">
-            <Box mb="3">
-              <UnstakeModal />
-            </Box>
             <StakeModal lpTokenContract={lpTokenContract} />
           </Box>
         </HStack>
-        <Box mt="4"></Box>
       </Box>
     </Card>
   );

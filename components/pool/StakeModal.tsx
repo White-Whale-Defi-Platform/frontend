@@ -1,5 +1,13 @@
 import React, { FC } from "react";
 import {
+  Box,
+  Flex,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Heading,
   Modal,
   ModalOverlay,
   Button,
@@ -10,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 
 import StakeForm from "components/pool/StakeForm";
+import UnstakeForm from "components/pool/UnstakeForm";
 
 type Props = {
   lpTokenContract: string;
@@ -34,7 +43,31 @@ const StakeModal: FC<Props> = ({ lpTokenContract }) => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <StakeForm lpTokenContract={lpTokenContract} onClose={onClose} />
+            <Box
+              border="2px"
+              borderColor="whiteAlpha.200"
+              borderRadius="3xl"
+              px="4"
+              py="8"
+            >
+              <Tabs variant="brand">
+                <TabList justify="center">
+                  <Tab>Stake</Tab>
+                  <Tab>Unstake</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <StakeForm
+                      lpTokenContract={lpTokenContract}
+                      onClose={onClose}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <UnstakeForm onClose={onClose} />
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>

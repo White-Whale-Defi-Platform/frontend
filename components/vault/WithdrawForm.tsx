@@ -53,7 +53,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     onClose();
   }, [onClose, queryClient]);
 
-  const withdrawState = useWithdraw({
+  const state = useWithdraw({
     lpToken: vault.liquidity_token,
     contract: vault.contract_addr,
     amount: toAmount(token.amount),
@@ -61,19 +61,21 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   });
 
   const submit = async () => {
-    withdrawState.withdraw();
+    state.withdraw();
   };
 
   // @ts-expect-error
-  const feeString = useFeeToString(withdrawState.fee);
+  const feeString = useFeeToString(state.fee);
 
-  if (withdrawState.txStep == TxStep.Posting) {
+  if (state.txStep == TxStep.Posting) {
     return <PendingForm />;
   }
 
-  if (withdrawState.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={withdrawState.txHash} />;
+  if (state.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state.txHash} />;
   }
+
+  console.log(state);
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
@@ -106,7 +108,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
           </Flex>
         </Box>
 
-        {withdrawState.error && (
+        {state.error && (
           <Box
             my="6"
             color="red.500"
@@ -116,7 +118,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             py="2"
             borderRadius="2xl"
           >
-            <Text>{withdrawState.error}</Text>
+            <Text>{state.error}</Text>
           </Box>
         )}
 
@@ -126,8 +128,8 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             variant="primary"
             size="md"
             px="12"
-            isLoading={withdrawState.txStep == TxStep.Estimating}
-            disabled={withdrawState.txStep != TxStep.Ready}
+            isLoading={state.txStep == TxStep.Estimating}
+            disabled={state.txStep != TxStep.Ready}
           >
             Witdhraw
           </Button>

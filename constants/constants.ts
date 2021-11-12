@@ -1,6 +1,6 @@
 /* terra */
 export const FINDER = "https://finder.terra.money";
-export const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL;
+export const GRAPHQL_URL = process.env.NEXT_PUBLIC_TESTNET_GRAPHQL_URL;
 
 /* terra:unit */
 export const SMALLEST = 1e6;

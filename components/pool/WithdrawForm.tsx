@@ -65,7 +65,7 @@ const WithdrawForm: FC<Props> = ({
     [onClose, queryClient]
   );
 
-  const withdrawState = useWithdraw({
+  const state = useWithdraw({
     pairContract,
     lpTokenContract,
     amount: toAmount(debouncedAmount1),
@@ -73,16 +73,14 @@ const WithdrawForm: FC<Props> = ({
   });
 
   const submit = async () => {
-    withdrawState.withdraw();
+    state.withdraw();
   };
 
   // @ts-expect-error
-  const feeString = useFeeToString(withdrawState.fee);
+  const feeString = useFeeToString(state.fee);
 
   const renderToken = (token) => {
-    const amount = num(withdrawState.tokenAmounts[token])
-      .div(ONE_TOKEN)
-      .toFormat();
+    const amount = num(state.tokenAmounts[token]).div(ONE_TOKEN).toFormat();
 
     return (
       <Flex justify="space-between">
@@ -102,12 +100,12 @@ const WithdrawForm: FC<Props> = ({
     );
   };
 
-  if (withdrawState.txStep == TxStep.Posting) {
+  if (state.txStep == TxStep.Posting) {
     return <PendingForm />;
   }
 
-  if (withdrawState.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={withdrawState.txHash} />;
+  if (state.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state.txHash} />;
   }
 
   return (
@@ -121,33 +119,31 @@ const WithdrawForm: FC<Props> = ({
         />
       </Box>
 
-      {withdrawState.tokenAmounts && (
+      {state.tokenAmounts && (
         <Box py="3" my="6" bg="blackAlpha.300" px="4" borderRadius="2xl">
-          <Box mb="4">{renderToken(withdrawState.token1)}</Box>
-          {renderToken(withdrawState.token2)}
+          <Box mb="4">{renderToken(state.token1)}</Box>
+          {renderToken(state.token2)}
         </Box>
       )}
 
-      <Box mt="4">
-        <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-      </Box>
+      <Flex mt="8" justify="center">
+        <Box mb="4">
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        </Box>
+      </Flex>
 
-      <HStack spacing="6" width="full" mt="8">
-        <Button variant="secondary" size="lg" flex="1" onClick={onClose}>
-          Cancel
-        </Button>
-
+      <Flex mt="4" justify="center">
         <Button
           type="submit"
           variant="primary"
-          size="lg"
-          flex="1"
-          isLoading={withdrawState.txStep == TxStep.Estimating}
-          isDisabled={withdrawState.txStep != TxStep.Ready}
+          size="md"
+          px="12"
+          isLoading={state.txStep == TxStep.Estimating}
+          isDisabled={state.txStep != TxStep.Ready}
         >
-          Confirm
+          Withdraw
         </Button>
-      </HStack>
+      </Flex>
     </chakra.form>
   );
 };

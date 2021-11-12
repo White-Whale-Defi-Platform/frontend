@@ -55,12 +55,7 @@ export const useWithdraw = ({
       return "0";
     }
 
-    return numeral("1000000")
-      .multiply(pool.total_value_in_ust)
-      .divide(pool.total_share)
-      .value()
-      .toFixed()
-      .toString();
+    return numeral(pool.total_value_in_ust).divide(pool.total_share).value();
   }, [balData, pool]);
 
   const msgs = useMemo(() => {
