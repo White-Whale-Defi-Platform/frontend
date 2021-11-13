@@ -38,9 +38,9 @@ const defaultContracts: { [key: string]: any } = {
   testnet: {
     wallet: "terra1lzquc5em3qrz6e2uyp9se60un4e7wnpf5yvz97",
     aUstToken: "terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl",
-    whaleToken: "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",
+    whaleToken: "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m",
     ustVault: "terra1w0yhdc3atmrpgxz5gq66xltu8t6ez8r9dazvvx",
-    ustVaultLpToken: "terra1569qzpg7j9e80c7q24vy0yz55fz2ednfkygaa8",
+    ustVaultLpToken: "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
     lunaUstPair: "terra156v8s539wtz0sjpn8y8a8lfg8fhmwa7fy22aff",
     whaleUstPair: "terra1xq3v5rp0w84ugqesv9m5q3xdx04akacsdlk5z7",
     whaleUstLpToken: "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv",
