@@ -65,10 +65,10 @@
         "token": "uusd",
         "icon": "https://whitelist.mirror.finance/images/UST.png"
       },
-      "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh": {
+      "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m": {
         "protocol": "WhiteWhale",
         "symbol": "WHALE",
-        "token": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh",
+        "token": "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m",
         "icon": "/whale.svg"
       },
       "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv": {
@@ -101,7 +101,7 @@
         "asset_infos": [
           {
             "token": {
-              "contract_addr": "terra1k8pgyyxde6y893kjfqhtw7q0uttn68th60d6gh"
+              "contract_addr": "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m"
             }
           },
           {

@@ -75,8 +75,6 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     return <LoadingForm txHash={state.txHash} />;
   }
 
-  console.log(state);
-
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
       <Box
@@ -88,7 +86,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
       >
         <Flex justify="center" mt="-12" mb="8">
           <Box bg="rgba(26,26,26,1)" px="8">
-            <Heading size="md">Widthdraw</Heading>
+            <Heading size="md">Withdraw</Heading>
           </Box>
         </Flex>
 
