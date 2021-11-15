@@ -6,6 +6,7 @@ import Card from "components/Card";
 import ProvideModal from "components/pool/ProvideModal";
 import StakeModal from "components/pool/StakeModal";
 import { usePool } from "modules/pool";
+import ClaimPoolRewardModal from "components/pool/ClaimPoolRewardModal";
 
 type Props = {
   label: string;
@@ -95,6 +96,9 @@ const PoolItem: FC<Props> = ({
           </Text>
         </Flex>
         <HStack mt="6">
+          <Box flex="1">
+            <ClaimPoolRewardModal contract={stakingContract} />
+          </Box>
           <Box flex="1">
             <ProvideModal
               pool={pool}

@@ -11,7 +11,7 @@ export const createClaimPoolMsgs = (
   const { contract } = options;
 
   const executeMsg = {
-    withdraw: {},
+    claim: {},
   };
 
   const msg = new MsgExecuteContract(sender, contract, executeMsg);

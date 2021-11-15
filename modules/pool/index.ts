@@ -7,6 +7,7 @@ export * from "./hooks/usePool";
 export * from "./hooks/useClaimPool";
 export * from "./hooks/useGetPool";
 export * from "./hooks/useGetStakerInfo";
+export * from "./hooks/useClaimableAmount";
 export * from "./hooks/useGetBalance";
 export * from "./hooks/usePoolPrice";
 export * from "./hooks/useProvide";
