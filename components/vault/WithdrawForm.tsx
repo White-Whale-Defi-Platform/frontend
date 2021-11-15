@@ -8,7 +8,7 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import { TxStep, useBalance } from "@arthuryeti/terra";
+import { num, TxStep, useBalance } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 
@@ -18,7 +18,7 @@ import { useWithdraw } from "modules/vault";
 
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
-import AmountInput from "components/AmountInput";
+import WithdrawAmountInput from "components/WithdrawAmountInput";
 import InlineStat from "components/InlineStat";
 
 type IFormInputs = {
@@ -56,7 +56,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   const state = useWithdraw({
     lpToken: vault.liquidity_token,
     contract: vault.contract_addr,
-    amount: toAmount(token.amount),
+    amount: token.amount,
     onSuccess: handleSuccess,
   });
 
@@ -95,7 +95,11 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             name="token"
             control={control}
             render={({ field }) => (
-              <AmountInput initialBalance={balance} {...field} />
+              <WithdrawAmountInput
+                initialBalance={balance}
+                ratio={state.ratio}
+                {...field}
+              />
             )}
           />
 

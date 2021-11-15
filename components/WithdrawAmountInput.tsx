@@ -24,6 +24,7 @@ type Props = {
   onChange: any;
   onBlur: any;
   initialBalance?: string;
+  ratio?: number;
   isMaxDisabled?: boolean;
   hideBalance?: boolean;
   value: {
@@ -39,6 +40,7 @@ const AmountInput: FC<Props> = forwardRef(
       onBlur,
       value,
       initialBalance,
+      ratio,
       isMaxDisabled = false,
       hideBalance = false,
       ...field
@@ -48,8 +50,9 @@ const AmountInput: FC<Props> = forwardRef(
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
     const symbol = getSymbol(value.asset);
-    const max = num(initialBalance).gt("0")
-      ? div(initialBalance, ONE_TOKEN)
+    const balance = num(initialBalance).times(ratio).toFixed(6);
+    const max = num(balance).gt("0")
+      ? num(balance).div(ONE_TOKEN).toFixed(6)
       : null;
 
     return (
@@ -63,7 +66,7 @@ const AmountInput: FC<Props> = forwardRef(
                   Available:
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
-                  {fromTerraAmount(initialBalance, "0,0.000000")}
+                  {fromTerraAmount(balance, "0,0.000000")}
                 </Text>
               </Text>
             )}
