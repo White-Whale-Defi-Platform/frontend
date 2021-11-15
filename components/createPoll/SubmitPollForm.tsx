@@ -1,7 +1,16 @@
 import React, { FC, useCallback } from "react";
-import { Box, chakra, Heading, Flex, Text, Button } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Box,
+  chakra,
+  useToast,
+  Divider,
+  Flex,
+  Text,
+} from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { TxStep } from "@arthuryeti/terra";
+import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { toAmount } from "libs/parse";
@@ -15,6 +24,8 @@ import LoadingForm from "components/LoadingForm";
 import AmountInput from "components/AmountInput";
 import InlineStat from "components/InlineStat";
 import PollVoteButtons from "components/gov/PollVoteButtons";
+import Card from "components/Card";
+import PollInput from "components/PollInput";
 
 type Inputs = {
   voteType: VoteType;
@@ -25,11 +36,10 @@ type Inputs = {
 };
 
 type Props = {
-  pollId: number;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
-const VoteForm: FC<Props> = ({ pollId, onClose }) => {
+const SubmitPollForm: FC<Props> = ({ onClose }) => {
   const { whaleToken, gov } = useContracts();
   const staker = useGovStaker();
   const queryClient = useQueryClient();
@@ -54,58 +64,36 @@ const VoteForm: FC<Props> = ({ pollId, onClose }) => {
     [onClose, queryClient]
   );
 
-  const state = useVote({
-    govContract: gov,
-    pollId,
-    vote: voteType,
-    amount: toAmount(token.amount),
-    onSuccess: handleSuccess,
-  });
-
   const submit = async () => {
-    state.vote();
+    console.log("oui");
   };
 
-  // @ts-expect-error
-  const feeString = useFeeToString(state.fee);
+  // const feeString = useFeeToString(voteState.fee);
 
-  if (state.txStep == TxStep.Posting) {
-    return <PendingForm />;
-  }
+  // if (voteState.txStep == TxStep.Posting) {
+  //   return <PendingForm />;
+  // }
 
-  if (state.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={state.txHash} />;
-  }
+  // if (voteState.txStep == TxStep.Broadcasting) {
+  //   return <LoadingForm txHash={voteState.txHash} />;
+  // }
 
   return (
-    <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      <Box
-        border="2px"
-        borderColor="whiteAlpha.200"
-        borderRadius="3xl"
-        px="4"
-        py="8"
-      >
-        <Flex justify="center" mt="-12" mb="8">
-          <Box bg="rgba(26,26,26,1)" px="8">
-            <Heading size="md">Vote</Heading>
-          </Box>
-        </Flex>
-
-        {/* <Text variant="light" textAlign="center" fontWeight="500">
-                You are about to vote on “Proposal: Funding for Kado”. Please
-                select side, set the amount and sumbit your vote.
-              </Text> */}
-
-        <Flex align="center" direction="column">
+    <Card mb="8">
+      <Text mb="6" color="#fff" fontSize="2xl" fontWeight="700">
+        Submit text poll
+      </Text>
+      <chakra.form onSubmit={handleSubmit(submit)} width="full">
+        <Box width="full">
           <Controller
-            name="voteType"
+            name="token"
             control={control}
-            defaultValue={null}
             rules={{ required: true }}
-            render={({ field }) => <PollVoteButtons {...field} />}
+            render={({ field }) => (
+              <PollInput initialBalance={staker?.balance} {...field} />
+            )}
           />
-        </Flex>
+        </Box>
 
         <Box width="full">
           <Controller
@@ -118,13 +106,11 @@ const VoteForm: FC<Props> = ({ pollId, onClose }) => {
           />
         </Box>
 
-        <Flex mt="8" justify="center">
-          <Box mb="4">
-            <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
-          </Box>
-        </Flex>
+        {/* <Box mt="4">
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        </Box> */}
 
-        {state.error && (
+        {/* {voteState.error && (
           <Box
             my="6"
             color="red.500"
@@ -134,25 +120,25 @@ const VoteForm: FC<Props> = ({ pollId, onClose }) => {
             py="2"
             borderRadius="2xl"
           >
-            <Text>{state.error}</Text>
+            <Text>{voteState.error}</Text>
           </Box>
-        )}
+        )} */}
 
-        <Flex mt="4" justify="center">
+        <HStack mt="8" width="full">
           <Button
             type="submit"
             variant="primary"
             size="md"
-            px="12"
-            isLoading={state.txStep == TxStep.Estimating}
-            disabled={state.txStep != TxStep.Ready}
+            flex="1"
+            // isLoading={voteState.txStep == TxStep.Estimating}
+            // isDisabled={voteState.txStep != TxStep.Ready}
           >
-            Vote
+            Create Poll
           </Button>
-        </Flex>
-      </Box>
-    </chakra.form>
+        </HStack>
+      </chakra.form>
+    </Card>
   );
 };
 
-export default VoteForm;
+export default SubmitPollForm;

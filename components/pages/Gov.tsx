@@ -10,7 +10,9 @@ import {
   Select,
   Stack,
   Image,
+  chakra,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { NextPage } from "next";
 
@@ -28,6 +30,7 @@ import LineChart from "components/LineChart";
 import UnstakeModal from "components/gov/UnstakeModal";
 import StakeModal from "components/gov/StakeModal";
 import CommunityFund from "components/gov/CommunityFund";
+import PollList from "components/gov/PollList";
 
 const dataChart = [
   {
@@ -94,7 +97,9 @@ const Gov: NextPage = () => {
             alignSelf="center"
             padding="2px 20px"
           >
-            <Text>Create Poll</Text>
+            <Link href="/gov/createPoll" passHref>
+              <a>Create Poll</a>
+            </Link>
           </Box>
         </HStack>
       </Flex>

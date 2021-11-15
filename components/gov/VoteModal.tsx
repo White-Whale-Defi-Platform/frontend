@@ -16,10 +16,10 @@ import VoteForm from "components/gov/VoteForm";
 
 type Props = {
   pollId: number;
-  isDisabled: boolean;
+  isDisabled?: boolean;
 };
 
-const VoteModal: FC<Props> = ({ pollId, isDisabled }) => {
+const VoteModal: FC<Props> = ({ pollId, isDisabled = false }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -27,7 +27,7 @@ const VoteModal: FC<Props> = ({ pollId, isDisabled }) => {
       <Button
         type="button"
         variant="primary"
-        size="lg"
+        size="md"
         onClick={onOpen}
         isDisabled={isDisabled}
       >
@@ -38,17 +38,7 @@ const VoteModal: FC<Props> = ({ pollId, isDisabled }) => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Flex align="center" direction="column">
-              <Heading size="md" mb="4">
-                Vote
-              </Heading>
-              <Text variant="light" textAlign="center" fontWeight="500">
-                You are about to vote on “Proposal: Funding for Kado”. Please
-                select side, set the amount and sumbit your vote.
-              </Text>
-
-              <VoteForm pollId={pollId} onClose={onClose} />
-            </Flex>
+            <VoteForm pollId={pollId} onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>

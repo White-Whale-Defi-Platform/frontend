@@ -1,20 +1,15 @@
 import React, { FC } from "react";
-import {
-  HStack,
-  Grid,
-  GridItem,
-  Box,
-  Heading,
-  Divider,
-} from "@chakra-ui/react";
+import { HStack, Box, Heading, Text } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 import { usePoll } from "modules/govern";
-
+import Link from "next/link";
 import BackButton from "components/BackButton";
 import PollVote from "components/gov/PollVote";
 import PollDetails from "components/gov/PollDetails";
 import PollSummary from "components/gov/PollSummary";
 import PollVoteLog from "components/gov/PollVoteLog";
+import VoteModal from "components/gov/VoteModal";
 
 type Props = {
   pollId: number;
@@ -29,19 +24,41 @@ const Poll: FC<Props> = ({ pollId }) => {
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
-      <BackButton />
-      <HStack spacing="4" mb="10">
+      <Box color="brand.500" mb="8">
+        <Link href="/gov">
+          <a>
+            <ArrowBackIcon boxSize={4} />
+            Back to Governance
+          </a>
+        </Link>
+      </Box>
+      <HStack justify="space-between" spacing="4" mb="10">
         <Heading color="#fff" size="lg">
           Poll #{pollId}
         </Heading>
+        <HStack>
+          {/* <Box
+            as="button"
+            mr="17px"
+            borderRadius="full"
+            color="white"
+            border="1px solid #fff"
+            alignSelf="center"
+            padding="2px 20px"
+          >
+            <Text fontSize="sm">Execute message</Text>
+          </Box> */}
+          <VoteModal pollId={pollId} />
+        </HStack>
       </HStack>
       <Box mb="6">
         <PollSummary poll={poll.data} />
       </Box>
-      <Box mb="6">
-        <PollVote poll={poll} />
-      </Box>
+      <Box mb="10">{/* <PollVote poll={poll} /> */}</Box>
       <Box>
+        <Heading mb="10" color="#fff" size="lg">
+          Voters
+        </Heading>
         <PollVoteLog voters={poll.voters} />
       </Box>
     </Box>

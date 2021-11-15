@@ -7,10 +7,14 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Flex,
+  HStack,
+  Divider,
 } from "@chakra-ui/react";
 
 import Card from "components/Card";
 import PollVoteLogItem from "components/gov/PollVoteLogItem";
+import Voters from "./Voters";
 
 type Props = {
   voters: any;
@@ -19,14 +23,29 @@ type Props = {
 const PollVoteLog: FC<Props> = ({ voters }) => {
   return (
     <Card>
-      <Text variant="light" mb="4">
-        Vote log
-      </Text>
-      <Tabs variant="soft-rounded">
+      <Flex direction="column" justify="space-between" h="full">
+        <HStack>
+          <Box flex="1">
+            <Flex justify="space-between">
+              <Text variant="light" mb="4">
+                Voter
+              </Text>
+              <Text variant="light" mb="4">
+                Vote
+              </Text>
+              <Text variant="light" mb="4">
+                Amount
+              </Text>
+            </Flex>
+          </Box>
+        </HStack>
+        <Voters />
+
+        {/* <Tabs variant="soft-rounded">
         <TabList>
           <Tab>All</Tab>
-          {/* <Tab>Yes</Tab>
-          <Tab>No</Tab> */}
+          <Tab>Yes</Tab>
+          <Tab>No</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -42,7 +61,8 @@ const PollVoteLog: FC<Props> = ({ voters }) => {
             <p>two!</p>
           </TabPanel>
         </TabPanels>
-      </Tabs>
+      </Tabs> */}
+      </Flex>
     </Card>
   );
 };
