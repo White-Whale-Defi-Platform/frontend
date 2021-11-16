@@ -71,10 +71,10 @@
         "token": "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m",
         "icon": "/whale.svg"
       },
-      "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv": {
+      "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd": {
         "protocol": "WhiteWhale",
         "symbol": "WHALE-UST LP",
-        "token": "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv",
+        "token": "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
         "icon": "/whale.svg"
       }
     },
@@ -96,8 +96,8 @@
         ]
       },
       {
-        "contract_addr": "terra1xq3v5rp0w84ugqesv9m5q3xdx04akacsdlk5z7",
-        "liquidity_token": "terra1pl98xje34559ama3f7xfm5szkz68qxewgvcgdv",
+        "contract_addr": "terra1nyaj3xv93gzh753d03yh5er8wq4vma2rm730fg",
+        "liquidity_token": "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
         "asset_infos": [
           {
             "token": {
