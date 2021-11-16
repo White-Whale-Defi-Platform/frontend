@@ -1,10 +1,10 @@
 ---
-name: deployment-dev
+name: deployment-prod
 
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   deploy:
@@ -44,7 +44,7 @@ jobs:
           aws-region: eu-central-1
       - name: aws-sync-to-s3
         run: |
-          aws s3 sync --delete --acl public-read out/ s3://app-dev.whitewhale.money
+          aws s3 sync --delete --acl public-read out/ s3://app.whitewhale.money
       - name: cloudflare-purge
         uses: jakejarvis/cloudflare-purge-action@v0.3.0
         env:
