@@ -44,9 +44,9 @@ jobs:
           aws-region: eu-central-1
       - name: aws-sync-to-s3
         run: |
-          aws s3 sync --delete --acl public-read out/ s3://app-dev.whitewhale.finance
-#      - name: cloudflare-purge
-#        uses: jakejarvis/cloudflare-purge-action@v0.3.0
-#        env:
-#          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
-#          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+          aws s3 sync --delete --acl public-read out/ s3://app-dev.whitewhale.money
+      - name: cloudflare-purge
+        uses: jakejarvis/cloudflare-purge-action@v0.3.0
+        env:
+          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
