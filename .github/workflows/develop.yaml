@@ -33,6 +33,8 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: build package
+        env:
+          NEXT_PUBLIC_TESTNET_GRAPHQL_URL: https://api-dev.whitewhale.money/graphql
         run: |
           npm run build
           npm run export
