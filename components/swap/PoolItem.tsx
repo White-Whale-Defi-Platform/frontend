@@ -2,10 +2,11 @@ import React, { FC } from "react";
 import { Box, HStack, Flex, Text, Image } from "@chakra-ui/react";
 import { fromTerraAmount } from "@arthuryeti/terra";
 
+import { usePool, usePoolApr } from "modules/pool";
+
 import Card from "components/Card";
 import ProvideModal from "components/pool/ProvideModal";
 import StakeModal from "components/pool/StakeModal";
-import { usePool } from "modules/pool";
 import ClaimPoolRewardModal from "components/pool/ClaimPoolRewardModal";
 
 type Props = {
@@ -28,6 +29,14 @@ const PoolItem: FC<Props> = ({
     lpTokenContract,
     stakingContract,
   });
+
+  const apr = usePoolApr({
+    pairContract,
+    lpTokenContract,
+    stakingContract,
+  });
+
+  console.log(apr);
 
   return (
     <Card noPadding h="full">
@@ -86,7 +95,7 @@ const PoolItem: FC<Props> = ({
         <Flex justify="space-between" mb="4">
           <Text>APR</Text>
           <Text color="brand.500" fontWeight="700">
-            --
+            {apr}%
           </Text>
         </Flex>
         <Flex justify="space-between">

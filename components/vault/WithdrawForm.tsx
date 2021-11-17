@@ -133,7 +133,7 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             isLoading={state.txStep == TxStep.Estimating}
             disabled={state.txStep != TxStep.Ready}
           >
-            Witdhraw
+            Withdraw
           </Button>
         </Flex>
       </Box>
