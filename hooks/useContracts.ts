@@ -36,7 +36,7 @@ const defaultContracts: { [key: string]: any } = {
     warchest: "",
   },
   testnet: {
-    wallet: "terra1lzquc5em3qrz6e2uyp9se60un4e7wnpf5yvz97",
+    wallet: "terra1xhhedykp6knc0ygtggwek3w0et3dmwe6apzeuz",
     aUstToken: "terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl",
     whaleToken: "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m",
     ustVault: "terra1w0yhdc3atmrpgxz5gq66xltu8t6ez8r9dazvvx",
