@@ -8,7 +8,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm ci
+RUN npm ci && \
+    # https://github.com/vercel/next.js/issues/30713
+    rm -r node_modules/@next/swc-linux-x64-gnu
 
 RUN npm run build && \
     npm install --production --ignore-scripts --prefer-offline
