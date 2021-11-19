@@ -38,7 +38,7 @@ jobs:
       - name: build and push
         uses: docker/build-push-action@v2
         with:
-          tags: 323224315211.dkr.ecr.eu-central-1.amazonaws.com/frontend:${{ github.sha }}
+          tags: 265389612123.dkr.ecr.eu-central-1.amazonaws.com/frontend:${{ github.sha }}
           push: true
           build-args: |
             NEXT_PUBLIC_TESTNET_GRAPHQL_URL=https://api-dev.whitewhale.money/graphql
