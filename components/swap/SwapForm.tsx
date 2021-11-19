@@ -33,8 +33,6 @@ const SwapForm: FC = () => {
   const { whaleToken } = useContracts();
   const [currentInput, setCurrentInput] = useState(null);
 
-  console.log(whaleToken);
-
   const { control, handleSubmit, watch, setValue } = useForm<Inputs>({
     defaultValues: {
       token1: {
