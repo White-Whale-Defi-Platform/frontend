@@ -36,8 +36,6 @@ const PoolItem: FC<Props> = ({
     stakingContract,
   });
 
-  console.log(apr);
-
   return (
     <Card noPadding h="full">
       <Flex

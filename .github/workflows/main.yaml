@@ -1,5 +1,4 @@
----
-name: deployment-prod
+name: build docker image
 
 on:
   push:
@@ -7,46 +6,57 @@ on:
       - main
 
 jobs:
-  deploy:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: setup nodejs
-        uses: actions/setup-node@v2
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: lint
+        uses: luke142367/Docker-Lint-Action@v1.1.1
         with:
-          node-version: 16.x
-      - name: setup nodejs cache
-        uses: actions/cache@v2
+          target: Dockerfile
         env:
-          cache-name: cache-node-modules
-        with:
-          path: |
-            ~/.npm
-            node_modules
-          key: >
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: install dependencies
-        run: npm ci
-      - name: build package
-        run: |
-          npm run build
-          npm run export
-      - name: aws-credentials
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-and-publish-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup qemu
+        uses: docker/setup-qemu-action@v1
+      - name: setup docker buildx
+        uses: docker/setup-buildx-action@v1
+      - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
-      - name: aws-sync-to-s3
-        run: |
-          aws s3 sync --delete --acl public-read out/ s3://app.whitewhale.money
-      - name: cloudflare-purge
-        uses: jakejarvis/cloudflare-purge-action@v0.3.0
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: login to ecr
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: build and push
+        uses: docker/build-push-action@v2
+        with:
+          tags: 265389612123.dkr.ecr.eu-central-1.amazonaws.com/frontend:${{ github.sha }}
+          push: true
+          build-args: |
+            NEXT_PUBLIC_TESTNET_GRAPHQL_URL=https://api.whitewhale.money/graphql
+      - uses: actions/checkout@v2
+        with:
+          repository: 'White-Whale-Defi-Platform/k8s-apps-prod'
+          token: ${{ secrets.SERVICE_ACCOUNT_PAT }}
+          path: 'k8s-apps-prod'
+      - name: commit new version
+        working-directory: './k8s-apps-prod'
+        run: 'sed -i "s/tag: .*/tag: ${{ github.sha }}/g" apps/values-frontend.yaml'
+      - uses: EndBug/add-and-commit@v5.2.0
+        with:
+          cwd: 'k8s-apps-prod'
+          branch: main
+          author_name: Whitewhale Service Account
+          author_email: aws@whitewhale.finance
+          message: 'Bump frontend to ${{ github.sha }}'
+          push: true
         env:
-          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
-          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SERVICE_ACCOUNT_PAT }}
