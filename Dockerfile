@@ -1,6 +1,8 @@
 FROM node:16-alpine AS builder
 
-ENV NEXT_PUBLIC_TESTNET_GRAPHQL_URL https://api-dev.whitewhale.money/graphql
+ARG NEXT_PUBLIC_TESTNET_GRAPHQL_URL
+
+ENV NEXT_PUBLIC_TESTNET_GRAPHQL_URL ${NEXT_PUBLIC_TESTNET_GRAPHQL_URL}
 
 RUN apk add --no-cache libc6-compat python3 make gcc musl-dev g++
 
