@@ -101,7 +101,7 @@ const Warchest = () => {
           <HStack spacing="4">
             <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
             <Text color="#fff" fontSize="2xl" fontWeight="700">
-              War Chest
+              Treasury
             </Text>
           </HStack>
           <SimpleStat
