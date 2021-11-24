@@ -34,7 +34,7 @@ const Navbar: FC = () => {
         justifyContent="space-between"
         mx="auto"
         maxWidth="container.xl"
-        display={{ base: "none", md: "block" }}
+        display={{ base: "none", md: "flex" }}
       >
         <Box flex="1">
           <HStack spacing="8">
