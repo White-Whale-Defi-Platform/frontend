@@ -19,7 +19,7 @@ const Swap: NextPage = () => {
             Swap
           </Heading>
         </Box>
-        <Box flex="1">
+        <Box flex="1" display={{ base: "none", lg: "block" }}>
           <Flex
             mb="8"
             flexDir={{ base: "column", sm: "column", md: "row" }}
@@ -39,13 +39,17 @@ const Swap: NextPage = () => {
         </Box>
       </Flex>
 
-      <Grid templateColumns="repeat(12, 1fr)" gridAutoRows="1fr" gap={12}>
-        <GridItem colSpan={[12, null, 6]}>
+      <Grid
+        templateColumns="repeat(12, 1fr)"
+        gridAutoRows={{ lg: "1fr" }}
+        gap={{ base: 10, lg: 12 }}
+      >
+        <GridItem colSpan={{ base: 12, lg: 6 }}>
           <Card h="full">
             <SwapForm />
           </Card>
         </GridItem>
-        <GridItem colSpan={[12, null, 4]}>
+        <GridItem colSpan={{ base: 12, lg: 4 }}>
           <PoolItem
             label="WHALE-UST LP"
             asset="Astroport"
@@ -58,7 +62,6 @@ const Swap: NextPage = () => {
 
       <Flex gridGap="24">
         <Box flex="1"></Box>
-
         <Box flex="1"></Box>
       </Flex>
     </Box>

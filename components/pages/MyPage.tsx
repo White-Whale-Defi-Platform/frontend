@@ -37,12 +37,12 @@ const MyPage: NextPage = () => {
         My Page
       </Heading>
 
-      <Grid templateColumns="repeat(12, 1fr)" gridAutoRows="1fr" gap={12}>
-        <GridItem colSpan={5}>
+      <Grid templateColumns="repeat(12, 1fr)" gap={{ base: 8, md: 12 }}>
+        <GridItem colSpan={{ base: 12, lg: 5 }}>
           <MyAssets />
         </GridItem>
 
-        <GridItem colSpan={7}>
+        <GridItem colSpan={{ base: 12, lg: 7 }}>
           <LineGraphCard
             cells={[
               {

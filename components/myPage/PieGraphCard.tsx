@@ -73,15 +73,28 @@ const PieGraphCard: NextPage<Props> = ({ title, value, asset, data }) => {
           </HStack>
         </Flex>
 
-        <Flex mt="8" align="center">
-          <Box w="55%">
+        <Flex
+          mt={{ base: "0", lg: "8" }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Box width={{ base: "100%", md: "55%" }} p={{ base: "12", lg: "0" }}>
             <Doughnut data={formattedData} options={options} />
           </Box>
 
-          <Flex justify="center" flexDir="column" gridGap="4" pl="12">
+          <Flex
+            justify="center"
+            direction="column"
+            gridGap="4"
+            pl={{ md: "12" }}
+            flex="1"
+          >
             {data.map((item) => {
               return (
-                <Box key={item.label}>
+                <Flex
+                  key={item.label}
+                  justify={{ base: "space-between" }}
+                  direction={{ lg: "column" }}
+                >
                   <HStack spacing="2">
                     <Circle size="18" bgColor={item.color} />
                     <Text whiteSpace="nowrap">{item.label}</Text>
@@ -89,7 +102,7 @@ const PieGraphCard: NextPage<Props> = ({ title, value, asset, data }) => {
                   <Text color="#8b8b8c" fontWeight="700">
                     {format(String(item.value), "uusd")} UST
                   </Text>
-                </Box>
+                </Flex>
               );
             })}
           </Flex>

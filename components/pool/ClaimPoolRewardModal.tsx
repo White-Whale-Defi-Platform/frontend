@@ -30,7 +30,6 @@ const ClaimPoolRewardModal: FC<Props> = ({ contract }) => {
         isFullWidth
         size="md"
         onClick={onOpen}
-        display={["none", null, "inline-flex"]}
       >
         Claim
       </Button>

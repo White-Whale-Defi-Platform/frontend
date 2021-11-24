@@ -8,6 +8,7 @@ import Button from "./button";
 import Tabs from "./tabs";
 import NumberInput from "./numberInput";
 import Menu from "./menu";
+import Drawer from "./drawer";
 
 export default extendTheme({
   fonts: {
@@ -19,6 +20,7 @@ export default extendTheme({
   components: {
     Modal,
     Tooltip,
+    Drawer,
     Text,
     Badge,
     Button,

@@ -46,11 +46,11 @@ const TerraWallet: FC = () => {
               </Text>
             </HStack>
 
-            <Box h="6">
+            <Box h="6" display={{ base: "none", md: "block" }}>
               <Divider orientation="vertical" borderColor="whiteAlpha.400" />
             </Box>
 
-            <HStack spacing="8">
+            <HStack spacing="8" display={{ base: "none", md: "flex" }}>
               <Text>UST</Text>
               <Text>{fromTerraAmount(balance)}</Text>
             </HStack>

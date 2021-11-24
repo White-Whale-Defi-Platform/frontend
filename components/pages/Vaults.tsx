@@ -31,7 +31,11 @@ const Vaults = () => {
           Arb Vaults
         </Heading>
       </Box>
-      <Flex mt="8" gridGap="24">
+      <Flex
+        mt="8"
+        gridGap={{ base: 12, xl: 24 }}
+        wrap={{ base: "wrap", xl: "nowrap" }}
+      >
         {data.map((item) => (
           <VaultItem key={item.name} data={item} />
         ))}
