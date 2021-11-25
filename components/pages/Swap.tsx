@@ -42,7 +42,7 @@ const Swap: NextPage = () => {
       <Grid
         templateColumns="repeat(12, 1fr)"
         gridAutoRows={{ lg: "1fr" }}
-        gap={{ base: 10, lg: 12 }}
+        gap={{ base: 2, lg: 12 }}
       >
         <GridItem colSpan={{ base: 12, lg: 6 }}>
           <Card h="full">
