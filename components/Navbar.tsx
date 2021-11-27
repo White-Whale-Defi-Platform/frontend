@@ -21,7 +21,11 @@ import DrawerLink from "components/DrawerLink";
 import NavbarLink from "components/NavbarLink";
 import BurgerIcon from "components/icons/BurgerIcon";
 
-const Navbar: FC = () => {
+type Props = {
+  hideNav?: boolean;
+};
+
+const Navbar: FC<Props> = ({ hideNav = false }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -43,13 +47,17 @@ const Navbar: FC = () => {
                 <Image src="/logo.svg" alt="WhiteWhale Logo" boxSize="12" />
               </a>
             </Link>
-            <NavbarLink text="My Page" href="/myPage" />
-            <NavbarLink text="Vaults" href="/vaults" />
-            <NavbarLink text="Swap" href="/swap" />
+            {!hideNav && (
+              <>
+                <NavbarLink text="My Page" href="/myPage" />
+                <NavbarLink text="Vaults" href="/vaults" />
+                <NavbarLink text="Swap" href="/swap" />
+              </>
+            )}
             {/* <NavbarLink text="Governance" href="/gov" /> */}
           </HStack>
         </Box>
-        <HStack flex="1" spacing="6" justify="flex-end">
+        <HStack flex="1" spacing="6" justify="flex-end" py="3">
           <TerraWallet />
         </HStack>
       </Flex>
