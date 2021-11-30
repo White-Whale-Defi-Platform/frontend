@@ -36,7 +36,7 @@ const StakeModal: FC<Props> = ({ lpTokenContract }) => {
         onClick={onOpen}
         isFullWidth
       >
-        Stake
+        Stake LP
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />

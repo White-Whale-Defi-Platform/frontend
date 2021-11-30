@@ -10,16 +10,6 @@ const IndexPageComponent: FC<IProps> = ({ statusCode }) => {
   const heightOfNavbar: string = "74px";
   const containerPadding: string = "1rem";
 
-  const signOutButtonNode = () => {
-    return (
-      <Box>
-        <Link href="/" passHref>
-          <Button as="a">Return to the home page</Button>
-        </Link>
-      </Box>
-    );
-  };
-
   return (
     <Stack>
       <Flex
@@ -27,8 +17,8 @@ const IndexPageComponent: FC<IProps> = ({ statusCode }) => {
         justifyContent="center"
         alignItems="center"
       >
-        <Stack spacing={4} maxW="xl" mx="auto">
-          <Heading textAlign="center">Nextjs Hasura Boilerplate</Heading>
+        <Stack spacing={4} maxW="xl" mx="auto" color="white">
+          <Heading textAlign="center">Oups...</Heading>
           <Text fontSize="xl" lineHeight="tall" textAlign="center">
             {statusCode
               ? `An error ${statusCode} occurred on server`
@@ -36,7 +26,13 @@ const IndexPageComponent: FC<IProps> = ({ statusCode }) => {
           </Text>
           <Box>
             <Stack isInline align="center" justifyContent="center">
-              {signOutButtonNode()}
+              <Box>
+                <Link href="/" passHref>
+                  <Button as="a" variant="primary">
+                    Return to the home page
+                  </Button>
+                </Link>
+              </Box>
             </Stack>
           </Box>
         </Stack>

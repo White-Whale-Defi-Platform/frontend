@@ -11,7 +11,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useTokenInfo } from "@arthuryeti/terraswap";
-import { num, TxStep } from "@arthuryeti/terra";
+import { fromTerraAmount, num, TxStep } from "@arthuryeti/terra";
 
 import { useFeeToString } from "hooks/useFeeToString";
 import { useWithdraw } from "modules/pool";
@@ -80,8 +80,6 @@ const WithdrawForm: FC<Props> = ({
   const feeString = useFeeToString(state.fee);
 
   const renderToken = (token) => {
-    const amount = num(state.tokenAmounts[token]).div(ONE_TOKEN).toFormat();
-
     return (
       <Flex justify="space-between">
         <HStack>
@@ -95,7 +93,7 @@ const WithdrawForm: FC<Props> = ({
             {getSymbol(token)}
           </Text>
         </HStack>
-        <Text>{amount}</Text>
+        <Text>{fromTerraAmount(state.tokenAmounts[token], "0,0.000000")}</Text>
       </Flex>
     );
   };

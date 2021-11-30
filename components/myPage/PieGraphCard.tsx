@@ -76,6 +76,7 @@ const PieGraphCard: NextPage<Props> = ({ title, value, asset, data }) => {
         <Flex
           mt={{ base: "0", lg: "8" }}
           direction={{ base: "column", md: "row" }}
+          align={{ base: "normal", md: "center" }}
         >
           <Box width={{ base: "100%", md: "55%" }} p={{ base: "12", lg: "0" }}>
             <Doughnut data={formattedData} options={options} />

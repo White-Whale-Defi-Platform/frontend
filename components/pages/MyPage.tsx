@@ -47,15 +47,18 @@ const MyPage: NextPage = () => {
             cells={[
               {
                 label: "WHALE",
-                value: `${fromTerraAmount(price, "0.000")} UST`,
+                value: fromTerraAmount(price, "0.000"),
+                asset: "UST",
               },
               {
                 label: "Market Cap",
-                value: `${fromTerraAmount(marketCap, "0,0")} UST`,
+                value: fromTerraAmount(marketCap, "0,0"),
+                asset: "UST",
               },
               {
                 label: "Circulating Supply",
-                value: `${fromTerraAmount(circSupply, "0,0")} WHALE`,
+                value: fromTerraAmount(circSupply, "0,0"),
+                asset: "WHALE",
               },
             ]}
             data={dataChart}

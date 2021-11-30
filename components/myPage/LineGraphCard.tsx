@@ -13,6 +13,7 @@ type DataIrtem = {
 type Cell = {
   label: string;
   value: string;
+  asset: string;
 };
 
 type Props = {
@@ -47,7 +48,10 @@ const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
                   {cell.label}
                 </Text>
                 <Text color="brand.500" fontSize="2xl" fontWeight="bold">
-                  {cell.value}
+                  {cell.value}{" "}
+                  <Text as="span" fontSize="md">
+                    {cell.asset}
+                  </Text>
                 </Text>
               </Box>
               {renderDivider(index)}

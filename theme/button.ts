@@ -13,6 +13,10 @@ const button = {
       _hover: {
         bg: "white",
         color: "brand.900",
+        _disabled: {
+          bg: "brand.500",
+          color: "white",
+        },
       },
       _focus: {
         boxShadow: "none",

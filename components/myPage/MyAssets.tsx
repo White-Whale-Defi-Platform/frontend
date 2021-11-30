@@ -18,7 +18,7 @@ import { useLpHolding } from "hooks/useLpHolding";
 import PieGraphCard from "components/myPage/PieGraphCard";
 
 const MyAssets: NextPage = () => {
-  const { ustVault } = useContracts();
+  const { ustVault, whaleToken } = useContracts();
   const price = useWhalePrice();
   const stakedAmount = useGovStaked();
   const lpHolding = useLpHolding();
@@ -26,7 +26,10 @@ const MyAssets: NextPage = () => {
     contract: ustVault,
   });
 
-  const whaleAmount = useMemo(() => {
+  const ustBalance = useBalance("uusd");
+  const whaleBalance = useBalance(whaleToken);
+
+  const warchestAmount = useMemo(() => {
     if (stakedAmount == null) {
       return null;
     }
@@ -34,15 +37,22 @@ const MyAssets: NextPage = () => {
     return times(stakedAmount, div(price, ONE_TOKEN));
   }, [stakedAmount, price]);
 
-  const ustBalance = useBalance("uusd");
+  const whaleAmount = useMemo(() => {
+    if (whaleBalance == null || price == null) {
+      return null;
+    }
+
+    return times(whaleBalance, div(price, ONE_TOKEN));
+  }, [whaleBalance, price]);
 
   const total = useMemo(() => {
     return num(balance)
       .plus(ustBalance)
-      .plus(whaleAmount)
+      .plus(warchestAmount)
       .plus(lpHolding)
+      .plus(whaleAmount)
       .toString();
-  }, [balance, lpHolding, whaleAmount, ustBalance]);
+  }, [balance, lpHolding, warchestAmount, ustBalance, whaleAmount]);
 
   const data = [
     {
@@ -52,7 +62,7 @@ const MyAssets: NextPage = () => {
     },
     {
       label: "War Chest",
-      value: Number(whaleAmount),
+      value: Number(warchestAmount),
       color: "#298F46",
     },
     {
@@ -64,6 +74,11 @@ const MyAssets: NextPage = () => {
       label: "Liquid UST",
       value: Number(ustBalance),
       color: "#2EB1E9",
+    },
+    {
+      label: "Liquid WHALE",
+      value: Number(whaleAmount),
+      color: "#3CCD64",
     },
   ];
 
