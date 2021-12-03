@@ -52,9 +52,10 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
                 <NavbarLink text="My Page" href="/myPage" />
                 <NavbarLink text="Vaults" href="/vaults" />
                 <NavbarLink text="Swap" href="/swap" />
+                <NavbarLink text="Governance" href="/gov" />
+                <NavbarLink text="Bond" href="/bond" />
               </>
             )}
-            {/* <NavbarLink text="Governance" href="/gov" /> */}
           </HStack>
         </Box>
         <HStack flex="1" spacing="6" justify="flex-end" py="3">
