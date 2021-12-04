@@ -16,28 +16,28 @@ const Layout: FC = ({ children }) => {
     return null;
   }
 
-  if (network.name == "mainnet") {
-    return (
-      <>
-        <Global
-          styles={{
-            body: {
-              background: "#191919",
-            },
-          }}
-        />
-        <RadialGradient />
-        <Flex direction="column">
-          <Navbar hideNav />
-          <Box flex="1" px="10">
-            <Center color="white">
-              <Text>Mainnet is not yet supported</Text>
-            </Center>
-          </Box>
-        </Flex>
-      </>
-    );
-  }
+  // if (network.name == "mainnet") {
+  //   return (
+  //     <>
+  //       <Global
+  //         styles={{
+  //           body: {
+  //             background: "#191919",
+  //           },
+  //         }}
+  //       />
+  //       <RadialGradient />
+  //       <Flex direction="column">
+  //         <Navbar hideNav />
+  //         <Box flex="1" px="10">
+  //           <Center color="white">
+  //             <Text>Mainnet is not yet supported</Text>
+  //           </Center>
+  //         </Box>
+  //       </Flex>
+  //     </>
+  //   );
+  // }
 
   return (
     <>
