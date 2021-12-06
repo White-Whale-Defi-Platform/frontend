@@ -26,7 +26,6 @@ export const useUnstake = ({ govContract, amount, onSuccess }: Params) => {
     );
   }, [address, govContract, amount]);
 
-  // @ts-expect-error
   const { submit, ...rest } = useTransaction({ msgs, onSuccess });
 
   return {

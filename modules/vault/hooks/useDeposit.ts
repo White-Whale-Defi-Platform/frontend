@@ -52,7 +52,6 @@ export const useDeposit = ({ contract, amount, token, onSuccess }: Params) => {
   }, [token, contract, amount, address]);
 
   const { submit, ...rest } = useTransaction({
-    // @ts-expect-error
     msgs,
     onSuccess,
   });

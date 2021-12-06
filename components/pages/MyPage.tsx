@@ -46,7 +46,7 @@ const MyPage: NextPage = () => {
           <LineGraphCard
             cells={[
               {
-                label: "WHALE",
+                label: "WHALE Price",
                 value: fromTerraAmount(price, "0.000"),
                 asset: "UST",
               },

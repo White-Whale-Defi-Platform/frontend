@@ -90,7 +90,6 @@ export const useWithdraw = ({
   }, [contract, amountConverted, lpToken, address]);
 
   const { submit, ...rest } = useTransaction({
-    // @ts-expect-error
     msgs,
     onSuccess,
   });

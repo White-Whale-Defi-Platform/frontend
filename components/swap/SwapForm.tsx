@@ -68,7 +68,7 @@ const SwapForm: FC = () => {
     }
   }, []);
 
-  const swapState = useSwap({
+  const state = useSwap({
     token1: token1.asset,
     token2: token2.asset,
     amount1: toAmount(debouncedAmount1),
@@ -89,9 +89,9 @@ const SwapForm: FC = () => {
     if (
       value.amount != null &&
       num(value.amount).gt("0") &&
-      swapState.simulated != null
+      state.simulated != null
     ) {
-      const amount = num(swapState.simulated?.amount).div(ONE_TOKEN);
+      const amount = num(state.simulated?.amount).div(ONE_TOKEN);
       const newAmount = num(value.amount).times(amount).toFixed(3);
 
       setValue("token2.amount", newAmount);
@@ -120,9 +120,9 @@ const SwapForm: FC = () => {
     if (
       value.amount != null &&
       num(value.amount).gt("0") &&
-      swapState.simulated != null
+      state.simulated != null
     ) {
-      const amount = num(swapState.simulated?.amount).div(ONE_TOKEN);
+      const amount = num(state.simulated?.amount).div(ONE_TOKEN);
       const newAmount = num(value.amount).div(amount).toFixed(3);
 
       setValue("token1.amount", newAmount);
@@ -148,31 +148,29 @@ const SwapForm: FC = () => {
   };
 
   useEffect(() => {
-    if (gt(swapState.simulated?.amount, "0")) {
+    if (gt(state.simulated?.amount, "0")) {
       const name = currentInput == "token2" ? "token1.amount" : "token2.amount";
 
-      setValue(name, fromTerraAmount(swapState.simulated?.amount, "0.000"));
+      setValue(name, fromTerraAmount(state.simulated?.amount, "0.000"));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [swapState.simulated]);
+  }, [state.simulated]);
 
   const submit = async () => {
-    swapState.swap();
+    state.swap();
   };
 
-  if (swapState.txStep == TxStep.Posting) {
+  if (state.txStep == TxStep.Posting) {
     return <PendingForm />;
   }
 
-  if (swapState.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={swapState.txHash} />;
+  if (state.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state.txHash} />;
   }
 
-  if (swapState.txStep == TxStep.Success) {
-    return (
-      <SwapFormSuccess txInfo={swapState.txInfo} onClick={swapState.reset} />
-    );
+  if (state.txStep == TxStep.Success) {
+    return <SwapFormSuccess txInfo={state.txInfo} onClick={state.reset} />;
   }
 
   return (
@@ -231,15 +229,15 @@ const SwapForm: FC = () => {
         <SwapFormInfos
           token1={token1.asset}
           token2={token2.asset}
-          fee={swapState.fee}
+          fee={state.fee}
           slippage={slippage}
-          exchangeRate={swapState.simulated?.price}
-          minimumReceive={swapState.minReceive}
+          exchangeRate={state.simulated?.price}
+          minimumReceive={state.minReceive}
           control={control}
         />
       </Box>
 
-      {swapState.error && (
+      {state.error && (
         <Box
           my="6"
           color="red.500"
@@ -249,7 +247,7 @@ const SwapForm: FC = () => {
           py="2"
           borderRadius="2xl"
         >
-          <Text>{swapState.error}</Text>
+          <Text>{state.error}</Text>
         </Box>
       )}
 
@@ -258,8 +256,8 @@ const SwapForm: FC = () => {
           type="submit"
           variant="primary"
           size="md"
-          isLoading={swapState.txStep == TxStep.Estimating}
-          isDisabled={swapState.txStep != TxStep.Ready}
+          isLoading={state.txStep == TxStep.Estimating}
+          isDisabled={state.txStep != TxStep.Ready}
           minW="64"
         >
           Swap

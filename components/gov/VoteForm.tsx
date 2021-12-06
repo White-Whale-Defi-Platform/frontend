@@ -66,7 +66,6 @@ const VoteForm: FC<Props> = ({ pollId, onClose }) => {
     state.vote();
   };
 
-  // @ts-expect-error
   const feeString = useFeeToString(state.fee);
 
   if (state.txStep == TxStep.Posting) {

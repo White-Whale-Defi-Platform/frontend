@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Flex, Text, Center } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Global } from "@emotion/react";
 import { useTerraWebapp } from "@arthuryeti/terra";
 import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
@@ -15,29 +15,6 @@ const Layout: FC = ({ children }) => {
   if (isInitializing) {
     return null;
   }
-
-  // if (network.name == "mainnet") {
-  //   return (
-  //     <>
-  //       <Global
-  //         styles={{
-  //           body: {
-  //             background: "#191919",
-  //           },
-  //         }}
-  //       />
-  //       <RadialGradient />
-  //       <Flex direction="column">
-  //         <Navbar hideNav />
-  //         <Box flex="1" px="10">
-  //           <Center color="white">
-  //             <Text>Mainnet is not yet supported</Text>
-  //           </Center>
-  //         </Box>
-  //       </Flex>
-  //     </>
-  //   );
-  // }
 
   return (
     <>

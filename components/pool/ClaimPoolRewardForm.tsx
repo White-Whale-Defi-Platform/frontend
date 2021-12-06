@@ -47,7 +47,6 @@ const ClaimFarmForm: FC<Props> = ({ contract, onClose }) => {
     state.claim();
   };
 
-  // @ts-expect-error
   const feeString = useFeeToString(state.fee);
 
   if (state.txStep == TxStep.Posting) {

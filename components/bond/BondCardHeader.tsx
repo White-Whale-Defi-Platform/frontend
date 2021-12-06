@@ -11,19 +11,20 @@ import {
 
 const BondCardHeader = () => {
   return (
-    <Flex justify="space-between" mb="2">
-      <Box px="32">
+    <Flex mb="2">
+      <Box flex="1">
         <Text variant="light">Bond</Text>
       </Box>
-      <Box>
+      <Box flex="1">
         <Text variant="light">Price</Text>
       </Box>
-      <Box>
+      <Box flex="1">
         <Text variant="light">ROI</Text>
       </Box>
-      <Box pr="52">
+      <Box flex="1">
         <Text variant="light">Purchased</Text>
       </Box>
+      <Box flex="1" />
     </Flex>
   );
 };

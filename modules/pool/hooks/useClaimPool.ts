@@ -23,7 +23,6 @@ export const useClaimPool = ({ contract, onSuccess }: Params) => {
   }, [address, contract]);
 
   const { submit, ...rest } = useTransaction({
-    // @ts-expect-error
     msgs,
     onSuccess,
   });

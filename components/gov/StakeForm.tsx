@@ -59,7 +59,6 @@ const StakeForm: FC<Props> = ({ onClose }) => {
     stakeState.deposit();
   };
 
-  // @ts-expect-error
   const feeString = useFeeToString(stakeState.fee);
 
   if (stakeState.txStep == TxStep.Posting) {

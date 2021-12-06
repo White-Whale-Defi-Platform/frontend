@@ -34,7 +34,6 @@ export const useStake = ({
   }, [address, govContract, tokenContract, amount]);
 
   const { submit, ...rest } = useTransaction({
-    // @ts-expect-error
     msgs,
     onSuccess,
   });

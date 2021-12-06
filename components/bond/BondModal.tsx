@@ -31,19 +31,9 @@ const BondModal: FC<Props> = ({ tokenContract }) => {
 
   return (
     <>
-      <Box
-        as="button"
-        mr="17px"
-        borderRadius="full"
-        color="white"
-        border="1px solid #fff"
-        alignSelf="center"
-        padding="2px 20px"
-        onClick={onOpen}
-        display={["none", null, "inline-flex"]}
-      >
+      <Button minW="32" variant="secondary" onClick={onOpen}>
         Bond
-      </Box>
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>

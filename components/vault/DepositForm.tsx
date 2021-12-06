@@ -65,7 +65,6 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     state.deposit();
   };
 
-  // @ts-expect-error
   const feeString = useFeeToString(state.fee);
 
   if (state.txStep == TxStep.Posting) {
