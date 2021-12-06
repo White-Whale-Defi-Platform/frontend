@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { fromTerraAmount } from "@arthuryeti/terra";
 import {
@@ -20,6 +21,8 @@ import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
 import Card from "components/Card";
 import { number } from "libs/math";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const options = {
   cutout: "75%",

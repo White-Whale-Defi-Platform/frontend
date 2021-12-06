@@ -1,10 +1,12 @@
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Box, Flex, Text, HStack, Circle } from "@chakra-ui/react";
 import { NextPage } from "next";
 
 import Card from "components/Card";
-import CardTitle from "components/CardTitle";
 import { format } from "libs/parse";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DataIrtem = {
   label: string;

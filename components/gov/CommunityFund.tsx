@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { fromTerraAmount } from "@arthuryeti/terra";
 import { Box, Flex, HStack, Text, Image } from "@chakra-ui/react";
@@ -8,6 +9,8 @@ import { useCommunityFund } from "hooks/useCommunityFund";
 import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
 import Card from "components/Card";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const options = {
   cutout: "75%",
