@@ -14,7 +14,7 @@ type Props = {
 const SwapFormSuccess: FC<Props> = ({ txInfo, onClick }) => {
   const finder = useFinder();
   const { getSymbol } = useTokenInfo();
-  const { amount, offer_amount, offer_asset, ask_asset } =
+  const { return_amount, offer_amount, offer_asset, ask_asset } =
     txInfo.logs[0].eventsByType.wasm;
   const { txhash } = txInfo;
 
@@ -34,7 +34,7 @@ const SwapFormSuccess: FC<Props> = ({ txInfo, onClick }) => {
         <Flex justify="space-between" mt="6">
           <Text fontColor="whiteAlpha.200">Received</Text>
           <Text fontWeight="bold">
-            {fromTerraAmount(amount, "0,0.00")} {getSymbol(ask_asset)}
+            {fromTerraAmount(return_amount, "0,0.00")} {getSymbol(ask_asset)}
           </Text>
         </Flex>
         <Flex justify="space-between" mt="6">
