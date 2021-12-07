@@ -37,11 +37,11 @@ const Suggestions = () => {
                 size="md"
               />
             </Flex>
-            <Divider borderColor="brand.600" my="2" />
+            {/* <Divider borderColor="brand.600" my="2" />
             <Flex my="4" justify="space-between">
               <Text fontSize="xl">Spend community pool</Text>
               <Radio alignSelf="center" colorScheme="brand" value="2" />
-            </Flex>
+            </Flex> */}
           </RadioGroup>
         </Box>
       </HStack>
