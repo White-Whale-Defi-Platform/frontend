@@ -8,13 +8,12 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import { num, TxStep, useBalance } from "@arthuryeti/terra";
+import { fromTerraAmount, num, TxStep, useBalance } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 
 import { useFeeToString } from "hooks/useFeeToString";
-import { toAmount } from "libs/parse";
-import { useWithdraw } from "modules/vault";
+import { useWithdraw, useEstWithdrawFee } from "modules/vault";
 
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
@@ -46,11 +45,13 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
   });
   const token = watch("token");
 
+  const withdrawFee = useEstWithdrawFee({ amount: token.amount });
   const balance = useBalance(vault.liquidity_token);
 
   const handleSuccess = useCallback(() => {
     queryClient.invalidateQueries("balance");
     onClose();
+    useEstWithdrawFee;
   }, [onClose, queryClient]);
 
   const state = useWithdraw({
@@ -102,9 +103,15 @@ const WithdrawForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
             )}
           />
 
-          <Flex mt="8" justify="center">
+          <Flex mt="8" align="center" direction="column">
             <Box mb="4">
               <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+            </Box>
+            <Box mb="4">
+              <InlineStat
+                label="Treasury Withdraw Fee"
+                value={`${fromTerraAmount(withdrawFee) || "0.00"}`}
+              />
             </Box>
           </Flex>
         </Box>
