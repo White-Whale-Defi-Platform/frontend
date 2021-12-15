@@ -14,15 +14,14 @@ const Dashboard: NextPage = () => {
   const price = useWhalePrice();
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
-  // const data = useWhalePriceTimes();
-  const dataChart = [];
+  const data = useWhalePriceTimes();
 
-  // const dataChart = data.map((item) => {
-  //   return {
-  //     label: dayjs(item.createdAt).format("MMM D"),
-  //     value: item.token1,
-  //   };
-  // });
+  const dataChart = data.map((item) => {
+    return {
+      label: dayjs(item.createdAt).format("MMM D"),
+      value: item.token1,
+    };
+  });
 
   // dataChart.push({
   //   label: "Now",

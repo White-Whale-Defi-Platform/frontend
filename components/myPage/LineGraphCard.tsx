@@ -39,34 +39,39 @@ const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
 
   return (
     <Card h="full">
-      <Flex align={{ lg: "center" }} direction={{ base: "column", lg: "row" }}>
-        {cells.map((cell, index) => {
-          return (
-            <Fragment key={cell.label}>
-              <Box key={cell.label} mb={{ base: "4", lg: "0" }}>
-                <Text fontSize="xl" mb="4" fontWeight="bold">
-                  {cell.label}
-                </Text>
-                <Text
-                  color="brand.500"
-                  fontSize="2xl"
-                  fontWeight="bold"
-                  textTransform="uppercase"
-                >
-                  {cell.value}{" "}
-                  <Text as="span" fontSize="md">
-                    {cell.asset}
+      <Flex justify="space-between" direction="column" h="full">
+        <Flex
+          align={{ lg: "center" }}
+          direction={{ base: "column", lg: "row" }}
+        >
+          {cells.map((cell, index) => {
+            return (
+              <Fragment key={cell.label}>
+                <Box key={cell.label} mb={{ base: "4", lg: "0" }}>
+                  <Text fontSize="xl" mb="4" fontWeight="bold">
+                    {cell.label}
                   </Text>
-                </Text>
-              </Box>
-              {renderDivider(index)}
-            </Fragment>
-          );
-        })}
+                  <Text
+                    color="brand.500"
+                    fontSize="2xl"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    {cell.value}{" "}
+                    <Text as="span" fontSize="md">
+                      {cell.asset}
+                    </Text>
+                  </Text>
+                </Box>
+                {renderDivider(index)}
+              </Fragment>
+            );
+          })}
+        </Flex>
+        <Box height="240" mt="8">
+          <LineChart data={data} />
+        </Box>
       </Flex>
-      <Box height="240" mt="8">
-        <LineChart data={data} />
-      </Box>
     </Card>
   );
 };
