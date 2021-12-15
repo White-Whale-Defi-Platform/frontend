@@ -2,26 +2,14 @@ import React, { useMemo } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { fromTerraAmount } from "@arthuryeti/terra";
-import {
-  Box,
-  Flex,
-  HStack,
-  Text,
-  Image,
-  Center,
-  Divider,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, Image } from "@chakra-ui/react";
 
-import { useWarchest } from "hooks/useWarchest";
-import { useGovStaked } from "modules/govern";
+import { useTreasury } from "hooks/useTreasury";
 
-import UnstakeModal from "components/gov/UnstakeModal";
-import StakeModal from "components/gov/StakeModal";
 import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
 import Card from "components/Card";
 import { number } from "libs/math";
-import useTreasury from "hooks/useTreasury";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -50,7 +38,7 @@ const options = {
   },
 };
 
-const Warchest = () => {
+const Treasury = () => {
   const treasury = useTreasury();
 
   const data = useMemo(() => {
@@ -79,8 +67,14 @@ const Warchest = () => {
   return (
     <Card noPadding h="full">
       <Flex direction="column" h="full">
-        <Flex justify="space-between" align="center" pt="8" px="8">
-          <HStack spacing="4">
+        <Flex
+          justify="space-between"
+          align={{ lg: "center" }}
+          pt="8"
+          px="8"
+          direction={{ base: "column", lg: "row" }}
+        >
+          <HStack spacing="4" mb={{ base: "4", lg: "0" }}>
             <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
             <Text color="#fff" fontSize="2xl" fontWeight="700">
               Treasury
@@ -120,4 +114,4 @@ const Warchest = () => {
   );
 };
 
-export default Warchest;
+export default Treasury;

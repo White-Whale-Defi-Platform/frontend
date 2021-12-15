@@ -25,7 +25,7 @@ type Networks = {
 const defaultContracts: { [key: string]: any } = {
   mainnet: {
     wallet: "terra1vjws6sa429u48dlw8s6mycr62nalyhakxc4v7v",
-    aUstToken: "",
+    aUstToken: "terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu",
     treasury: "terra1cnt2dls25u40wqyjgq72stuyjrwn0u5r6m5sm5",
     whaleToken: "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz",
     ustVault: "terra1j3l9e29rv8dmz35lhx8d4yk8qfct6aahdy4c77",
