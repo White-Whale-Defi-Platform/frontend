@@ -64,8 +64,6 @@ export const useTreasury = () => {
       };
     }
 
-    console.log("result", result);
-
     const assets = [
       {
         asset: "WHALE",
@@ -75,7 +73,7 @@ export const useTreasury = () => {
       {
         asset: "WHALE-UST LP",
         value: result[whaleUstLpToken].contractQuery,
-        color: "#525252",
+        color: "#298F46",
       },
       {
         asset: "UST",
