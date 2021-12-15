@@ -47,7 +47,12 @@ const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
                 <Text fontSize="xl" mb="4" fontWeight="bold">
                   {cell.label}
                 </Text>
-                <Text color="brand.500" fontSize="2xl" fontWeight="bold">
+                <Text
+                  color="brand.500"
+                  fontSize="2xl"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                >
                   {cell.value}{" "}
                   <Text as="span" fontSize="md">
                     {cell.asset}

@@ -149,9 +149,13 @@ const SwapForm: FC = () => {
 
   useEffect(() => {
     if (gt(state.simulated?.amount, "0")) {
-      const name = currentInput == "token2" ? "token1.amount" : "token2.amount";
+      const name = currentInput == "token2" ? "token1" : "token2";
+      const token = currentInput == "token2" ? token1 : token2;
 
-      setValue(name, fromTerraAmount(state.simulated?.amount, "0.000"));
+      setValue(name, {
+        ...token,
+        amount: fromTerraAmount(state.simulated?.amount, "0.000"),
+      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

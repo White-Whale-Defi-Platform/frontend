@@ -28,17 +28,17 @@
     },
     "pairs": [
       {
-        "contract_addr": "terra1tndcaqxkpc5ce9qee5ggqf430mr2z3pefe5wj6",
-        "liquidity_token": "terra17dkr9rnmtmu7x4azrpupukvur2crnptyfvsrvr",
+        "contract_addr": "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
+        "liquidity_token": "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
         "asset_infos": [
           {
-            "native_token": {
-              "denom": "uusd"
+            "token": {
+              "contract_addr": "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz"
             }
           },
           {
             "native_token": {
-              "denom": "uluna"
+              "denom": "uusd"
             }
           }
         ]

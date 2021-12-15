@@ -27,8 +27,6 @@ export const useWithdraw = ({
   const address = useAddress();
   const { client } = useTerraWebapp();
 
-  console.log(amount);
-
   const { data: pool } = useQuery(
     ["pool", contract],
     () => {

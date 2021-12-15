@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { num, useTerraWebapp } from "@arthuryeti/terra";
 
 import useContracts from "hooks/useContracts";
 import { getAmountsInPool } from "libs/terra";
 import { Pool } from "types/common";
+import { ONE_TOKEN } from "constants/constants";
 
 export const useWhalePrice = () => {
   const { client } = useTerraWebapp();
@@ -23,7 +24,7 @@ export const useWhalePrice = () => {
 
     const { uusd, other } = getAmountsInPool(pool);
 
-    return ((Number(uusd) / Number(other)) * 1000000).toFixed();
+    return num(uusd).div(other).times(ONE_TOKEN).toFixed();
   }, [pool]);
 };
 

@@ -12,6 +12,7 @@ type Contracts = {
   whaleUstLpToken: string;
   whaleUstStaking: string;
   gov: string;
+  treasury: string;
   communityFund: string;
   warchest: string;
 };
@@ -23,14 +24,15 @@ type Networks = {
 
 const defaultContracts: { [key: string]: any } = {
   mainnet: {
-    wallet: "",
+    wallet: "terra1vjws6sa429u48dlw8s6mycr62nalyhakxc4v7v",
     aUstToken: "",
+    treasury: "terra1cnt2dls25u40wqyjgq72stuyjrwn0u5r6m5sm5",
     whaleToken: "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz",
     ustVault: "terra1j3l9e29rv8dmz35lhx8d4yk8qfct6aahdy4c77",
     ustVaultLpToken: "terra1994nxa36w0xxj46e8pd8kanxjuc4astnm2ncxm",
     lunaUstPair: "",
-    whaleUstPair: "",
-    whaleUstLpToken: "",
+    whaleUstPair: "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
+    whaleUstLpToken: "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
     gov: "",
     communityFund: "",
     warchest: "",
