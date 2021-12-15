@@ -23,7 +23,7 @@ export const useCirculatingSupply = () => {
       return null;
     }
 
-    return minus(tokenInfo.total_supply, balance);
+    return minus(minus(tokenInfo.total_supply, balance), "50000000000000");
   }, [balance, tokenInfo]);
 };
 
