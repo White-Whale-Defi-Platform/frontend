@@ -87,6 +87,9 @@ export const useTreasury = () => {
 
     const exchangeRate =
       result.moneyMarketEpochState.contractQuery.exchange_rate;
+    const aUstValue = num(result.balance.contractQuery.balance)
+      .times(exchangeRate)
+      .toNumber();
 
     const assets = [
       {
@@ -101,9 +104,7 @@ export const useTreasury = () => {
       },
       {
         asset: "aUST",
-        value: num(result.balance.contractQuery.balance)
-          .times(exchangeRate)
-          .toNumber(),
+        value: aUstValue,
         color: "#194325",
       },
       {
@@ -119,10 +120,10 @@ export const useTreasury = () => {
     ];
 
     return {
-      totalValue,
+      totalValue: num(totalValue).plus(aUstValue).toNumber(),
       assets,
     };
-  }, [totalValue, result]);
+  }, [totalValue, result, whaleToken, whaleUstLpToken]);
 };
 
 export default useTreasury;
