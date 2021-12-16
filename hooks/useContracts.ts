@@ -7,6 +7,7 @@ type Contracts = {
   whaleToken: string;
   ustVault: string;
   ustVaultLpToken: string;
+  moneyMarket: string;
   lunaUstPair: string;
   whaleUstPair: string;
   whaleUstLpToken: string;
@@ -30,6 +31,7 @@ const defaultContracts: { [key: string]: any } = {
     whaleToken: "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz",
     ustVault: "terra1j3l9e29rv8dmz35lhx8d4yk8qfct6aahdy4c77",
     ustVaultLpToken: "terra1994nxa36w0xxj46e8pd8kanxjuc4astnm2ncxm",
+    moneyMarket: "terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s",
     lunaUstPair: "",
     whaleUstPair: "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
     whaleUstLpToken: "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
@@ -44,6 +46,7 @@ const defaultContracts: { [key: string]: any } = {
     ustVault: "terra1w0yhdc3atmrpgxz5gq66xltu8t6ez8r9dazvvx",
     ustVaultLpToken: "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
     lunaUstPair: "terra156v8s539wtz0sjpn8y8a8lfg8fhmwa7fy22aff",
+    moneyMarket: "terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal",
     whaleUstPair: "terra1nyaj3xv93gzh753d03yh5er8wq4vma2rm730fg",
     whaleUstLpToken: "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
     whaleUstStaking: "terra1acddhgjd7vdedlx870lsu7eavfc6jm5yg70hcg",

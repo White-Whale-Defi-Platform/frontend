@@ -12,7 +12,7 @@ const Swap: NextPage = () => {
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Flex justify="center">
-        <Card h="full" minW="container.sm">
+        <Card h="full" minW={{ lg: "container.sm" }}>
           <SwapForm />
         </Card>
       </Flex>

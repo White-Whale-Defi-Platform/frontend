@@ -1,12 +1,12 @@
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { num, useTerraWebapp } from "@arthuryeti/terra";
 
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
 
-const createQuery = (contract, assets) => {
+const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
   if (assets.length === 0) {
     return;
   }
@@ -25,6 +25,26 @@ const createQuery = (contract, assets) => {
               }
             )
           }
+
+          balance: wasm {
+            contractQuery(
+              contractAddress: "${aUstToken}"
+              query: {
+                balance: {
+                  address: "${contract}"
+                }
+              }
+            )
+          }
+
+          moneyMarketEpochState: wasm {
+            contractQuery(
+              contractAddress: "${moneyMarketContract}"
+              query: {
+                epoch_state: {}
+              }
+            )
+          }
         `;
       })}
     }
@@ -33,11 +53,12 @@ const createQuery = (contract, assets) => {
 
 export const useTreasury = () => {
   const { client } = useTerraWebapp();
-  const { treasury, whaleUstLpToken, whaleToken } = useContracts();
+  const { treasury, whaleUstLpToken, whaleToken, aUstToken, moneyMarket } =
+    useContracts();
 
   const assets = ["uusd", "uluna", whaleToken, whaleUstLpToken];
 
-  const query = createQuery(treasury, assets);
+  const query = createQuery(treasury, assets, aUstToken, moneyMarket);
 
   const result = useHive({
     name: ["terraswap-pools", treasury],
@@ -64,6 +85,9 @@ export const useTreasury = () => {
       };
     }
 
+    const exchangeRate =
+      result.moneyMarketEpochState.contractQuery.exchange_rate;
+
     const assets = [
       {
         asset: "WHALE",
@@ -74,6 +98,13 @@ export const useTreasury = () => {
         asset: "WHALE-UST LP",
         value: result[whaleUstLpToken].contractQuery,
         color: "#298F46",
+      },
+      {
+        asset: "aUST",
+        value: num(result.balance.contractQuery.balance)
+          .times(exchangeRate)
+          .toNumber(),
+        color: "#194325",
       },
       {
         asset: "UST",
