@@ -71,7 +71,8 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
     (txHash) => {
       queryClient.invalidateQueries("pool");
       queryClient.invalidateQueries("staked");
-      queryClient.invalidateQueries("stakerInfo");
+      queryClient.invalidateQueries("balance");
+      // queryClient.invalidateQueries("stakerInfo");
       onClose();
     },
     [onClose, queryClient]

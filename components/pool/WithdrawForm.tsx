@@ -59,7 +59,8 @@ const WithdrawForm: FC<Props> = ({
   const handleSuccess = useCallback(
     (txHash) => {
       queryClient.invalidateQueries("pool");
-      queryClient.invalidateQueries("staked");
+      // queryClient.invalidateQueries("staked");
+      queryClient.invalidateQueries("balance");
       onClose();
     },
     [onClose, queryClient]
