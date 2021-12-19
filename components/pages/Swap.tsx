@@ -52,7 +52,7 @@ const Swap: NextPage = () => {
         <GridItem colSpan={{ base: 12, lg: 4 }}>
           <PoolItem
             label="WHALE-UST LP"
-            asset="Astroport"
+            asset="Terraswap"
             pairContract={whaleUstPair}
             lpTokenContract={whaleUstLpToken}
             stakingContract={whaleUstStaking}
