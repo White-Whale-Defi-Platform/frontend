@@ -24,6 +24,12 @@
         "symbol": "Whale",
         "token": "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz",
         "icon": "/whale.svg"
+      },
+      "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke": {
+        "protocol": "WhiteWhale",
+        "symbol": "WHALE-UST LP",
+        "token": "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
+        "icon": "/whale.svg"
       }
     },
     "pairs": [

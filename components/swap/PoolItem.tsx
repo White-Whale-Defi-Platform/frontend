@@ -30,11 +30,11 @@ const PoolItem: FC<Props> = ({
     stakingContract,
   });
 
-  const apr = usePoolApr({
-    pairContract,
-    lpTokenContract,
-    stakingContract,
-  });
+  // const apr = usePoolApr({
+  //   pairContract,
+  //   lpTokenContract,
+  //   stakingContract,
+  // });
 
   return (
     <Card noPadding h="full">
