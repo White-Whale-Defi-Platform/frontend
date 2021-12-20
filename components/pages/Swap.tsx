@@ -26,15 +26,8 @@ const Swap: NextPage = () => {
             align="baseline"
           >
             <Heading color="#fff" size="lg" pr={{ md: "10px" }}>
-              Earn WHALE
+              Provide
             </Heading>
-            <Text
-              color={{ base: "brand.500", sm: "brand.500", md: "white" }}
-              fontSize="2xl"
-              fontWeight={{ md: "700" }}
-            >
-              by staking WHALE LP
-            </Text>
           </Flex>
         </Box>
       </Flex>

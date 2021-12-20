@@ -22,19 +22,23 @@ const PoolItem: FC<Props> = ({
   asset,
   pairContract,
   lpTokenContract,
-  stakingContract,
 }) => {
   const pool = usePool({
     pairContract,
     lpTokenContract,
-    stakingContract,
   });
+
+  console.log("pool", pool);
 
   // const apr = usePoolApr({
   //   pairContract,
   //   lpTokenContract,
   //   stakingContract,
   // });
+
+  if (pool == null) {
+    return null;
+  }
 
   return (
     <Card noPadding h="full">
@@ -83,13 +87,13 @@ const PoolItem: FC<Props> = ({
           <Flex justify="space-between" mb="4">
             <Text>Liquidity</Text>
             <Text color="brand.500" fontWeight="700">
-              {fromTerraAmount(pool.totalShareInUST)} UST
+              {fromTerraAmount(pool.total.shareInUst)} UST
             </Text>
           </Flex>
           <Flex justify="space-between" mb="4">
             <Text>My Liquidity</Text>
             <Text color="brand.500" fontWeight="700">
-              {fromTerraAmount(pool.myShareInUST)} UST
+              {fromTerraAmount(pool.mine.shareInUST)} UST
             </Text>
           </Flex>
           {/* <Flex justify="space-between" mb="4">

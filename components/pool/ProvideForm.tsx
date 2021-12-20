@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
-import { fromTerraAmount, TxStep, useBalance } from "@arthuryeti/terra";
+import { fromTerraAmount, num, TxStep, useBalance } from "@arthuryeti/terra";
 
 import { toAmount } from "libs/parse";
 import { useFeeToString } from "hooks/useFeeToString";
@@ -22,18 +22,16 @@ import useDebounceValue from "hooks/useDebounceValue";
 import PlusCircleIcon from "components/icons/PlusCircleIcon";
 import InlineStat from "components/InlineStat";
 import AmountInput from "components/AmountInput";
+import TokenInput from "components/TokenInput";
+import NewAmountInput from "components/NewAmountInput";
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
 
 type Inputs = {
-  token1: {
-    asset: string;
-    amount: string;
-  };
-  token2: {
-    asset: string;
-    amount: string;
-  };
+  token1: string;
+  amount1: string;
+  token2: string;
+  amount2: string;
 };
 
 type Props = {
@@ -43,29 +41,20 @@ type Props = {
 };
 
 const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
-  const token1Balance = useBalance(pool.token1);
-  const token2Balance = useBalance(pool.token2);
   const queryClient = useQueryClient();
 
-  const { control, handleSubmit, watch, setValue, formState } = useForm<Inputs>(
-    {
-      defaultValues: {
-        token1: {
-          amount: undefined,
-          asset: pool.token1,
-        },
-        token2: {
-          amount: undefined,
-          asset: pool.token2,
-        },
-      },
-    }
-  );
-  const token1 = watch("token1");
-  const token2 = watch("token2");
+  const { control, handleSubmit, watch, setValue } = useForm<Inputs>({
+    defaultValues: {
+      token1: pool.token1.asset,
+      amount1: "",
+      token2: pool.token2.asset,
+      amount2: "",
+    },
+  });
+  const { token1, amount1, token2, amount2 } = watch();
 
-  const debouncedAmount1 = useDebounceValue(token1.amount, 200);
-  const debouncedAmount2 = useDebounceValue(token2.amount, 200);
+  const debouncedAmount1 = useDebounceValue(amount1, 200);
+  const debouncedAmount2 = useDebounceValue(amount2, 200);
 
   const handleSuccess = useCallback(
     (txHash) => {
@@ -88,65 +77,50 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
   const state = useProvide({
     contract: pairContract,
     pool: pool,
-    token1: token1.asset,
-    token2: token2.asset,
+    token1,
+    token2,
     amount1: toAmount(debouncedAmount1),
     amount2: toAmount(debouncedAmount2),
     onSuccess: handleSuccess,
     onError: handleError,
   });
 
-  useEffect(() => {
-    // @ts-expect-error
-    if (formState.name == "token1") {
-      const formattedToken2Balance = fromTerraAmount(token2Balance, "0.000000");
-      const token2amount = calculateTokenAmount(
-        pool,
-        token1.asset,
-        token1.amount
-      );
-      const potentialToken1amount = calculateTokenAmount(
-        pool,
-        token2.asset,
-        formattedToken2Balance
-      );
+  const balances = {
+    token1: fromTerraAmount(useBalance(token1), "0.000000"),
+    token2: fromTerraAmount(useBalance(token2), "0.000000"),
+  };
 
-      if (gt(token2amount, formattedToken2Balance)) {
-        setValue("token2.amount", formattedToken2Balance);
-        setValue("token1.amount", potentialToken1amount);
-      } else {
-        setValue("token2.amount", token2amount);
-      }
-    }
+  const token1Max = Math.min(
+    +balances.token1,
+    num(balances.token2)
+      .times(num(pool.token1.share).div(pool.token2.share))
+      .dp(6)
+      .toNumber()
+  );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token1.amount]);
+  const token2Max = Math.min(
+    +balances.token2,
+    num(balances.token1)
+      .div(num(pool.token1.share).div(pool.token2.share))
+      .dp(6)
+      .toNumber()
+  );
 
-  useEffect(() => {
-    // @ts-expect-error
-    if (formState.name == "token2") {
-      const formattedToken1Balance = fromTerraAmount(token1Balance, "0.000000");
-      const token1amount = calculateTokenAmount(
-        pool,
-        token2.asset,
-        token2.amount
-      );
-      const potentialToken2amount = calculateTokenAmount(
-        pool,
-        token1.asset,
-        formattedToken1Balance
-      );
+  const handleAmount1Change = (value) => {
+    const normalizedValue = value || 0;
+    const ratio = num(pool.token2.share).div(pool.token1.share);
+    const newAmount2 = num(normalizedValue).times(ratio).toFixed(6);
+    setValue("amount1", normalizedValue);
+    setValue("amount2", newAmount2);
+  };
 
-      if (gt(token1amount, formattedToken1Balance)) {
-        setValue("token1.amount", formattedToken1Balance);
-        setValue("token2.amount", potentialToken2amount);
-      } else {
-        setValue("token1.amount", token1amount);
-      }
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token2.amount]);
+  const handleAmount2Change = (value) => {
+    const normalizedValue = value || 0;
+    const ratio = num(pool.token2.share).div(pool.token1.share);
+    const newAmount1 = num(normalizedValue).div(ratio).toFixed(6);
+    setValue("amount1", newAmount1);
+    setValue("amount2", normalizedValue);
+  };
 
   const submit = async () => {
     state.provideLiquidity();
@@ -162,14 +136,28 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
     return <LoadingForm txHash={state.txHash} />;
   }
 
+  console.log("test", {
+    token1Max,
+    amount1,
+    token2Max,
+    amount2,
+  });
+
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
       <Box width="full" mt="8">
         <Controller
-          name="token1"
+          name="amount1"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => <AmountInput {...field} />}
+          render={({ field }) => (
+            <NewAmountInput
+              asset={token1}
+              max={token1Max}
+              {...field}
+              onChange={handleAmount1Change}
+            />
+          )}
         />
       </Box>
 
@@ -179,10 +167,17 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
 
       <Box width="full">
         <Controller
-          name="token2"
+          name="amount2"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => <AmountInput {...field} />}
+          render={({ field }) => (
+            <NewAmountInput
+              asset={token2}
+              max={token2Max}
+              {...field}
+              onChange={handleAmount2Change}
+            />
+          )}
         />
       </Box>
 
