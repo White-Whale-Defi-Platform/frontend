@@ -14,7 +14,6 @@ type Props = {
   asset: string;
   pairContract: string;
   lpTokenContract: string;
-  stakingContract: string;
 };
 
 const PoolItem: FC<Props> = ({
@@ -93,7 +92,7 @@ const PoolItem: FC<Props> = ({
           <Flex justify="space-between" mb="4">
             <Text>My Liquidity</Text>
             <Text color="brand.500" fontWeight="700">
-              {fromTerraAmount(pool.mine.shareInUST)} UST
+              {fromTerraAmount(pool.mine.shareInUst)} UST
             </Text>
           </Flex>
           {/* <Flex justify="space-between" mb="4">

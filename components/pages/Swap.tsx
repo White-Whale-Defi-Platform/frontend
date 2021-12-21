@@ -48,7 +48,6 @@ const Swap: NextPage = () => {
             asset="Terraswap"
             pairContract={whaleUstPair}
             lpTokenContract={whaleUstLpToken}
-            stakingContract={whaleUstStaking}
           />
         </GridItem>
       </Grid>

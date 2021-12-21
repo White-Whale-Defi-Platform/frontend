@@ -136,13 +136,6 @@ const ProvideForm: FC<Props> = ({ pairContract, pool, onClose }) => {
     return <LoadingForm txHash={state.txHash} />;
   }
 
-  console.log("test", {
-    token1Max,
-    amount1,
-    token2Max,
-    amount2,
-  });
-
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
       <Box width="full" mt="8">
