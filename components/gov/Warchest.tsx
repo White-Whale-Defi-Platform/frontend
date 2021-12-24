@@ -100,7 +100,7 @@ const Warchest = () => {
   return (
     <Card noPadding h="full">
       <Flex direction="column" justify="space-between" h="full">
-        <Flex justify="space-between" align="center" pt="8" px="8">
+        {/* <Flex justify="space-between" align="center" pt="8" px="8">
           <HStack spacing="4">
             <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
             <Text color="#fff" fontSize="2xl" fontWeight="700">
@@ -129,7 +129,7 @@ const Warchest = () => {
               <AssetLine key={item.label} data={item} />
             ))}
           </Flex>
-        </Flex>
+        </Flex> */}
 
         <HStack bg="blackAlpha.400" px="8" py="2">
           <Box flex="1">

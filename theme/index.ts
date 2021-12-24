@@ -6,7 +6,9 @@ import Tooltip from "./tooltip";
 import Text from "./text";
 import Button from "./button";
 import Tabs from "./tabs";
+import Input from "./input";
 import NumberInput from "./numberInput";
+import Textarea from "./textarea";
 import Menu from "./menu";
 import Drawer from "./drawer";
 
@@ -24,7 +26,9 @@ export default extendTheme({
     Text,
     Badge,
     Button,
+    Input,
     NumberInput,
+    Textarea,
     Tabs,
     Menu,
   },

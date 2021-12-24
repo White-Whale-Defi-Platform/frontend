@@ -78,9 +78,9 @@ const Gov: NextPage = () => {
         <GridItem colSpan={[12, null, 6]}>
           <Warchest />
         </GridItem>
-        <GridItem colSpan={[12, null, 6]}>
+        {/* <GridItem colSpan={[12, null, 6]}>
           <CommunityFund />
-        </GridItem>
+        </GridItem> */}
       </Grid>
 
       <Flex justify="space-between" mt="24" mb="6">

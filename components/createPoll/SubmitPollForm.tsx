@@ -1,20 +1,21 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useMemo } from "react";
 import {
   Button,
   HStack,
   Box,
   chakra,
-  useToast,
+  Input,
   Divider,
   Flex,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { toAmount } from "libs/parse";
-import { useGovStaker, useVote } from "modules/govern";
+import { useGovStaker, useCreatePoll } from "modules/govern";
 import { useFeeToString } from "hooks/useFeeToString";
 import useContracts from "hooks/useContracts";
 import { VoteType } from "types/poll";
@@ -28,11 +29,8 @@ import Card from "components/Card";
 import PollInput from "components/PollInput";
 
 type Inputs = {
-  voteType: VoteType;
-  token: {
-    asset: string;
-    amount: string;
-  };
+  title: string;
+  description: string;
 };
 
 type Props = {
@@ -46,37 +44,46 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
 
   const { control, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
-      voteType: VoteType.Yes,
-      token: {
-        amount: undefined,
-        asset: whaleToken,
-      },
+      title: "",
+      description: "",
     },
   });
-  const token = watch("token");
-  const voteType = watch("voteType");
+  const { title, description } = watch();
 
   const handleSuccess = useCallback(
     (txHash) => {
       queryClient.invalidateQueries("balance");
-      onClose();
     },
     [onClose, queryClient]
   );
 
+  const data = useMemo(() => {
+    return {
+      title,
+      description,
+    };
+  }, [title, description]);
+
+  const state = useCreatePoll({
+    govContract: gov,
+    tokenContract: whaleToken,
+    data,
+    onSuccess: handleSuccess,
+  });
+
   const submit = async () => {
-    console.log("oui");
+    state.submit();
   };
 
-  // const feeString = useFeeToString(voteState.fee);
+  const feeString = useFeeToString(state.fee);
 
-  // if (voteState.txStep == TxStep.Posting) {
-  //   return <PendingForm />;
-  // }
+  if (state.txStep == TxStep.Posting) {
+    return <PendingForm />;
+  }
 
-  // if (voteState.txStep == TxStep.Broadcasting) {
-  //   return <LoadingForm txHash={voteState.txHash} />;
-  // }
+  if (state.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state.txHash} />;
+  }
 
   return (
     <Card mb="8">
@@ -85,32 +92,65 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
       </Text>
       <chakra.form onSubmit={handleSubmit(submit)} width="full">
         <Box width="full">
-          <Controller
-            name="token"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <PollInput initialBalance={staker?.balance} {...field} />
-            )}
-          />
+          <Box mb="2">
+            <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
+              Title
+            </Text>
+          </Box>
+          <Box mb="2">
+            <Controller
+              name="title"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Input
+                  size="lg"
+                  variant="brand"
+                  placeholder="Enter your title"
+                  _placeholder={{ color: "whiteAlpha.300" }}
+                  {...field}
+                />
+              )}
+            />
+          </Box>
         </Box>
-
         <Box width="full">
+          <Box mb="2">
+            <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
+              Description
+            </Text>
+          </Box>
+          <Box mb="2">
+            <Controller
+              name="description"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Textarea
+                  variant="brand"
+                  placeholder="Enter your title"
+                  _placeholder={{ color: "whiteAlpha.300" }}
+                  {...field}
+                />
+              )}
+            />
+          </Box>
+        </Box>
+
+        {/* <Box width="full">
           <Controller
             name="token"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => (
-              <AmountInput initialBalance={staker?.balance} {...field} />
-            )}
+            render={({ field }) => <AmountInput {...field} />}
           />
-        </Box>
-
-        {/* <Box mt="4">
-          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
         </Box> */}
 
-        {/* {voteState.error && (
+        <Box mt="4">
+          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        </Box>
+
+        {state.error && (
           <Box
             my="6"
             color="red.500"
@@ -120,9 +160,9 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
             py="2"
             borderRadius="2xl"
           >
-            <Text>{voteState.error}</Text>
+            <Text>{state.error}</Text>
           </Box>
-        )} */}
+        )}
 
         <HStack mt="8" width="full">
           <Button
@@ -130,8 +170,8 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
             variant="primary"
             size="md"
             flex="1"
-            // isLoading={voteState.txStep == TxStep.Estimating}
-            // isDisabled={voteState.txStep != TxStep.Ready}
+            // isLoading={state.txStep == TxStep.Estimating}
+            // isDisabled={state.txStep != TxStep.Ready}
           >
             Create Poll
           </Button>
