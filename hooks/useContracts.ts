@@ -50,7 +50,7 @@ const defaultContracts: { [key: string]: any } = {
     whaleUstPair: "terra1nyaj3xv93gzh753d03yh5er8wq4vma2rm730fg",
     whaleUstLpToken: "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
     whaleUstStaking: "terra1acddhgjd7vdedlx870lsu7eavfc6jm5yg70hcg",
-    gov: "terra13zkn22u6fs550xdmx2s2mydesd0ym4jk3r4um3",
+    gov: "terra1ytsms4c9e3nxzvucuxe385c9rcm8tfjvuzv5j7",
     communityFund: "terra1ugx7u99t8nqvhrt40ka759kqxy4j4r3n5v5l9j",
     warchest: "terra1twgq7ye7rz75gs82e503gh6n9cm8nvs4tsq88v",
   },

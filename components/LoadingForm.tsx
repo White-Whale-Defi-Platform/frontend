@@ -26,7 +26,12 @@ const LoadingForm: FC<Props> = ({ txHash }) => {
         <Text variant="light" fontSize="md">
           Tx Hash
         </Text>
-        <Link fontWeight="bold" href={finder(txHash, "tx")} target="_blank">
+        <Link
+          fontWeight="bold"
+          href={finder(txHash, "tx")}
+          target="_blank"
+          color="white"
+        >
           {truncate(txHash)}
         </Link>
       </Flex>

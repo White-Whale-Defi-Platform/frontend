@@ -12,7 +12,9 @@ export * from "./hooks/useGovStaked";
 export * from "./hooks/useVoteAvailable";
 export * from "./hooks/usePollVoters";
 export * from "./hooks/useVote";
+export * from "./hooks/useCreatePoll";
 
 export * from "./createVoteMsgs";
+export * from "./createCreatePollMsgs";
 export * from "./createStakeMsgs";
 export * from "./createUnstakeMsgs";
