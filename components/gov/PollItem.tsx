@@ -3,23 +3,20 @@ import { Box, Heading, HStack, Text, chakra } from "@chakra-ui/react";
 import Link from "next/link";
 import dayjs from "dayjs";
 
-import { truncate } from "libs/text";
 import { Poll } from "types/poll";
 import { usePoll } from "modules/govern";
 
 import Card from "components/Card";
-import PollBadge from "components/gov/PollBadge";
 import PollProgress from "components/gov/PollProgress";
-import CalendarIcon from "components/icons/CalendarIcon";
 
 type Props = {
   poll: Poll;
 };
 
 const PollItem: FC<Props> = ({ poll }) => {
-  const { id, title, creator, end_time, status } = poll;
+  const { id, title, status } = poll;
   const details = usePoll(id);
-  const formattedEndTime = dayjs.unix(end_time).format("LLL z");
+  const formattedEndTime = dayjs(details?.endsIn).format("LLL z");
 
   return (
     <Link href={`/gov/poll/${id}`} passHref>

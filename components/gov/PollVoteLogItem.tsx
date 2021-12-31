@@ -30,7 +30,7 @@ const PollVoteLogItem: FC<Props> = ({ data }) => {
           <Text variant="light" lineHeight="1" textTransform="capitalize">
             {vote}
           </Text>
-          {iconContent}
+          {/* {iconContent} */}
         </HStack>
       </Box>
     </Flex>

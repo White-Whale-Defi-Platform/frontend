@@ -4,9 +4,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 
 import { usePoll } from "modules/govern";
 import Link from "next/link";
-import BackButton from "components/BackButton";
 import PollVote from "components/gov/PollVote";
-import PollDetails from "components/gov/PollDetails";
 import PollSummary from "components/gov/PollSummary";
 import PollVoteLog from "components/gov/PollVoteLog";
 import VoteModal from "components/gov/VoteModal";
@@ -54,7 +52,9 @@ const Poll: FC<Props> = ({ pollId }) => {
       <Box mb="6">
         <PollSummary poll={poll.data} />
       </Box>
-      <Box mb="10">{/* <PollVote poll={poll} /> */}</Box>
+      <Box mb="10">
+        <PollVote poll={poll} />
+      </Box>
       <Box>
         <Heading mb="10" color="#fff" size="lg">
           Voters

@@ -16,21 +16,16 @@ export enum PollType {
 
 export type Poll = {
   id: number;
-  title: string;
-  description: string;
+  deposit_amount: string;
   creator: string;
-  end_time: number;
-  submittedAt: string;
-  endAt: string;
-  recipient: string;
-  status: PollStatus;
-  type: PollType;
-  progress: number;
-  amount: string;
-  staked_amount: string;
-  total: string;
-  yes_votes: string;
+  description: string;
+  end_height: number;
+  execute_data?: any;
+  link: string;
   no_votes: string;
-  abstain_votes: string;
+  staked_amount: string;
+  status: PollStatus;
+  title: string;
   total_balance_at_end_poll: string;
+  yes_votes: string;
 };
