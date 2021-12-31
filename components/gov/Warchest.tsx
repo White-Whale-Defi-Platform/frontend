@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useWarchest } from "hooks/useWarchest";
-import { useGovStaked } from "modules/govern";
+import { useGovStaked, useGovTotalStaked } from "modules/govern";
 
 import UnstakeModal from "components/gov/UnstakeModal";
 import StakeModal from "components/gov/StakeModal";
@@ -51,6 +51,7 @@ const options = {
 
 const Warchest = () => {
   const warchest = useWarchest();
+  const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
 
   const data = useMemo(() => {
@@ -132,21 +133,26 @@ const Warchest = () => {
         </Flex> */}
 
         <HStack bg="blackAlpha.400" px="8" py="2">
-          <Box flex="1">
-            <Flex justify="space-between">
+          <HStack flex="2" spacing="8">
+            <HStack spacing="2">
               <Text>APY</Text>
               <Text color="brand.500" fontWeight="600">
                 18.2%
               </Text>
-            </Flex>
-            <Divider borderColor="rgba(255, 255, 255, 0.1)" my="2" />
-            <Flex justify="space-between">
+            </HStack>
+            <HStack spacing="2">
+              <Text>Total Deposit</Text>
+              <Text color="brand.500" fontWeight="600">
+                {fromTerraAmount(totalStakedAmount, "0.00a")} WHALE
+              </Text>
+            </HStack>
+            <HStack spacing="2">
               <Text>My Deposit</Text>
               <Text color="brand.500" fontWeight="600">
                 {fromTerraAmount(stakedAmount, "0.00a")} WHALE
               </Text>
-            </Flex>
-          </Box>
+            </HStack>
+          </HStack>
           <Center h="14" px="6">
             <Divider
               orientation="vertical"

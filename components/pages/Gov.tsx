@@ -75,7 +75,7 @@ const Gov: NextPage = () => {
       </Heading>
 
       <Grid templateColumns="repeat(12, 1fr)" gridAutoRows="1fr" gap={12}>
-        <GridItem colSpan={[12, null, 6]}>
+        <GridItem colSpan={[12, null, 12]}>
           <Warchest />
         </GridItem>
         {/* <GridItem colSpan={[12, null, 6]}>

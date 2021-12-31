@@ -17,9 +17,6 @@ import { truncate } from "libs/text";
 import { Poll } from "types/poll";
 import useFinder from "hooks/useFinder";
 import Link from "next/link";
-import PollDetails from "./PollDetails";
-import PollVoteButtons from "./PollVoteButtons";
-import ChartDetailsBar from "./VotesBar/ChartDetails";
 
 type Props = {
   poll: Poll;
@@ -69,15 +66,15 @@ const PollSummary: FC<Props> = ({ poll }) => {
                 </Text>
               </Flex>
             </Box>
-            <Center h="70px" px="6">
+            {/* <Center h="70px" px="6">
               <Divider
                 orientation="vertical"
                 borderColor="rgba(255, 255, 255, 0.1)"
               />
-            </Center>
-            <HStack flex="1" spacing="4">
+            </Center> */}
+            {/* <HStack flex="1" spacing="4">
               <ChartDetailsBar />
-            </HStack>
+            </HStack> */}
           </HStack>
         </Flex>
       </Card>

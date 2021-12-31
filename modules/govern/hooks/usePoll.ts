@@ -73,11 +73,16 @@ export const usePoll = (pollId: number): null | any => {
             label: `Quorum ${quorum.gov * 100}%`,
           };
 
+    const endsIn: Date = new Date(
+      (data.end_height - 7122813) * 6000 + Date.now()
+    );
+
     return {
       data,
       voters,
       baseline,
       quorum,
+      endsIn,
       vote: {
         yes,
         no,
