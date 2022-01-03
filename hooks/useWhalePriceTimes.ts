@@ -34,7 +34,7 @@ export const useWhalePriceTimes = () => {
   });
 
   return useMemo(() => {
-    if (data == null) {
+    if (data == null || data.pair == null) {
       return [];
     }
 

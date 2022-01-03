@@ -18,7 +18,6 @@ import TerraWallet from "components/TerraWallet";
 import DrawerLink from "components/DrawerLink";
 import NavbarLink from "components/NavbarLink";
 import BurgerIcon from "components/icons/BurgerIcon";
-import { toBase64 } from "@arthuryeti/terra";
 
 type Props = {
   hideNav?: boolean;
@@ -26,17 +25,6 @@ type Props = {
 
 const Navbar: FC<Props> = ({ hideNav = false }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  console.log(
-    "ssss",
-    toBase64({
-      create_poll: {
-        title: "Test 1",
-        description: "set slippage to 0.01",
-        link: "https://whitewhale.finance",
-      },
-    })
-  );
 
   return (
     <Box
@@ -60,11 +48,11 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
             {!hideNav && (
               <>
                 <NavbarLink text="Dashboard" href="/dashboard" />
-                {/* <NavbarLink text="My Page" href="/myPage" /> */}
-                {/* <NavbarLink text="Vaults" href="/vaults" /> */}
+                <NavbarLink text="My Page" href="/myPage" />
+                <NavbarLink text="Vaults" href="/vaults" />
                 <NavbarLink text="Swap" href="/swap" />
                 <NavbarLink text="Governance" href="/gov" />
-                {/* <NavbarLink text="Bond" href="/bond" /> */}
+                <NavbarLink text="Bond" href="/bond" />
               </>
             )}
           </HStack>
