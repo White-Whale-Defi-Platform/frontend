@@ -12,18 +12,18 @@ const query = gql`
   }
 `;
 
-export const useVaultApy = () => {
-  const { data } = useQuery("vaultApr", () => {
+export const useGovApr = () => {
+  const { data } = useQuery("govApr", () => {
     return request(GRAPHQL_URL, query);
   });
 
   return useMemo(() => {
-    if (data == null || data.vault == null) {
+    if (data == null || data.gov == null) {
       return "0";
     }
 
-    return data.vault.apy;
+    return data.gov.apr;
   }, [data]);
 };
 
-export default useVaultApy;
+export default useGovApr;
