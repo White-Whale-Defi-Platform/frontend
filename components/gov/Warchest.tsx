@@ -21,6 +21,7 @@ import SimpleStat from "components/SimpleStat";
 import AssetLine from "components/myPage/AssetLine";
 import Card from "components/Card";
 import { number } from "libs/math";
+import useGovApr from "hooks/useGovApr";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -53,6 +54,8 @@ const Warchest = () => {
   const warchest = useWarchest();
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
+  const govApr = useGovApr();
+  const govAprInPercent = (govApr * 100).toFixed(2);
 
   const data = useMemo(() => {
     return [
@@ -137,17 +140,17 @@ const Warchest = () => {
             <HStack spacing="2">
               <Text>APY</Text>
               <Text color="brand.500" fontWeight="600">
-                18.2%
+                {govAprInPercent}%
               </Text>
             </HStack>
             <HStack spacing="2">
-              <Text>Total Deposit</Text>
+              <Text>Total Staked</Text>
               <Text color="brand.500" fontWeight="600">
                 {fromTerraAmount(totalStakedAmount, "0.00a")} WHALE
               </Text>
             </HStack>
             <HStack spacing="2">
-              <Text>My Deposit</Text>
+              <Text>My Staked</Text>
               <Text color="brand.500" fontWeight="600">
                 {fromTerraAmount(stakedAmount, "0.00a")} WHALE
               </Text>
