@@ -8,6 +8,7 @@ const styles = {
       return {
         border: "1px solid",
         borderColor: "brand.100",
+        borderRadius: "2xl",
         bg: "inherit",
         color: "brand.500",
         fontWeight: "700",

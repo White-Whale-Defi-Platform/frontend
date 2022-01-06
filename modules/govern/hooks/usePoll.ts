@@ -4,6 +4,7 @@ import { num, useTerraWebapp } from "@arthuryeti/terra";
 
 import useContracts from "hooks/useContracts";
 import { Poll } from "types/poll";
+import { useLastSyncedHeight } from "modules/common";
 import {
   useGovWhaleBalance,
   useGovState,
@@ -14,6 +15,7 @@ import {
 export const usePoll = (pollId: number): null | any => {
   const { client } = useTerraWebapp();
   const { gov } = useContracts();
+  const height = useLastSyncedHeight();
 
   const balance = useGovWhaleBalance();
   const govConfig = useGovConfig();
@@ -74,7 +76,7 @@ export const usePoll = (pollId: number): null | any => {
           };
 
     const endsIn: Date = new Date(
-      (data.end_height - 7122813) * 6000 + Date.now()
+      (data.end_height - height) * 6000 + Date.now()
     );
 
     return {
@@ -90,7 +92,7 @@ export const usePoll = (pollId: number): null | any => {
         threshold,
       },
     };
-  }, [data, govConfig, voters, balance, govState]);
+  }, [data, govConfig, voters, balance, govState, height]);
 };
 
 export default usePoll;

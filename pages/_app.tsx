@@ -16,6 +16,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import utc from "dayjs/plugin/utc";
 import { TerraWebappProvider } from "@arthuryeti/terra";
 import { TerraswapProvider } from "@arthuryeti/terraswap";
 
@@ -24,6 +25,7 @@ import whitelist from "constants/whitelist.json";
 import theme from "../theme";
 
 dayjs.extend(timezone);
+dayjs.extend(utc);
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
 dayjs.extend(advancedFormat);

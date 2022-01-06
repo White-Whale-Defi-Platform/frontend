@@ -46,13 +46,11 @@ const VoteForm: FC<Props> = ({ pollId, onClose }) => {
   const token = watch("token");
   const voteType = watch("voteType");
 
-  const handleSuccess = useCallback(
-    (txHash) => {
-      queryClient.invalidateQueries("balance");
-      onClose();
-    },
-    [onClose, queryClient]
-  );
+  const handleSuccess = useCallback(() => {
+    queryClient.invalidateQueries("balance");
+    queryClient.invalidateQueries("poll");
+    onClose();
+  }, [onClose, queryClient]);
 
   const state = useVote({
     govContract: gov,

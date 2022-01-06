@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Box,
   Grid,
@@ -6,7 +6,7 @@ import {
   Heading,
   Flex,
   HStack,
-  Text,
+  Button,
   Select,
   Stack,
   Image,
@@ -16,7 +16,7 @@ import Link from "next/link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { NextPage } from "next";
 
-import { useGovStaked, useGovTotalStaked } from "modules/govern";
+import { useGovConfig, useGovStaked, useGovTotalStaked } from "modules/govern";
 import { useWhalePrice } from "hooks/useWhalePrice";
 import { fromTerraAmount } from "libs/terra";
 
@@ -31,6 +31,8 @@ import UnstakeModal from "components/gov/UnstakeModal";
 import StakeModal from "components/gov/StakeModal";
 import CommunityFund from "components/gov/CommunityFund";
 import PollList from "components/gov/PollList";
+import useContracts from "hooks/useContracts";
+import { num, useBalance } from "@arthuryeti/terra";
 
 const dataChart = [
   {
@@ -64,9 +66,17 @@ const dataChart = [
 ];
 
 const Gov: NextPage = () => {
-  const totalStakedAmount = useGovTotalStaked();
-  const stakedAmount = useGovStaked();
-  const price = useWhalePrice();
+  const { whaleToken } = useContracts();
+  const config = useGovConfig();
+  const balance = useBalance(whaleToken);
+
+  const canCreate = useMemo(() => {
+    if (config == null) {
+      return false;
+    }
+
+    return num(balance).gte(config.proposal_deposit);
+  }, [balance, config]);
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
@@ -87,21 +97,15 @@ const Gov: NextPage = () => {
         <Heading color="#fff" size="lg">
           Polls
         </Heading>
-        <HStack>
-          <Box
-            as="button"
-            mr="17px"
-            borderRadius="full"
-            color="white"
-            border="1px solid #fff"
-            alignSelf="center"
-            padding="2px 20px"
-          >
-            <Link href="/gov/createPoll" passHref>
-              <a>Create Poll</a>
+        {canCreate && (
+          <HStack>
+            <Link href="/gov/create-poll" passHref>
+              <Button as="a" variant="secondary" size="sm">
+                Create Poll
+              </Button>
             </Link>
-          </Box>
-        </HStack>
+          </HStack>
+        )}
       </Flex>
       <Polls />
     </Box>

@@ -20,12 +20,9 @@ type Props = {
 
 const PollVote: FC<Props> = ({ poll }) => {
   const {
-    data: { id, status, end_time },
+    data: { id, status },
   } = poll;
   const isVoteAvailable = useVoteAvailable(poll);
-  const formattedEndTime = dayjs().to(dayjs.unix(end_time));
-  const yesPercent = poll.vote.yes / poll.vote.total;
-  const noPercent = poll.vote.no / poll.vote.total;
 
   return (
     <Card noPadding>
