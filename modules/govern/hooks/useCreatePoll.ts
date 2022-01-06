@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { toTerraAmount, useAddress, useTransaction } from "@arthuryeti/terra";
 import { createCreatePollMsgs } from "modules/govern";
+import useGovConfig from "./useGovConfig";
 
 type Params = {
   tokenContract: string;
@@ -19,6 +20,7 @@ export const useCreatePoll = ({
   onSuccess,
 }: Params) => {
   const address = useAddress();
+  const config = useGovConfig();
 
   const msgs = useMemo(() => {
     if (data == null || data.title.length == 0) {
@@ -29,12 +31,12 @@ export const useCreatePoll = ({
       {
         tokenContract,
         govContract,
-        amount: toTerraAmount(100),
+        amount: config.proposal_deposit,
         data,
       },
       address
     );
-  }, [address, govContract, tokenContract, data]);
+  }, [address, govContract, tokenContract, data, config]);
 
   return useTransaction({
     msgs,

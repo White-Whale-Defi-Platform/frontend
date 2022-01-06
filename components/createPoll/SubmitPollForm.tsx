@@ -13,6 +13,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
+import { useRouter } from "next/router";
 
 import { toAmount } from "libs/parse";
 import { useGovStaker, useCreatePoll } from "modules/govern";
@@ -37,10 +38,10 @@ type Props = {
   onClose?: () => void;
 };
 
-const SubmitPollForm: FC<Props> = ({ onClose }) => {
+const SubmitPollForm: FC<Props> = () => {
   const { whaleToken, gov } = useContracts();
-  const staker = useGovStaker();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { control, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
@@ -50,12 +51,11 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
   });
   const { title, description } = watch();
 
-  const handleSuccess = useCallback(
-    (txHash) => {
-      queryClient.invalidateQueries("balance");
-    },
-    [onClose, queryClient]
-  );
+  const handleSuccess = useCallback(() => {
+    queryClient.invalidateQueries("balance");
+    queryClient.invalidateQueries("polls");
+    router.push("/gov");
+  }, [queryClient, router]);
 
   const data = useMemo(() => {
     return {
@@ -78,15 +78,23 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
   const feeString = useFeeToString(state.fee);
 
   if (state.txStep == TxStep.Posting) {
-    return <PendingForm />;
+    return (
+      <Card>
+        <PendingForm />
+      </Card>
+    );
   }
 
   if (state.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={state.txHash} />;
+    return (
+      <Card>
+        <LoadingForm txHash={state.txHash} />
+      </Card>
+    );
   }
 
   return (
-    <Card mb="8">
+    <Card>
       <Text mb="6" color="#fff" fontSize="2xl" fontWeight="700">
         Submit text poll
       </Text>
@@ -97,7 +105,7 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
               Title
             </Text>
           </Box>
-          <Box mb="2">
+          <Box mb="8">
             <Controller
               name="title"
               control={control}
@@ -130,21 +138,15 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
                   variant="brand"
                   placeholder="Enter your title"
                   _placeholder={{ color: "whiteAlpha.300" }}
+                  size="lg"
+                  resize="none"
+                  rows={12}
                   {...field}
                 />
               )}
             />
           </Box>
         </Box>
-
-        {/* <Box width="full">
-          <Controller
-            name="token"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => <AmountInput {...field} />}
-          />
-        </Box> */}
 
         <Box mt="4">
           <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
@@ -170,8 +172,8 @@ const SubmitPollForm: FC<Props> = ({ onClose }) => {
             variant="primary"
             size="md"
             flex="1"
-            // isLoading={state.txStep == TxStep.Estimating}
-            // isDisabled={state.txStep != TxStep.Ready}
+            isLoading={state.txStep == TxStep.Estimating}
+            isDisabled={state.txStep != TxStep.Ready}
           >
             Create Poll
           </Button>
