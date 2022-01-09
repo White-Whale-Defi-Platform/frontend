@@ -6,8 +6,8 @@ import { GRAPHQL_URL } from "constants/constants";
 
 const query = gql`
   query {
-    gov {
-      apr
+    vault{
+      apy
     }
   }
 `;
