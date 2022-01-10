@@ -55,7 +55,6 @@ const Warchest = () => {
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
   const govApr = useGovApr();
-  const govAprInPercent = (govApr * 100).toFixed(2);
 
   const data = useMemo(() => {
     return [
@@ -138,9 +137,9 @@ const Warchest = () => {
         <HStack bg="blackAlpha.400" px="8" py="2">
           <HStack flex="2" spacing="8">
             <HStack spacing="2">
-              <Text>APY</Text>
+              <Text>APR</Text>
               <Text color="brand.500" fontWeight="600">
-                {govAprInPercent}%
+                {govApr}%
               </Text>
             </HStack>
             <HStack spacing="2">
