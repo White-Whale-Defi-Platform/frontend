@@ -23,11 +23,6 @@ const Dashboard: NextPage = () => {
     };
   });
 
-  // dataChart.push({
-  //   label: "Now",
-  //   value: fromTerraAmount(price, "0.000000"),
-  // });
-
   return (
     <LineGraphCard
       cells={[
