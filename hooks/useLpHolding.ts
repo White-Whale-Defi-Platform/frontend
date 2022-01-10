@@ -9,7 +9,7 @@ export const useLpHolding = () => {
     // stakingContract: whaleUstStaking,
   });
 
-  return pool.mine.shareInUST;
+  return pool?.mine?.shareInUst;
 };
 
 export default useLpHolding;
