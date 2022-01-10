@@ -26,6 +26,7 @@ type Props = {
   initialBalance?: string;
   isMaxDisabled?: boolean;
   hideBalance?: boolean;
+  isDisabled?: boolean;
   value: {
     amount: string;
     asset: string;
@@ -41,6 +42,7 @@ const AmountInput: FC<Props> = forwardRef(
       initialBalance,
       isMaxDisabled = false,
       hideBalance = false,
+      isDisabled = false,
       ...field
     },
     ref
@@ -76,6 +78,7 @@ const AmountInput: FC<Props> = forwardRef(
             value={value.amount}
             onChange={(a) => onChange({ ...value, amount: a })}
             onBlur={onBlur}
+            isDisabled
             {...field}
           >
             <NumberInputField

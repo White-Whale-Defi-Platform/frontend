@@ -32,6 +32,10 @@ import PollInput from "components/PollInput";
 type Inputs = {
   title: string;
   description: string;
+  token: {
+    asset: string;
+    amount: string;
+  };
 };
 
 type Props = {
@@ -47,6 +51,10 @@ const SubmitPollForm: FC<Props> = () => {
     defaultValues: {
       title: "",
       description: "",
+      token: {
+        asset: whaleToken,
+        amount: "5000",
+      },
     },
   });
   const { title, description } = watch();
@@ -128,7 +136,7 @@ const SubmitPollForm: FC<Props> = () => {
               Description
             </Text>
           </Box>
-          <Box mb="2">
+          <Box mb="8">
             <Controller
               name="description"
               control={control}
@@ -148,9 +156,29 @@ const SubmitPollForm: FC<Props> = () => {
           </Box>
         </Box>
 
-        <Box mt="4">
-          <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+        <Box width="full">
+          <Box mb="2">
+            <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
+              Deposit
+            </Text>
+          </Box>
+          <Box mb="2">
+            <Controller
+              name="token"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <AmountInput hideBalance isDisabled isMaxDisabled {...field} />
+              )}
+            />
+          </Box>
         </Box>
+
+        <Flex mt="8" justify="center">
+          <Box>
+            <InlineStat label="Tx Fee" value={`${feeString || "0.00"}`} />
+          </Box>
+        </Flex>
 
         {state.error && (
           <Box
