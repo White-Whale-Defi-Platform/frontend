@@ -66,20 +66,6 @@ const dataChart = [
 ];
 
 const Gov: NextPage = () => {
-  // const { whaleToken } = useContracts();
-  // const config = useGovConfig();
-  // const balance = useBalance(whaleToken);
-
-  // const canCreate = useMemo(() => {
-  //   if (config == null) {
-  //     return false;
-  //   }
-  //   console.log("config", config)
-  //   console.log("num blanace", num(balance))
-  //   // greater than or equal
-  //   return num(balance).gte(config.proposal_deposit);
-  // }, [balance, config]);
-
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Heading color="#fff" size="lg" mb="10">
