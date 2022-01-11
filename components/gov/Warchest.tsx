@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { fromTerraAmount } from "@arthuryeti/terra";
+import { fromTerraAmount, toTerraAmount } from "@arthuryeti/terra";
 import {
   Box,
   Flex,
@@ -11,6 +11,7 @@ import {
   Center,
   Divider,
 } from "@chakra-ui/react";
+import { toAmount, format, decimal } from "libs/parse";
 
 import { useWarchest } from "hooks/useWarchest";
 import { useGovStaked, useGovTotalStaked } from "modules/govern";
@@ -22,6 +23,7 @@ import AssetLine from "components/myPage/AssetLine";
 import Card from "components/Card";
 import { number } from "libs/math";
 import useGovApr from "hooks/useGovApr";
+import { percent, percentage } from "libs/num";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -54,7 +56,12 @@ const Warchest = () => {
   const warchest = useWarchest();
   const totalStakedAmount = useGovTotalStaked();
   const stakedAmount = useGovStaked();
-  const govApr = useGovApr();
+  // 7200_000 for some reason becomes 7_200_000_000_000 most likely the 6 decimal places needs to be accounted in the calcs 
+  // becuase total staked amount is also a value with 6 decimals taken into account so if you dont add the 6 zeros here
+  // Your gonna end up with totalStakeAmount being a way bigger amount 
+  // Hope this hopes someone one day 
+  const govAprFormulaCalcThingy = (parseFloat(totalStakedAmount) + 7_200_000_000_000)/parseFloat(totalStakedAmount)-1;
+  const govApr = (govAprFormulaCalcThingy * 100).toFixed(2);
 
   const data = useMemo(() => {
     return [
