@@ -66,17 +66,19 @@ const dataChart = [
 ];
 
 const Gov: NextPage = () => {
-  const { whaleToken } = useContracts();
-  const config = useGovConfig();
-  const balance = useBalance(whaleToken);
+  // const { whaleToken } = useContracts();
+  // const config = useGovConfig();
+  // const balance = useBalance(whaleToken);
 
-  const canCreate = useMemo(() => {
-    if (config == null) {
-      return false;
-    }
-
-    return num(balance).gte(config.proposal_deposit);
-  }, [balance, config]);
+  // const canCreate = useMemo(() => {
+  //   if (config == null) {
+  //     return false;
+  //   }
+  //   console.log("config", config)
+  //   console.log("num blanace", num(balance))
+  //   // greater than or equal
+  //   return num(balance).gte(config.proposal_deposit);
+  // }, [balance, config]);
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
@@ -97,15 +99,13 @@ const Gov: NextPage = () => {
         <Heading color="#fff" size="lg">
           Polls
         </Heading>
-        {canCreate && (
-          <HStack>
-            <Link href="/gov/create-poll" passHref>
-              <Button as="a" variant="secondary" size="sm">
-                Create Poll
-              </Button>
-            </Link>
-          </HStack>
-        )}
+        <HStack>
+          <Link href="/gov/create-poll" passHref>
+            <Button as="a" variant="secondary" size="sm">
+              Create Poll
+            </Button>
+          </Link>
+        </HStack>
       </Flex>
       <Polls />
     </Box>

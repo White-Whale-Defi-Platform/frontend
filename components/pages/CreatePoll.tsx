@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Grid, GridItem, Heading, Flex, Text } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import SubmitPollForm from "components/createPoll/SubmitPollForm";
 import Suggestions from "components/createPoll/Suggestions";
+
+
 
 const CreatePoll = () => {
   return (

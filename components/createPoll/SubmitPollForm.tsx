@@ -11,7 +11,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
+import { TxStep, useTerraWebapp, num, useBalance } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 import { useRouter } from "next/router";
 
@@ -20,6 +20,7 @@ import { useGovStaker, useCreatePoll } from "modules/govern";
 import { useFeeToString } from "hooks/useFeeToString";
 import useContracts from "hooks/useContracts";
 import { VoteType } from "types/poll";
+import { useGovConfig } from "modules/govern";
 
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
@@ -28,6 +29,8 @@ import InlineStat from "components/InlineStat";
 import PollVoteButtons from "components/gov/PollVoteButtons";
 import Card from "components/Card";
 import PollInput from "components/PollInput";
+
+
 
 type Inputs = {
   title: string;
@@ -46,6 +49,15 @@ const SubmitPollForm: FC<Props> = () => {
   const { whaleToken, gov } = useContracts();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const config = useGovConfig();
+  const balance = useBalance(whaleToken);
+
+  const canCreate = useMemo(() => {
+    if (config == null) {
+      return false;
+    }
+    return num(balance).gte(config.proposal_deposit);
+  }, [balance, config]);
 
   const { control, handleSubmit, watch } = useForm<Inputs>({
     defaultValues: {
@@ -167,7 +179,7 @@ const SubmitPollForm: FC<Props> = () => {
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <AmountInput hideBalance isDisabled isMaxDisabled {...field} />
+                <AmountInput hideBalance isDisabled isMaxDisabled isError={!canCreate} {...field} />
               )}
             />
           </Box>
@@ -179,7 +191,7 @@ const SubmitPollForm: FC<Props> = () => {
           </Box>
         </Flex>
 
-        {state.error && (
+        {(state.error && canCreate) && (
           <Box
             my="6"
             color="red.500"
@@ -192,6 +204,21 @@ const SubmitPollForm: FC<Props> = () => {
             <Text>{state.error}</Text>
           </Box>
         )}
+         {
+           !canCreate && (
+            <Box
+              my="6"
+              color="red.500"
+              borderColor="red.500"
+              borderWidth="1px"
+              px="4"
+              py="2"
+              borderRadius="2xl"
+            >
+              <Text>Not enough WHALE</Text>
+            </Box>
+          )
+         }
 
         <HStack mt="8" width="full">
           <Button
