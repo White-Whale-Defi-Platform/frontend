@@ -27,6 +27,7 @@ type Props = {
   isMaxDisabled?: boolean;
   hideBalance?: boolean;
   isDisabled?: boolean;
+  isError?: boolean;
   value: {
     amount: string;
     asset: string;
@@ -40,6 +41,7 @@ const AmountInput: FC<Props> = forwardRef(
       onBlur,
       value,
       initialBalance,
+      isError = false,
       isMaxDisabled = false,
       hideBalance = false,
       isDisabled = false,
@@ -53,7 +55,7 @@ const AmountInput: FC<Props> = forwardRef(
     const max = num(initialBalance).gt("0")
       ? div(initialBalance, ONE_TOKEN)
       : null;
-
+      
     return (
       <Box ref={ref}>
         {!hideBalance && (
@@ -83,6 +85,7 @@ const AmountInput: FC<Props> = forwardRef(
             {...field}
           >
             <NumberInputField
+              color={isError ? "red.500" : "brand.500" }
               placeholder="0.0"
               _placeholder={{ color: "whiteAlpha.300" }}
             />
