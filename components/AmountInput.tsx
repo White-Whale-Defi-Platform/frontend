@@ -78,7 +78,7 @@ const AmountInput: FC<Props> = forwardRef(
             value={value.amount}
             onChange={(a) => onChange({ ...value, amount: a })}
             onBlur={onBlur}
-            isDisabled
+            isDisabled={isDisabled}
             {...field}
           >
             <NumberInputField
