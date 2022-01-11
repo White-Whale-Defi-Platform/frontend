@@ -73,6 +73,7 @@ const AmountInput: FC<Props> = forwardRef(
         )}
         <Box position="relative">
           <NumberInput
+            min={0}
             variant="brand"
             size="lg"
             value={value.amount}
