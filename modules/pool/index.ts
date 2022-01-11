@@ -17,5 +17,6 @@ export * from "./hooks/usePoolApr";
 export * from "./hooks/useWithdraw";
 export * from "./hooks/useStake";
 export * from "./hooks/useUnstake";
+export * from "./hooks/useShareInUst";
 export * from "./hooks/useGetStakingState";
 export * from "./helpers";

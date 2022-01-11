@@ -7,7 +7,7 @@ import { ONE_TOKEN } from "constants/constants";
 type Props = {
   onChange: any;
   asset: string;
-  max?: string;
+  max?: string | number;
 };
 
 const AmountMaxButton: FC<Props> = ({ onChange, max, asset }) => {
@@ -43,7 +43,7 @@ const AmountMaxButton: FC<Props> = ({ onChange, max, asset }) => {
   }, [asset, balance, max, taxCap, taxRate]);
 
   if (amount == "0") {
-    return;
+    return null;
   }
 
   return (

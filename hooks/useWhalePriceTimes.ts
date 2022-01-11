@@ -38,7 +38,7 @@ export const useWhalePriceTimes = () => {
       return [];
     }
 
-    return data.pair.prices;
+    return data.pair.prices.reverse();
   }, [data]);
 };
 
