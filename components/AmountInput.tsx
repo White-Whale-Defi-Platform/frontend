@@ -41,7 +41,7 @@ const AmountInput: FC<Props> = forwardRef(
       onBlur,
       value,
       initialBalance,
-      isError,
+      isError = false,
       isMaxDisabled = false,
       hideBalance = false,
       isDisabled = false,
@@ -55,8 +55,7 @@ const AmountInput: FC<Props> = forwardRef(
     const max = num(initialBalance).gt("0")
       ? div(initialBalance, ONE_TOKEN)
       : null;
-
-    console.log("isError", isError)
+      
     return (
       <Box ref={ref}>
         {!hideBalance && (
