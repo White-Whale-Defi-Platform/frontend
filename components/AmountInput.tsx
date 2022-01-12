@@ -23,11 +23,13 @@ import Balance from "components/Balance";
 type Props = {
   onChange: any;
   onBlur: any;
+  availableToWithdraw?: number;
   initialBalance?: string;
   isMaxDisabled?: boolean;
   hideBalance?: boolean;
   isDisabled?: boolean;
   isError?: boolean;
+  showLockedInPolls?: boolean;
   value: {
     amount: string;
     asset: string;
@@ -41,6 +43,8 @@ const AmountInput: FC<Props> = forwardRef(
       onBlur,
       value,
       initialBalance,
+      availableToWithdraw,
+      showLockedInPolls = false,
       isError = false,
       isMaxDisabled = false,
       hideBalance = false,
@@ -52,10 +56,12 @@ const AmountInput: FC<Props> = forwardRef(
     const { getIcon, getSymbol } = useTokenInfo();
     const icon = getIcon(value.asset);
     const symbol = getSymbol(value.asset);
-    const max = num(initialBalance).gt("0")
-      ? div(initialBalance, ONE_TOKEN)
+    const stakedOrAvailable = showLockedInPolls ? availableToWithdraw : initialBalance
+    const max = num(stakedOrAvailable).gt("0")
+      ? div(stakedOrAvailable, ONE_TOKEN)
       : null;
       
+
     return (
       <Box ref={ref}>
         {!hideBalance && (
@@ -64,10 +70,20 @@ const AmountInput: FC<Props> = forwardRef(
             {initialBalance != null && (
               <Text ml="6">
                 <Text as="span" variant="light" color="white" fontSize="xs">
-                  Available:
+                  Staked:
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
                   {fromTerraAmount(initialBalance, "0,0.000000")}
+                </Text>
+              </Text>
+            )}
+            {showLockedInPolls && (
+              <Text ml="6">
+                <Text as="span" variant="light" color="white" fontSize="xs">
+                  Available:
+                </Text>{" "}
+                <Text as="span" fontSize="xs" fontWeight="700" ml="3">
+                  {fromTerraAmount(availableToWithdraw, "0,0.000000")}
                 </Text>
               </Text>
             )}
