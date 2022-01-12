@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { num, useBalance } from "@arthuryeti/terra";
+import dayjs from "dayjs";
 
 import {
   useGetPool,
@@ -11,7 +12,7 @@ import { div, times, gt } from "libs/math";
 import { findAssetInPool } from "libs/terra";
 import useContracts from "hooks/useContracts";
 import { ONE_TOKEN } from "constants/constants";
-import dayjs from "dayjs";
+import { useQuery } from "react-query";
 
 type Params = {
   stakingContract: string;
@@ -19,71 +20,29 @@ type Params = {
   pairContract: string;
 };
 
-export const usePoolApr = ({
-  stakingContract,
-  lpTokenContract,
-  pairContract,
-}: Params) => {
-  const { whaleUstPair, whaleToken } = useContracts();
-  const whalePrice = usePoolPrice(whaleUstPair);
-  const { data: pool } = useGetPool(pairContract);
-  const { data: config } = useGetStakingConfig(stakingContract);
-  const stakedLpTokens = useBalance(lpTokenContract, stakingContract);
-  const { data: totalLpTokens } = useGetTokenInfo(lpTokenContract);
-  const timestamp = dayjs().unix();
+export const usePoolApr = () => {
+  const { whaleUstPair } = useContracts();
+  const { data } = useQuery("pool-apr", () => {
+    return fetch(
+      `https://api.coinhall.org/api/v1/charts/terra/pairs?pairs=${whaleUstPair}`
+    ).then((res) => res.json());
+  });
 
   return useMemo(() => {
-    if (
-      pool == null ||
-      config == null ||
-      totalLpTokens == null ||
-      stakedLpTokens == null
-    ) {
-      return "0.00";
+    if (data == null || data[whaleUstPair] == null) {
+      return 0;
     }
 
-    const asset = findAssetInPool(pool, whaleToken);
-    const ustAmountInPool = times(asset.amount, whalePrice);
-    const scheduleStartTime = config.distribution_schedule[0];
-    const scheduleEndTime = config.distribution_schedule[1];
-    const scheduleAmount = config.distribution_schedule[2];
+    const volume = data[whaleUstPair]?.asset1.volume24h / 1000000;
+    const fee = volume * 0.003;
+    const pool = (data[whaleUstPair]?.asset1.poolAmount * 2) / 1000000;
+    const daily = fee / pool;
+    const apr = daily * 365;
 
-    if (config.distribution_schedule == null) {
-      return "0";
-    }
-
-    if (timestamp < scheduleStartTime) {
-      return "0";
-    }
-
-    const whaleDistributionPerSecond = div(
-      div(scheduleAmount, scheduleEndTime - scheduleStartTime),
-      ONE_TOKEN
-    );
-    const secondsPerMonth = 60 * 60 * 24 * 30;
-
-    const stakedLpTokensRatio = div(stakedLpTokens, totalLpTokens.total_supply);
-    const poolUstValue = div(times(ustAmountInPool, "2"), ONE_TOKEN);
-    const yearlyLPRewardsInUST = num(whaleDistributionPerSecond)
-      .times(secondsPerMonth)
-      .times(whalePrice);
-
-    if (gt(poolUstValue, "0")) {
-      const shareOfPool = num(poolUstValue).times(stakedLpTokensRatio);
-
-      return yearlyLPRewardsInUST.div(shareOfPool).times(100).toFixed(0);
-    }
-
-    return "0";
-  }, [
-    whaleToken,
-    config,
-    pool,
-    whalePrice,
-    timestamp,
-    stakedLpTokens,
-    totalLpTokens,
-  ]);
+    return num(apr * 100)
+      .dp(2)
+      .toNumber();
+  }, [data, whaleUstPair]);
 };
 
 export default usePoolApr;

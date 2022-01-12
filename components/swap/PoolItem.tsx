@@ -27,13 +27,7 @@ const PoolItem: FC<Props> = ({
     lpTokenContract,
   });
 
-  console.log("pool", pool);
-
-  // const apr = usePoolApr({
-  //   pairContract,
-  //   lpTokenContract,
-  //   stakingContract,
-  // });
+  const apr = usePoolApr();
 
   if (pool == null) {
     return null;
@@ -77,12 +71,12 @@ const PoolItem: FC<Props> = ({
         </Flex>
 
         <Box fontSize="xl" p="6">
-          {/* <Flex justify="space-between" mb="4">
+          <Flex justify="space-between" mb="4">
             <Text>APR</Text>
             <Text color="brand.500" fontWeight="700">
-              8,89%
+              {apr}%
             </Text>
-          </Flex> */}
+          </Flex>
           <Flex justify="space-between" mb="4">
             <Text>Liquidity</Text>
             <Text color="brand.500" fontWeight="700">
