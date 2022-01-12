@@ -35,7 +35,7 @@ const defaultContracts: { [key: string]: any } = {
     lunaUstPair: "",
     whaleUstPair: "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
     whaleUstLpToken: "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
-    gov: "",
+    gov: "terra15qv7cr7t2s4cfskq82mskq0d397hadflrazuj7",
     communityFund: "",
     warchest: "",
   },
