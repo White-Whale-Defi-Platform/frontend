@@ -3,15 +3,18 @@ import { useQuery } from "react-query";
 
 import useContracts from "hooks/useContracts";
 
+type Response = {
+  quorum: string;
+  threshold: string;
+  proposal_deposit: string;
+};
+
 export const useGovConfig = () => {
   const { client } = useTerraWebapp();
   const { gov } = useContracts();
 
   const { data, isLoading } = useQuery(["govConfig", gov], () => {
-    return client.wasm.contractQuery<{
-      quorum: string;
-      threshold: string;
-    }>(gov, {
+    return client.wasm.contractQuery<Response>(gov, {
       config: {},
     });
   });

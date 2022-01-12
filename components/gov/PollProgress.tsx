@@ -42,7 +42,7 @@ const PollProgress: FC<Props> = ({ vote, baseline, showLabel = false }) => {
         width="full"
         display="flex"
       >
-        <Box width={percent(String(yesWidth))} bg="green.500" height="full" />
+        <Box width={percent(String(yesWidth))} bg="brand.500" height="full" />
         <Box width={percent(String(noWidth))} bg="red.500" height="full" />
       </Box>
     </Box>

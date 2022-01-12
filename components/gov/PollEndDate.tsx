@@ -14,7 +14,7 @@ import ThumbsDownIcon from "components/icons/ThumbsDownIcon";
 
 import { Poll } from "types/poll";
 import { formatRate } from "libs/parse";
-import { useVoteAvailable } from "modules/govern";
+import { usePoll, useVoteAvailable } from "modules/govern";
 
 type Props = {
   poll: any;
@@ -22,10 +22,11 @@ type Props = {
 
 const PollEndDate: FC<Props> = ({ poll }) => {
   const {
-    data: { status, end_time },
+    data: { id, status, endsIn },
   } = poll;
   const now = dayjs();
-  const endDate = dayjs.unix(end_time);
+  const details = usePoll(id);
+  const endDate = dayjs(details.endsIn);
   const distance = endDate.diff(now, "s");
   const formattedEndAt = endDate.format("LLL z");
   const isEnded = now.isSameOrAfter(endDate);

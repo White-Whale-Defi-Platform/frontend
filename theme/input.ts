@@ -39,11 +39,6 @@ const styles = {
             borderColor: "brand.500",
             boxShadow: `0 0 0 1px ${getColor(theme, "brand.500")}`,
           },
-          _disabled: {
-            _hover: {
-              borderColor: "brand.100",
-            },
-          },
         },
       };
     },

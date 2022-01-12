@@ -1,12 +1,11 @@
 import React, { FC } from "react";
 import { HStack, Box, Heading, Text } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-
-import { usePoll } from "modules/govern";
 import Link from "next/link";
-import BackButton from "components/BackButton";
+
+import { usePoll, useVoteAvailable } from "modules/govern";
+
 import PollVote from "components/gov/PollVote";
-import PollDetails from "components/gov/PollDetails";
 import PollSummary from "components/gov/PollSummary";
 import PollVoteLog from "components/gov/PollVoteLog";
 import VoteModal from "components/gov/VoteModal";
@@ -17,6 +16,7 @@ type Props = {
 
 const Poll: FC<Props> = ({ pollId }) => {
   const poll = usePoll(pollId);
+  const isVoteAvailable = useVoteAvailable(poll);
 
   if (poll == null) {
     return null;
@@ -48,13 +48,15 @@ const Poll: FC<Props> = ({ pollId }) => {
           >
             <Text fontSize="sm">Execute message</Text>
           </Box> */}
-          <VoteModal pollId={pollId} />
+          <VoteModal pollId={pollId} isDisabled={!isVoteAvailable} />
         </HStack>
       </HStack>
       <Box mb="6">
-        <PollSummary poll={poll.data} />
+        <PollSummary poll={poll} />
       </Box>
-      <Box mb="10">{/* <PollVote poll={poll} /> */}</Box>
+      <Box mb="10">
+        <PollVote poll={poll} />
+      </Box>
       <Box>
         <Heading mb="10" color="#fff" size="lg">
           Voters

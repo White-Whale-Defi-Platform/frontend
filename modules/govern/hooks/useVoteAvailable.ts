@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { useGovStaker } from "modules/govern";
+import dayjs from "dayjs";
 
 export const useVoteAvailable = (poll: any): null | any => {
   const govStaker = useGovStaker();
@@ -18,8 +19,11 @@ export const useVoteAvailable = (poll: any): null | any => {
       return bal[0] == id;
     });
 
-    return status == "in_progress" && vote == null;
-    // return status == "in_progress" && vote == null && end_time > dateInSecond;
+    return (
+      status == "in_progress" &&
+      vote == null &&
+      dayjs(poll.endsIn).unix() > dateInSecond
+    );
   }, [poll, govStaker]);
 };
 

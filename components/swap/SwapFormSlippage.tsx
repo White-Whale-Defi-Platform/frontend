@@ -49,17 +49,17 @@ const SwapFormSlippage: FC<Props> = forwardRef(
         </Button>
         <Button
           type="button"
+          isActive={isSelected("0.03")}
+          onClick={() => onChange("0.03")}
+        >
+          3%
+        </Button>
+        <Button
+          type="button"
           isActive={isSelected("0.05")}
           onClick={() => onChange("0.05")}
         >
           5%
-        </Button>
-        <Button
-          type="button"
-          isActive={isSelected("0.3")}
-          onClick={() => onChange("0.3")}
-        >
-          30%
         </Button>
         <InputGroup size="sm" flex="1">
           <NumberInput

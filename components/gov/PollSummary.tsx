@@ -6,7 +6,7 @@ import {
   Text,
   Divider,
   Flex,
-  Center,
+  Link as _Link,
 } from "@chakra-ui/react";
 
 import Card from "components/Card";
@@ -16,21 +16,25 @@ import ExternalLink from "components/ExternalLink";
 import { truncate } from "libs/text";
 import { Poll } from "types/poll";
 import useFinder from "hooks/useFinder";
-import Link from "next/link";
-import PollDetails from "./PollDetails";
-import PollVoteButtons from "./PollVoteButtons";
-import ChartDetailsBar from "./VotesBar/ChartDetails";
+import dayjs from "dayjs";
 
 type Props = {
-  poll: Poll;
+  poll: {
+    data: Poll;
+    endsIn: Date;
+  };
 };
 
 const PollSummary: FC<Props> = ({ poll }) => {
   const finder = useFinder();
-  const { title, creator, status, description } = poll;
+  const {
+    data: { title, creator, status, description, link },
+    endsIn,
+  } = poll;
+  const formattedDate = dayjs(endsIn).format("LLL");
 
   return (
-    <React.Fragment>
+    <>
       <Card noPadding mb="6">
         <Flex direction="column" justify="space-between" h="full">
           <Box bg="blackAlpha.400" rounded="2xl" p="4">
@@ -65,19 +69,19 @@ const PollSummary: FC<Props> = ({ poll }) => {
                   End Time
                 </Text>{" "}
                 <Text fontSize="xs" color="brand.500" fontWeight="600">
-                  Wed, Aug 04, 19:20 PM
+                  {formattedDate}
                 </Text>
               </Flex>
             </Box>
-            <Center h="70px" px="6">
+            {/* <Center h="70px" px="6">
               <Divider
                 orientation="vertical"
                 borderColor="rgba(255, 255, 255, 0.1)"
               />
-            </Center>
-            <HStack flex="1" spacing="4">
+            </Center> */}
+            {/* <HStack flex="1" spacing="4">
               <ChartDetailsBar />
-            </HStack>
+            </HStack> */}
           </HStack>
         </Flex>
       </Card>
@@ -92,16 +96,18 @@ const PollSummary: FC<Props> = ({ poll }) => {
             variant="light"
           />
         </Box>
-        <Box px="4" pb="2">
-          <Text>Link</Text>
-        </Box>
-        <Box fontSize="xs" fontWeight="600" color="brand.500" px="4" pb="6">
-          <Link href="/gov/createPoll" passHref>
-            <a>app.anchorprotocol.com/poll/5</a>
-          </Link>
-        </Box>
+        {link && (
+          <>
+            <Box px="4" pb="2">
+              <Text>Link</Text>
+            </Box>
+            <Box fontSize="xs" fontWeight="600" color="brand.500" px="4" pb="6">
+              <_Link href={link}>{link}</_Link>
+            </Box>
+          </>
+        )}
       </Card>
-    </React.Fragment>
+    </>
   );
 };
 

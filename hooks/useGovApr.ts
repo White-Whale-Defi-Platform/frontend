@@ -6,24 +6,24 @@ import { GRAPHQL_URL } from "constants/constants";
 
 const query = gql`
   query {
-    vault{
-      apy
+    gov {
+      apr
     }
   }
 `;
 
-export const useVaultApy = () => {
-  const { data } = useQuery("vaultApr", () => {
+export const useGovApr = () => {
+  const { data } = useQuery("govApr", () => {
     return request(GRAPHQL_URL, query);
   });
 
   return useMemo(() => {
-    if (data == null || data.vault == null) {
+    if (data == null || data.gov == null) {
       return "0";
     }
 
-    return data.vault.apy;
+    return data.gov.apr;
   }, [data]);
 };
 
-export default useVaultApy;
+export default useGovApr;
