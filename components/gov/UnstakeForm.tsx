@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
-import { useGovStaked, useUnstake } from "modules/govern";
+import { useGovStaked, useGovStaker, useUnstake } from "modules/govern";
 import { toAmount } from "libs/parse";
 import useContracts from "hooks/useContracts";
 import useFeeToString from "hooks/useFeeToString";
@@ -29,6 +29,9 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
   const queryClient = useQueryClient();
   const { whaleToken, gov } = useContracts();
   const stakedAmount = useGovStaked();
+  const stakerInfo = useGovStaker();
+  const lockedInPolls = stakerInfo && stakerInfo.locked_balance.map(poll => parseFloat(poll[1].balance)).reduce((prevValue, currentValue) =>  prevValue + currentValue, 0)
+  const availableToWithdraw = parseFloat(stakedAmount) - lockedInPolls
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
     defaultValues: {
@@ -38,6 +41,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
       },
     },
   });
+
   const token = watch("token");
 
   const handleSuccess = useCallback(() => {
@@ -74,7 +78,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <AmountInput initialBalance={stakedAmount} {...field} />
+            <AmountInput availableToWithdraw={availableToWithdraw} initialBalance={stakedAmount} showLockedInPolls={true} {...field} />
           )}
         />
       </Box>

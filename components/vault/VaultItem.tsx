@@ -48,7 +48,9 @@ const VaultItem: FC<Props> = ({ data }) => {
   const ustPrice = useUstPrice();
   const isComing = data.contract == null;
   const apy = useVaultApy();
-  const apyInPercent = (apy * 100).toFixed(2);
+  console.log(apy);
+  console.log(typeof apy);
+  const apyInPercent = apy;
 
   return (
     <Card
