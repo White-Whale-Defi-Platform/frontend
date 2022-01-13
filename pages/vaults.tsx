@@ -7,6 +7,8 @@ import Head from "next/head";
 import { NextPage } from "next";
 
 const VaultsPage: NextPage = () => {
+
+  // temporarily disable access to vaults route, remove this once ready
   useEffect(() => {
     const {pathname} = Router
     if(pathname == '/vaults' ){
