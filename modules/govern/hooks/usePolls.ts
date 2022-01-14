@@ -1,8 +1,8 @@
-import { useQuery } from "react-query";
-import { useTerraWebapp } from "@arthuryeti/terra";
+import { useQuery } from 'react-query';
+import { useTerraWebapp } from '@arthuryeti/terra';
 
-import { Poll } from "types/poll";
-import useContracts from "hooks/useContracts";
+import { Poll } from 'types/poll';
+import useContracts from 'hooks/useContracts';
 
 type Result = {
   polls: Poll[];
@@ -12,7 +12,7 @@ export const usePolls = (status?: string) => {
   const { client } = useTerraWebapp();
   const { gov } = useContracts();
 
-  let msg: any = {
+  const msg: any = {
     polls: {},
   };
 
@@ -21,10 +21,8 @@ export const usePolls = (status?: string) => {
   }
 
   return useQuery<Result>(
-    ["polls", status],
-    () => {
-      return client.wasm.contractQuery(gov, msg);
-    },
+    ['polls', status],
+    () => client.wasm.contractQuery(gov, msg),
     {}
   );
 };
