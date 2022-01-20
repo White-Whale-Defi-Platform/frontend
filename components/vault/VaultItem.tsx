@@ -48,9 +48,6 @@ const VaultItem: FC<Props> = ({ data }) => {
   const ustPrice = useUstPrice();
   const isComing = data.contract == null;
   const apy = useVaultApy();
-  console.log(apy);
-  console.log(typeof apy);
-  const apyInPercent = apy;
 
   return (
     <Card
@@ -76,7 +73,7 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APY" value={apyInPercent} asset="%" />
+            <VaultItemLine label="APY" value={apy} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
