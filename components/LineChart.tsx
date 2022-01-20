@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { FC, useRef , useEffect, useState} from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,7 +27,22 @@ type Props = {
 };
 
 const LineChart: FC<Props> = ({ data }) => {
+  
+  const [width, setWidth] = useState<number>(window.innerWidth);
   const tooltipRef = useRef();
+
+  const handleWindowSizeChange = () => {
+    setWidth(window.innerWidth);
+  }
+
+  const isMobile = width <= 768;
+
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+        window.removeEventListener('resize', handleWindowSizeChange);
+    }
+}, []);
 
   const options = {
     tension: 0.3,
@@ -111,9 +126,22 @@ const LineChart: FC<Props> = ({ data }) => {
     ],
   };
 
+  const formattedDataMobile = {
+    labels: data.map((data) => data.label).slice(-5),
+    datasets: [
+      {
+        data: data.map((data) => data.value).slice(-5),
+        fill: false,
+        backgroundColor: "#3CCD64",
+        borderColor: "#3CCD64",
+      },
+    ],
+  };
+   
+
   return (
     <Box position="relative" h="full">
-      <Line data={formattedData} options={options} />
+      <Line data={ isMobile ? formattedDataMobile : formattedData} options={options} />
       <Box
         ref={tooltipRef}
         position="absolute"
