@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { useWallet, ConnectType } from "@terra-money/wallet-provider";
+import React, { FC, useCallback } from 'react';
+import { useWallet, ConnectType } from '@terra-money/wallet-provider';
 import {
   Modal,
   ModalOverlay,
@@ -11,10 +11,11 @@ import {
   ModalCloseButton,
   Heading,
   chakra,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import TerraExtensionIcon from "components/icons/TerraExtensionIcon";
-import TerraMobileIcon from "components/icons/TerraMobileIcon";
+import TerraExtensionIcon from 'components/icons/TerraExtensionIcon';
+import XdefiExtensionIcon from 'components/icons/XdefiExtensionIcon';
+import TerraMobileIcon from 'components/icons/TerraMobileIcon';
 
 type Props = {
   isOpen: boolean;
@@ -22,7 +23,8 @@ type Props = {
 };
 
 const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
-  const { connect } = useWallet();
+  const { connect, availableConnections } = useWallet();
+  const connections = availableConnections.filter(connection => connection.name === 'XDEFI Wallet' || connection.name === 'Terra Station Wallet')
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -39,7 +41,9 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
             <Heading size="md" mb="6">
               Connect to a wallet
             </Heading>
+            {connections.map(({ type, identifier, name, icon }) => (
             <chakra.button
+              key={identifier}
               transition="0.2s all"
               p="6"
               borderRadius="xl"
@@ -47,19 +51,20 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
               width="100%"
               mb="4"
               _hover={{
-                bg: "white",
-                color: "brand.900",
+                bg: 'white',
+                color: 'brand.900',
               }}
               onClick={() => {
                 onClose();
-                connect(ConnectType.EXTENSION);
+                connect(type, identifier);
               }}
             >
               <HStack justify="space-between">
-                <Text>Terra Station Extension</Text>
-                <TerraExtensionIcon />
+                <Text>{name}</Text>
+               {name === 'XDEFI Wallet' ?  <XdefiExtensionIcon /> :  <TerraExtensionIcon /> }
               </HStack>
             </chakra.button>
+          ))}
             <chakra.button
               transition="0.2s all"
               p="6"
@@ -67,8 +72,8 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
               bg="brand.900"
               width="100%"
               _hover={{
-                bg: "white",
-                color: "brand.900",
+                bg: 'white',
+                color: 'brand.900',
               }}
               onClick={() => {
                 onClose();
