@@ -69,7 +69,7 @@ const AmountInput: FC<Props> = forwardRef(
             {initialBalance == null && <Balance asset={value.asset} />}
             {initialBalance != null && (
               <Text ml="6">
-                <Text as="span" color="white" fontSize="xs">
+                <Text as="span" variant="light" color="white" fontSize="xs">
                   Staked:
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
@@ -79,7 +79,7 @@ const AmountInput: FC<Props> = forwardRef(
             )}
             {showLockedInPolls && (
               <Text ml="6">
-                <Text as="span" color="white" fontSize="xs">
+                <Text as="span" variant="light" color="white" fontSize="xs">
                   Available:
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
