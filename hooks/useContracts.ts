@@ -32,7 +32,7 @@ const defaultContracts: { [key: string]: any } = {
     ustVault: "terra1j3l9e29rv8dmz35lhx8d4yk8qfct6aahdy4c77",
     ustVaultLpToken: "terra1994nxa36w0xxj46e8pd8kanxjuc4astnm2ncxm",
     moneyMarket: "terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s",
-    lunaUstPair: "",
+    lunaUstPair: "terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552",
     whaleUstPair: "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
     whaleUstLpToken: "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
     gov: "",
