@@ -24,8 +24,7 @@ type Props = {
 
 const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
   const { connect, availableConnections } = useWallet();
-  const connections = availableConnections.filter(connection => connection.name === 'XDEFI Wallet' || connection.name === 'Terra Station Wallet')
-
+  const connections = availableConnections && availableConnections.filter(connection => connection.name === 'XDEFI Wallet' || connection.name === 'Terra Station Wallet')
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
