@@ -40,7 +40,7 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
             <Heading size="md" mb="6">
               Connect to a wallet
             </Heading>
-            {connections.map(({ type, identifier, name, icon }) => (
+            {connections && connections.map(({ type, identifier, name, icon }) => (
             <chakra.button
               key={identifier}
               transition="0.2s all"
