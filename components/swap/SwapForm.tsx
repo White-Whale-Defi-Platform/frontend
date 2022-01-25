@@ -64,6 +64,7 @@ const SwapForm: FC = () => {
   const handleError = useCallback((txHash) => {
     if (txHash) {
       // eslint-disable-next-line no-console
+      console.log("ouii");
     }
   }, []);
 

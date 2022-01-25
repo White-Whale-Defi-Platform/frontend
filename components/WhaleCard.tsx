@@ -1,4 +1,3 @@
-import { useEffect , useState  } from "react";
 import { NextPage } from "next";
 import dayjs from "dayjs";
 
@@ -11,27 +10,18 @@ import { useWhalePriceTimes } from "hooks/useWhalePriceTimes";
 
 import LineGraphCard from "components/myPage/LineGraphCard";
 
-interface GraphData {
-  label: string,
-  value: number
-}
-
 const Dashboard: NextPage = () => {
   const price = useWhalePrice();
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
   const data = useWhalePriceTimes();
-  const [ graphData , setGraphData ] =  useState<GraphData[]>([]);
 
-  useEffect(() => {
-    setGraphData( data && data.map((item) => {
-      return {
-        label: dayjs(item.createdAt).format("MMM D"),
-        value: item.token1,
-      };
-    }));
-  }, [data])
-
+  const dataChart = data.map((item) => {
+    return {
+      label: dayjs(item.createdAt).format("MMM D"),
+      value: item.token1,
+    };
+  });
 
   return (
     <LineGraphCard
@@ -52,7 +42,7 @@ const Dashboard: NextPage = () => {
           asset: "WHALE",
         },
       ]}
-      data={graphData}
+      data={dataChart}
     />
   );
 };

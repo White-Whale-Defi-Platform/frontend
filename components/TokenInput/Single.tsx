@@ -8,6 +8,7 @@ type Props = {
 
 const Single: FC<Props> = ({ asset }) => {
   const { getIcon, getSymbol } = useTokenInfo();
+  console.log(asset);
   const icon = getIcon(asset);
 
   return (
