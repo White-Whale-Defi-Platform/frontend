@@ -49,7 +49,7 @@ jobs:
           path: 'tf-infra-dev-apps'
       - name: commit new version
         working-directory: './tf-infra-dev-apps'
-        run: 'sed -i "s/frontend_image_tag = .*/frontend_image_tag = \"${{ github.sha }}\"/g" frontend.auto.tfvars'
+        run: echo 'frontend_image_tag = "${{ github.sha }}"' > frontend.auto.tfvars
       - uses: EndBug/add-and-commit@v5.2.0
         with:
           cwd: 'tf-infra-dev-apps'
