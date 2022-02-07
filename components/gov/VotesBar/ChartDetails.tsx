@@ -1,9 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 import { Box, Text, Flex, HStack } from "@chakra-ui/react";
 import CircleIcon from "./CircleIcon";
 import VotesChartBar from "./VotesChartBar";
+import { Poll } from "types/poll";
+import { usePoll, useVoteAvailable } from "modules/govern";
 
-const ChartDetailsBar = () => {
+
+type Props = {
+  pollId: number
+};
+
+const ChartDetailsBar: FC<Props> = ({ pollId }) => {
+  const full_poll = usePoll(pollId);
+
   return (
     <HStack width="full">
       <Box mb="2" mr="2" flex="1" fontSize="sm">
@@ -17,7 +26,7 @@ const ChartDetailsBar = () => {
                 Voted
               </Text>
               <Text fontSize="xx-small" fontWeight="600" color="brand.500">
-                23.6%
+              {(((full_poll.vote.yes + full_poll.vote.no) / full_poll.vote.total) * 100).toFixed(2)}%
               </Text>
             </HStack>
             <CircleIcon boxSize="8px" color="brand.500" />
@@ -25,22 +34,16 @@ const ChartDetailsBar = () => {
               Yes
             </Text>
             <Text fontSize="xx-small" variant="light">
-              17.6%
+             {((full_poll.vote.yes / full_poll.vote.total) * 100).toFixed(2)}%
             </Text>
             <CircleIcon boxSize="8px" color="red.500" />
             <Text fontSize="xx-small" variant="brand">
               No
             </Text>
             <Text fontSize="xx-small" variant="light">
-              3.6%
+            {((full_poll.vote.no / full_poll.vote.total) * 100).toFixed(2)}%
             </Text>
-            <CircleIcon boxSize="8px" color="grey" />
-            <Text fontSize="xx-small" variant="brand">
-              Abstain
-            </Text>
-            <Text fontSize="xx-small" variant="light">
-              3.6%
-            </Text>
+           
           </HStack>
         </Flex>
         <VotesChartBar />
