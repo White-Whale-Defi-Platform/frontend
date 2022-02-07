@@ -50,7 +50,10 @@ const PollVote: FC<Props> = ({ poll }) => {
           </Box>
           <HStack spacing="6">
             <StatWithIcon
+            
               icon={<ThumbsUpIcon />}
+              color="brand.400"
+              bgColor="rgba(60,205,100, 0.8)"
               value={`${formatRate(yesPercent)}%`}
               label={`${fromTerraAmount(poll.vote.yes)} WHALE`}
             />

@@ -76,15 +76,15 @@ const PollSummary: FC<Props> = ({ poll, pollId }) => {
                 </Text>
               </Flex>
             </Box>
-            <Center h="70px" px="6">
+            {/* <Center h="70px" px="6">
               <Divider
                 orientation="vertical"
                 borderColor="rgba(255, 255, 255, 0.1)"
               />
             </Center>
-            <HStack flex="1" spacing="4">
+            {/* <HStack flex="1" spacing="4">
               <ChartDetailsBar pollId={pollId} />
-            </HStack>
+            </HStack> */} 
           </HStack>
         </Flex>
       </Card>
