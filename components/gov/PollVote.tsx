@@ -13,6 +13,7 @@ import VoteModal from "components/gov/VoteModal";
 import StatWithIcon from "components/StatWithIcon";
 import ThumbsUpIcon from "components/icons/ThumbsUpIcon";
 import ThumbsDownIcon from "components/icons/ThumbsDownIcon";
+import InfoIcon from "components/icons/InfoIcon";
 
 type Props = {
   poll: any;
@@ -25,6 +26,7 @@ const PollVote: FC<Props> = ({ poll }) => {
   const isVoteAvailable = useVoteAvailable(poll);
   const yesPercent = (poll.vote.yes / poll.vote.total);
   const noPercent = (poll.vote.no / poll.vote.total);
+  const totalPercent = yesPercent + noPercent;
 
   return (
     <Card noPadding>
@@ -50,7 +52,6 @@ const PollVote: FC<Props> = ({ poll }) => {
           </Box>
           <HStack spacing="6">
             <StatWithIcon
-            
               icon={<ThumbsUpIcon />}
               color="brand.400"
               bgColor="rgba(60,205,100, 0.8)"

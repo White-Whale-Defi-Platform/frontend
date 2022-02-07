@@ -19,6 +19,7 @@ const PollProgress: FC<Props> = ({ vote, baseline, showLabel = false }) => {
   const thresholdWidth = (vote?.yes + vote?.no) / vote?.threshold;
   const baselineLeft = baseline?.value / vote?.total;
 
+
   return (
     <Box position="relative" mt={showLabel ? "9" : "0"}>
       {showLabel && (
@@ -34,7 +35,25 @@ const PollProgress: FC<Props> = ({ vote, baseline, showLabel = false }) => {
           <Text variant="light">{baseline?.label}</Text>
           <Box h="2" w="1px" bg="#515262" mt="1" />
         </Box>
+        
       )}
+
+      {showLabel && (
+        <Box
+          position="absolute"
+          transform="translateX(-50%)"
+          left={percent(String(yesWidth+noWidth))}
+          top="5"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <Box h="2" w="1px" bg="#515262" mt="1" />
+          <Text variant="light">{"Voted "+percent(String(yesWidth+noWidth))}</Text>
+          
+        </Box>
+        
+      )}      
       <Box
         height="2"
         bg="brand.900"
