@@ -7,6 +7,7 @@ import {
   Divider,
   Flex,
   Link as _Link,
+  Center,
 } from "@chakra-ui/react";
 
 import Card from "components/Card";
@@ -17,15 +18,17 @@ import { truncate } from "libs/text";
 import { Poll } from "types/poll";
 import useFinder from "hooks/useFinder";
 import dayjs from "dayjs";
+import ChartDetailsBar from "./VotesBar/ChartDetails";
 
 type Props = {
   poll: {
     data: Poll;
     endsIn: Date;
   };
+  pollId: number;
 };
 
-const PollSummary: FC<Props> = ({ poll }) => {
+const PollSummary: FC<Props> = ({ poll, pollId }) => {
   const finder = useFinder();
   const {
     data: { title, creator, status, description, link },
@@ -54,7 +57,7 @@ const PollSummary: FC<Props> = ({ poll }) => {
             <Box flex="1" fontSize="sm">
               <Flex justify="space-between">
                 <Text as="span" variant="light">
-                  Creater
+                  Creator
                 </Text>{" "}
                 <Text fontSize="xs" fontWeight="600">
                   <ExternalLink
@@ -73,15 +76,15 @@ const PollSummary: FC<Props> = ({ poll }) => {
                 </Text>
               </Flex>
             </Box>
-            {/* <Center h="70px" px="6">
+            <Center h="70px" px="6">
               <Divider
                 orientation="vertical"
                 borderColor="rgba(255, 255, 255, 0.1)"
               />
-            </Center> */}
-            {/* <HStack flex="1" spacing="4">
-              <ChartDetailsBar />
-            </HStack> */}
+            </Center>
+            <HStack flex="1" spacing="4">
+              <ChartDetailsBar pollId={pollId} />
+            </HStack>
           </HStack>
         </Flex>
       </Card>
