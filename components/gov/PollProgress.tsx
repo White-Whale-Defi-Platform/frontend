@@ -16,6 +16,7 @@ type Props = {
 const PollProgress: FC<Props> = ({ vote, baseline, showLabel = false }) => {
   const yesWidth = vote?.yes / vote?.total;
   const noWidth = vote?.no / vote?.total;
+  const thresholdWidth = (vote?.yes + vote?.no) / vote?.threshold;
   const baselineLeft = baseline?.value / vote?.total;
 
   return (

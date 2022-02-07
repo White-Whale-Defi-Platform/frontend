@@ -23,6 +23,8 @@ const PollVote: FC<Props> = ({ poll }) => {
     data: { id, status },
   } = poll;
   const isVoteAvailable = useVoteAvailable(poll);
+  const yesPercent = (poll.vote.yes / poll.vote.total);
+  const noPercent = (poll.vote.no / poll.vote.total);
 
   return (
     <Card noPadding>
@@ -40,7 +42,7 @@ const PollVote: FC<Props> = ({ poll }) => {
           </HStack>
         </Box>
       </Box>
-      {/* <Box p="6" py="8" borderTop="1px" borderTopColor="brand.800">
+      <Box p="6" py="8" borderTop="1px" borderTopColor="brand.800">
         <HStack justify="space-between">
           <Box>
             <Text variant="light">Total</Text>
@@ -61,7 +63,7 @@ const PollVote: FC<Props> = ({ poll }) => {
             />
           </HStack>
         </HStack>
-      </Box> */}
+      </Box>
     </Card>
   );
 };
