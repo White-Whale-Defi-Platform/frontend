@@ -9,12 +9,12 @@ type Params = {
 export const useVault = ({ contract }: Params) => {
   const { client } = useTerraWebapp();
   const address = useAddress();
-
+  console.log(contract);
   const { data: vault } = useQuery(
-    ["config", contract],
+    ["pool_config", contract],
     () => {
       return client.wasm.contractQuery<{ liquidity_token: string }>(contract, {
-        config: {},
+        pool_config: {},
       });
     },
     {
@@ -23,13 +23,13 @@ export const useVault = ({ contract }: Params) => {
   );
 
   const { data: pool } = useQuery(
-    ["pool", contract],
+    ["pool_state", contract],
     () => {
       return client.wasm.contractQuery<{
         total_value_in_ust: string;
         total_share: string;
       }>(contract, {
-        pool: {},
+        pool_state: {},
       });
     },
     {
