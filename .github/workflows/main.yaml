@@ -44,15 +44,15 @@ jobs:
             NEXT_PUBLIC_TESTNET_GRAPHQL_URL=https://api.whitewhale.money/graphql
       - uses: actions/checkout@v2
         with:
-          repository: 'White-Whale-Defi-Platform/k8s-apps-prod'
+          repository: 'White-Whale-Defi-Platform/tf-infra-prod-apps'
           token: ${{ secrets.SERVICE_ACCOUNT_PAT }}
-          path: 'k8s-apps-prod'
+          path: 'tf-infra-prod-apps'
       - name: commit new version
-        working-directory: './k8s-apps-prod'
-        run: 'sed -i "s/tag: .*/tag: ${{ github.sha }}/g" apps/values-frontend.yaml'
+        working-directory: './tf-infra-prod-apps'
+        run: echo 'frontend_image_tag = "${{ github.sha }}"' > frontend.auto.tfvars
       - uses: EndBug/add-and-commit@v5.2.0
         with:
-          cwd: 'k8s-apps-prod'
+          cwd: 'tf-infra-prod-apps'
           branch: main
           author_name: Whitewhale Service Account
           author_email: aws@whitewhale.finance
