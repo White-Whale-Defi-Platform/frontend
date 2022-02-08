@@ -99,7 +99,7 @@ const Treasury = () => {
           direction={{ base: "column", lg: "row" }}
         >
           <HStack spacing="4" mb={{ base: "4", lg: "0" }}>
-            <Image src="/warChest.png" alt="War Chest" boxSize="2.25rem" />
+            <Image src="/backingValue.png" alt="War Chest" boxSize="2.25rem" />
           <ChakraToolTip label="aUST + UST + LUNA + WHALE-UST LP / 2">
             <Text color="#fff" fontSize="2xl" fontWeight="700">
               Backing Value
