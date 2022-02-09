@@ -53,7 +53,6 @@ const DepositForm: FC<Props> = ({ token: tokenContract, vault, onClose }) => {
     queryClient.invalidateQueries("balance");
     onClose();
   }, [onClose, queryClient]);
-
   const state = useDeposit({
     token: token.asset,
     contract: vault.contract_addr,
