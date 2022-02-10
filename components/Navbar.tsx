@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import Link from "next/link";
+import React, { FC } from 'react';
+import Link from 'next/link';
 import {
   Flex,
   Box,
@@ -12,12 +12,12 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import TerraWallet from "components/TerraWallet";
-import DrawerLink from "components/DrawerLink";
-import NavbarLink from "components/NavbarLink";
-import BurgerIcon from "components/icons/BurgerIcon";
+import TerraWallet from 'components/TerraWallet';
+import DrawerLink from 'components/DrawerLink';
+import NavbarLink from 'components/NavbarLink';
+import BurgerIcon from 'components/icons/BurgerIcon';
 
 type Props = {
   hideNav?: boolean;
@@ -28,7 +28,7 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
 
   return (
     <Box
-      px={{ base: "4", md: "10" }}
+      px={{ base: '4', md: '10' }}
       borderBottomWidth="2px"
       borderColor="brand.100"
     >
@@ -36,7 +36,7 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
         justifyContent="space-between"
         mx="auto"
         maxWidth="container.xl"
-        display={{ base: "none", md: "flex" }}
+        display={{ base: 'none', md: 'flex' }}
       >
         <Box flex="1">
           <HStack spacing="8">
@@ -48,11 +48,11 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
             {!hideNav && (
               <>
                 <NavbarLink text="Dashboard" href="/dashboard" />
-                <NavbarLink text="My Page" href="/myPage" />
-                <NavbarLink text="Vaults" href="/vaults" />
+                {/* <NavbarLink text="My Page" href="/myPage" /> */}
+                {/* <NavbarLink text="Vaults" href="/vaults" /> */}
                 <NavbarLink text="Swap" href="/swap" />
                 <NavbarLink text="Governance" href="/gov" />
-                <NavbarLink text="Bond" href="/bond" />
+                {/* <NavbarLink text="Bond" href="/bond" /> */}
               </>
             )}
           </HStack>
@@ -66,7 +66,7 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
         justify="space-between"
         align="center"
         py="4"
-        display={{ base: "flex", md: "none" }}
+        display={{ base: 'flex', md: 'none' }}
       >
         <Link href="/" passHref>
           <a>
@@ -80,15 +80,15 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
           color="white"
           icon={<BurgerIcon width="1rem" height="1rem" />}
           onClick={onOpen}
-          display={{ base: "block", md: "none" }}
+          display={{ base: 'block', md: 'none' }}
           _focus={{
-            bg: "none",
+            bg: 'none',
           }}
           _active={{
-            bg: "none",
+            bg: 'none',
           }}
           _hover={{
-            boxShadow: "none",
+            boxShadow: 'none',
           }}
         >
           Open
@@ -104,6 +104,7 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
             {/* <DrawerLink text="My Page" href="/myPage" onClick={onClose} /> */}
             {/* <DrawerLink text="Vaults" href="/vaults" onClick={onClose} /> */}
             <DrawerLink text="Swap" href="/swap" onClick={onClose} />
+            <DrawerLink text="Governance" href="/gov" onClick={onClose} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

@@ -13,6 +13,7 @@ import VoteModal from "components/gov/VoteModal";
 import StatWithIcon from "components/StatWithIcon";
 import ThumbsUpIcon from "components/icons/ThumbsUpIcon";
 import ThumbsDownIcon from "components/icons/ThumbsDownIcon";
+import InfoIcon from "components/icons/InfoIcon";
 
 type Props = {
   poll: any;
@@ -23,6 +24,9 @@ const PollVote: FC<Props> = ({ poll }) => {
     data: { id, status },
   } = poll;
   const isVoteAvailable = useVoteAvailable(poll);
+  const yesPercent = (poll.vote.yes / poll.vote.total);
+  const noPercent = (poll.vote.no / poll.vote.total);
+  const totalPercent = yesPercent + noPercent;
 
   return (
     <Card noPadding>
@@ -40,7 +44,7 @@ const PollVote: FC<Props> = ({ poll }) => {
           </HStack>
         </Box>
       </Box>
-      {/* <Box p="6" py="8" borderTop="1px" borderTopColor="brand.800">
+      <Box p="6" py="8" borderTop="1px" borderTopColor="brand.800">
         <HStack justify="space-between">
           <Box>
             <Text variant="light">Total</Text>
@@ -49,6 +53,8 @@ const PollVote: FC<Props> = ({ poll }) => {
           <HStack spacing="6">
             <StatWithIcon
               icon={<ThumbsUpIcon />}
+              color="brand.400"
+              bgColor="rgba(60,205,100, 0.8)"
               value={`${formatRate(yesPercent)}%`}
               label={`${fromTerraAmount(poll.vote.yes)} WHALE`}
             />
@@ -61,7 +67,7 @@ const PollVote: FC<Props> = ({ poll }) => {
             />
           </HStack>
         </HStack>
-      </Box> */}
+      </Box>
     </Card>
   );
 };

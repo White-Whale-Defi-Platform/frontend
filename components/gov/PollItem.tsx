@@ -48,6 +48,7 @@ const PollItem: FC<Props> = ({ poll }) => {
           </Box>
           <HStack spacing="2">
             <Text variant="light" lineHeight="1">
+            {/* <Text fontSize={{ base: '12px', sm: '50px%', md: '10px' }} variant="light" lineHeight="1"> */}
               End time:{" "}
               <Text as="span" color="brand.500" fontWeight="bold">
                 {formattedEndTime}
@@ -61,3 +62,6 @@ const PollItem: FC<Props> = ({ poll }) => {
 };
 
 export default PollItem;
+
+
+// / npm run database
