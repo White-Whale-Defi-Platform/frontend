@@ -48,11 +48,11 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
             {!hideNav && (
               <>
                 <NavbarLink text="Dashboard" href="/dashboard" />
-                {/* <NavbarLink text="My Page" href="/myPage" /> */}
-                {/* <NavbarLink text="Vaults" href="/vaults" /> */}
+                <NavbarLink text="My Page" href="/myPage" />
+                <NavbarLink text="Vaults" href="/vaults" />
                 <NavbarLink text="Swap" href="/swap" />
                 <NavbarLink text="Governance" href="/gov" />
-                {/* <NavbarLink text="Bond" href="/bond" /> */}
+                <NavbarLink text="Bond" href="/bond" />
               </>
             )}
           </HStack>
