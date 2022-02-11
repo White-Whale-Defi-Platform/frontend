@@ -45,6 +45,7 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
                 <Image src="/logo.svg" alt="WhiteWhale Logo" boxSize="12" />
               </a>
             </Link>
+            {/* TODO: This is where we enable and disable pages loading in the Nav Bar. Uncomment any of the pages to have then render in menu */}
             {!hideNav && (
               <>
                 <NavbarLink text="Dashboard" href="/dashboard" />
@@ -52,7 +53,7 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
                 <NavbarLink text="Vaults" href="/vaults" />
                 <NavbarLink text="Swap" href="/swap" />
                 <NavbarLink text="Governance" href="/gov" />
-                <NavbarLink text="Bond" href="/bond" />
+                {/* <NavbarLink text="Bond" href="/bond" /> */}
               </>
             )}
           </HStack>
