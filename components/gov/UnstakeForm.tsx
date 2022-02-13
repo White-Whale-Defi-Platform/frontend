@@ -1,13 +1,14 @@
 import React, { FC, useCallback } from "react";
 import { Button, HStack, Box, chakra, Text } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
-import { TxStep, useTerraWebapp } from "@arthuryeti/terra";
+import { TxStep, useTerraWebapp, fromTerraAmount, num } from "@arthuryeti/terra";
 import { useQueryClient } from "react-query";
 
 import { useGovStaked, useGovStaker, useUnstake } from "modules/govern";
 import { toAmount } from "libs/parse";
 import useContracts from "hooks/useContracts";
 import useFeeToString from "hooks/useFeeToString";
+import { usePoll } from "modules/govern";
 
 import PendingForm from "components/PendingForm";
 import LoadingForm from "components/LoadingForm";
@@ -30,7 +31,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
   const { whaleToken, gov } = useContracts();
   const stakedAmount = useGovStaked();
   const stakerInfo = useGovStaker();
-  const lockedInPolls = stakerInfo && stakerInfo.locked_balance.map(poll => parseFloat(poll[1].balance)).reduce((prevValue, currentValue) =>  prevValue + currentValue, 0)
+  const lockedInPolls = stakerInfo && stakerInfo.locked_balance.map(poll => parseFloat(poll[1].balance)).reduce((prevValue, currentValue) => prevValue + currentValue, 0)
   const availableToWithdraw = parseFloat(stakedAmount) - lockedInPolls
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
@@ -97,7 +98,13 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
           py="2"
           borderRadius="2xl"
         >
-          <Text>{unstakeState.error}</Text>
+          {/* <Text>{unstakeState.error}</Text> */}
+          <Text>
+            Available to withdraw:  {fromTerraAmount(availableToWithdraw, "0,0.000000")}
+          </Text>
+          <Text>
+            Locked in poll:  {fromTerraAmount(lockedInPolls, "0,0.000000")}
+          </Text>
         </Box>
       )}
 
