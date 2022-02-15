@@ -1,8 +1,7 @@
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { num, useTerraWebapp } from "@arthuryeti/terra";
-
+import { num, useTerraWebapp} from "@arthuryeti/terra";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
 
@@ -53,7 +52,7 @@ const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
 
 export const useTreasury = () => {
   const { client } = useTerraWebapp();
-  const { treasury, whaleUstLpToken, whaleToken, aUstToken, moneyMarket } =
+  const { treasury, whaleUstLpToken, ustVaultLpToken, whaleToken, aUstToken, moneyMarket } =
     useContracts();
 
   const assets = ["uusd", "uluna", whaleToken, whaleUstLpToken];
@@ -68,6 +67,16 @@ export const useTreasury = () => {
     },
   });
 
+  console.log(ustVaultLpToken)
+
+  const { data: vustValue } = useQuery("vUSTValue",
+    () => {
+      return client.wasm.contractQuery<string>(ustVaultLpToken, {
+        balance: { address: treasury },
+      });
+    }
+  );
+  
   const { data: totalValue } = useQuery(
     ["treasury", "total-value", treasury],
     () => {
@@ -116,6 +125,11 @@ export const useTreasury = () => {
         asset: "LUNA",
         value: result.uluna.contractQuery,
         color: "#FFDD4D",
+      },
+      {
+        asset: "VUST",
+        value: (vustValue as any).balance,
+        color: "#3CCD64",
       },
     ];
 
