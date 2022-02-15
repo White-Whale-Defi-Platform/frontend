@@ -2,7 +2,6 @@ import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { num, useTerraWebapp} from "@arthuryeti/terra";
-import { useGetBalance } from "modules/pool";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
 
