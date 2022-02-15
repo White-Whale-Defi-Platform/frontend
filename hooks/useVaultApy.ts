@@ -17,13 +17,15 @@ export const useVaultApy = () => {
     return request(GRAPHQL_URL, query);
   });
 
-  return useMemo(() => {
+  const {apy, apr} =  useMemo(() => {
     if (data == null || data.vault == null) {
       return "0";
     }
 
-    return data.vault.apy;
+    return data.vault
   }, [data]);
+
+  return [apy, apr]
 };
 
 export default useVaultApy;
