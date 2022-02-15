@@ -46,13 +46,16 @@ const MyAssets: NextPage = () => {
   }, [whaleBalance, price]);
 
   const total = useMemo(() => {
-    return num(balance)
-      .plus(ustBalance)
-      .plus(warchestAmount)
-      .plus(lpHolding)
-      .plus(whaleAmount)
+    return num(balance ?? 0)
+      .plus(num(ustBalance ?? 0))
+      .plus(num(warchestAmount ?? 0))
+      .plus(num(lpHolding ?? 0))
+      .plus(num(whaleAmount ?? 0))
       .toString();
   }, [balance, lpHolding, warchestAmount, ustBalance, whaleAmount]);
+  console.log(typeof lpHolding)
+  console.log(typeof whaleAmount)
+  console.log(whaleAmount)
 
   const data = [
     {
@@ -61,7 +64,7 @@ const MyAssets: NextPage = () => {
       color: "#30FF6A",
     },
     {
-      label: "War Chest",
+      label: "Staked Whale",
       value: Number(warchestAmount),
       color: "#298F46",
     },
