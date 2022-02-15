@@ -19,7 +19,7 @@ export const useTVL = () => {
   const { client } = useTerraWebapp();
   const { ustVault } = useContracts();
 
-  const { data: pool } = useQuery(["pool", ustVault], () => {
+  const { data: pool } = useQuery(["pool_state", ustVault], () => {
     return client.wasm.contractQuery<{
       total_value_in_ust: string;
       total_share: string;

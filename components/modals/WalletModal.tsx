@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { useWallet, ConnectType } from '@terra-money/wallet-provider';
 import {
   Modal,
+  useMediaQuery,
   ModalOverlay,
   Text,
   HStack,
@@ -84,6 +85,7 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
                 <TerraMobileIcon width="1.5rem" height="1.5rem" />
               </HStack>
             </chakra.button>
+                 
           </Flex>
         </ModalBody>
       </ModalContent>
@@ -92,3 +94,4 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
 };
 
 export default WalletModal;
+

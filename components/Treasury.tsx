@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { fromTerraAmount } from "@arthuryeti/terra";
-import { Box, Flex, HStack, Text, Image } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, Image, Tooltip as ChakraToolTip, Tag } from "@chakra-ui/react";
 
 import { useTreasury } from "hooks/useTreasury";
 
@@ -64,6 +64,10 @@ const Treasury = () => {
     ],
   };
 
+  const riskFreeValue = number(treasury.totalValue) - data.filter(d => d.label === 'WHALE' || d.label === 'WHALE-UST LP')
+                        .map( token => token.label === 'WHALE-UST LP' ? token.valueForChart / 2 : token.valueForChart )
+                        .reduce((a, b) => a + b, 0)
+
   return (
     <Card noPadding h="full">
       <Flex direction="column" h="full">
@@ -87,6 +91,28 @@ const Treasury = () => {
             fontSizeAsset="xl"
           />
         </Flex>
+        <Flex
+          justify="space-between"
+          align={{ lg: "center" }}
+          pt="8"
+          px="8"
+          direction={{ base: "column", lg: "row" }}
+        >
+          <HStack spacing="4" mb={{ base: "4", lg: "0" }}>
+            <Image src="/backingValue.png" alt="War Chest" boxSize="2.25rem" />
+          <ChakraToolTip label="aUST + UST + LUNA + WHALE-UST LP / 2">
+            <Text color="#fff" fontSize="2xl" fontWeight="700">
+              Backing Value
+            </Text>
+          </ChakraToolTip>
+          </HStack>
+            <SimpleStat
+              value={fromTerraAmount(riskFreeValue)}
+              asset="UST"
+              fontSizeValue="2xl"
+              fontSizeAsset="xl"
+              />
+        </Flex>
 
         <Flex
           direction={["column", null, "row"]}
@@ -95,6 +121,7 @@ const Treasury = () => {
           px="8"
           mt="8"
         >
+          
           <Box w={[null, null, "50%"]}>
             <Doughnut data={formattedData} options={options} />
           </Box>

@@ -11,7 +11,7 @@ export const useWhalePrice = () => {
   const { client } = useTerraWebapp();
   const { whaleUstPair } = useContracts();
 
-  const { data: pool } = useQuery("pool", () => {
+  const { data: pool } = useQuery("pool_state", () => {
     return client.wasm.contractQuery<Pool>(whaleUstPair, {
       pool: {},
     });
