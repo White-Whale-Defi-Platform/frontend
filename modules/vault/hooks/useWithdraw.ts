@@ -34,7 +34,7 @@ export const useWithdraw = ({
         total_value_in_ust: string;
         total_share: string;
       }>(contract, {
-        pool: {},
+        pool_state: {},
       });
     },
     {
