@@ -33,8 +33,8 @@ const VaultItemLine = ({ label, value, asset = "UST" }) => {
     >
       <Text color="#fff">
         {label}
-        {label === "APY" && (
-          <Tooltip label={`25% APR`} fontSize='sm' >
+        {label === "APR" && (
+          <Tooltip label={`APR is estimated and representative only`} fontSize='sm' >
             <InfoOutlineIcon ml="2" />
           </Tooltip>
         )}
@@ -87,7 +87,7 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APY" value={apy} asset="%" />
+            <VaultItemLine label="APR" value={apy} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
