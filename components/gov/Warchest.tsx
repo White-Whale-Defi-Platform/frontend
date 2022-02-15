@@ -21,7 +21,7 @@ const Warchest = () => {
   // Your gonna end up with totalStakeAmount being a way bigger amount
   // Hope this hopes someone one day
   const govAprFormulaCalcThingy =
-    (parseFloat(totalStakedAmount) + 7_200_000_000_000) /
+    (parseFloat(totalStakedAmount) + 19_200_000_000_000) /
       parseFloat(totalStakedAmount) -
     1;
   const govApr = (govAprFormulaCalcThingy * 100).toFixed(2);
