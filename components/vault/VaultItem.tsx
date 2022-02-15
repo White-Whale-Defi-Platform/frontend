@@ -11,12 +11,15 @@ import ChartVault from "components/vault/chart/ChartVault";
 import DepositModal from "components/vault/DepositModal";
 import WithdrawModal from "components/vault/WithdrawModal";
 import useVaultApy from "hooks/useVaultApy";
+import { Tooltip } from '@chakra-ui/react'
+import { InfoOutlineIcon } from '@chakra-ui/icons'
 
 type Props = {
   data: any;
 };
 
 const VaultItemLine = ({ label, value, asset = "UST" }) => {
+  const [ _, apr ] = useVaultApy();
   return (
     <Flex
       justify="space-between"
@@ -28,8 +31,18 @@ const VaultItemLine = ({ label, value, asset = "UST" }) => {
         borderBottom: "none",
       }}
     >
-      <Text color="#fff">{label}</Text>
+      <Text color="#fff">
+        {label}
+        {label === "APY" && (
+          <Tooltip label={`25% APR`} fontSize='sm' >
+            <InfoOutlineIcon ml="2" />
+          </Tooltip>
+        )}
+
+      </Text>
+
       <SimpleStat
+        label={label}
         value={value}
         asset={asset}
         fontSizeValue="lg"
@@ -47,11 +60,12 @@ const VaultItem: FC<Props> = ({ data }) => {
   const totalBalanceAmount = format(totalBalance, "uusd");
   const ustPrice = useUstPrice();
   const isComing = data.contract == null;
-  const apy = useVaultApy();
+  const [ apy ] = useVaultApy();
 
   return (
     <Card
       noPadding
+      maxWidth="320px"
       whileHover={{
         scale: 1.05,
       }}
