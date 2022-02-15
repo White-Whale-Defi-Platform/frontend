@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { GridItem } from "@chakra-ui/react";
+import React, { FC } from 'react';
+import { GridItem } from '@chakra-ui/react';
 
-import PollItem from "components/gov/PollItem";
-import { usePolls } from "modules/govern";
+import PollItem from 'components/gov/PollItem';
+import { usePolls } from 'modules/govern';
 
 type Props = {
   status?: string;
@@ -15,17 +15,15 @@ const PollList: FC<Props> = ({ status }) => {
     return null;
   }
 
-  const polls = data.polls;
+  const { polls } = data;
 
   return (
     <>
-      {polls.map((poll) => {
-        return (
-          <GridItem key={poll.id} colSpan={6}>
-            <PollItem poll={poll} />
-          </GridItem>
-        );
-      })}
+      {polls.map((poll) => (
+        <GridItem key={poll.id} colSpan={[11, 12, 6]}>
+          <PollItem poll={poll} />
+        </GridItem>
+      ))}
     </>
   );
 };

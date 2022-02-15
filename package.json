@@ -1,7 +1,7 @@
 {
   "name": "whitewhale-protocol",
   "version": "0.0.1",
-  "author": "itey.arthur@gmail.com",
+  "author": "0xFable, Arthur Itey and White Whale team <fable@whitewhale.money>",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
@@ -24,7 +24,7 @@
     "@emotion/styled": "^11.6.0",
     "@hookform/resolvers": "^2.8.5",
     "@terra-money/terra.js": "^3.0.1",
-    "@terra-money/wallet-provider": "^3.7.1",
+    "@terra-money/wallet-provider": "^3.4.0",
     "bignumber.js": "^9.0.2",
     "chart.js": "^3.6.2",
     "dayjs": "^1.10.7",

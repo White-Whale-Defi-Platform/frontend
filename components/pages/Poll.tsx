@@ -52,7 +52,7 @@ const Poll: FC<Props> = ({ pollId }) => {
         </HStack>
       </HStack>
       <Box mb="6">
-        <PollSummary poll={poll} />
+        <PollSummary pollId={pollId} poll={poll} />
       </Box>
       <Box mb="10">
         <PollVote poll={poll} />

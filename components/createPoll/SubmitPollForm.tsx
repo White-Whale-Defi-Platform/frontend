@@ -29,12 +29,15 @@ import InlineStat from "components/InlineStat";
 import PollVoteButtons from "components/gov/PollVoteButtons";
 import Card from "components/Card";
 import PollInput from "components/PollInput";
+import { Tooltip } from '@chakra-ui/react'
+import { InfoOutlineIcon } from '@chakra-ui/icons'
 
 
 
 type Inputs = {
   title: string;
   description: string;
+  link: string;
   token: {
     asset: string;
     amount: string;
@@ -63,13 +66,14 @@ const SubmitPollForm: FC<Props> = () => {
     defaultValues: {
       title: "",
       description: "",
+      link: "",
       token: {
         asset: whaleToken,
         amount: "5000",
       },
     },
   });
-  const { title, description } = watch();
+  const { title, description, link } = watch();
 
   const handleSuccess = useCallback(() => {
     queryClient.invalidateQueries("balance");
@@ -81,8 +85,9 @@ const SubmitPollForm: FC<Props> = () => {
     return {
       title,
       description,
+      link
     };
-  }, [title, description]);
+  }, [title, description, link]);
 
   const state = useCreatePoll({
     govContract: gov,
@@ -119,6 +124,7 @@ const SubmitPollForm: FC<Props> = () => {
         Submit text poll
       </Text>
       <chakra.form onSubmit={handleSubmit(submit)} width="full">
+
         <Box width="full">
           <Box mb="2">
             <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
@@ -142,6 +148,7 @@ const SubmitPollForm: FC<Props> = () => {
             />
           </Box>
         </Box>
+
         <Box width="full">
           <Box mb="2">
             <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
@@ -167,6 +174,34 @@ const SubmitPollForm: FC<Props> = () => {
             />
           </Box>
         </Box>
+
+        <Box width="full">
+          <Box mb="2">
+            <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
+              Poll Discussion Link
+              <Tooltip label='Link to discord idea discussion' fontSize='lg' >
+                <InfoOutlineIcon ml="2" />
+              </Tooltip>
+            </Text>
+          </Box>
+          <Box mb="8">
+            <Controller
+              name="link"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Input
+                  size="lg"
+                  variant="brand"
+                  placeholder="Enter Pool Discussion Link"
+                  _placeholder={{ color: "whiteAlpha.300" }}
+                  {...field}
+                />
+              )}
+            />
+          </Box>
+        </Box>
+
         <Box width="full">
           <Box mb="2">
             <Text mx="6" as="span" variant="light" color="white" fontSize="lg">
@@ -204,8 +239,8 @@ const SubmitPollForm: FC<Props> = () => {
             <Text>{state.error}</Text>
           </Box>
         )}
-         {
-           !canCreate && (
+        {
+          !canCreate && (
             <Box
               my="6"
               color="red.500"
@@ -218,7 +253,7 @@ const SubmitPollForm: FC<Props> = () => {
               <Text>Not enough WHALE</Text>
             </Box>
           )
-         }
+        }
 
         <HStack mt="8" width="full">
           <Button

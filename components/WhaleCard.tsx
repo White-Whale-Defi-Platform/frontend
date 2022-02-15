@@ -38,7 +38,7 @@ const Dashboard: NextPage = () => {
       cells={[
         {
           label: "WHALE Price",
-          value: fromTerraAmount(price, "0.00"),
+          value: fromTerraAmount(price, "0.0000"),
           asset: "UST",
         },
         {
