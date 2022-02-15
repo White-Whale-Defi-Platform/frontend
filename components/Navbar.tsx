@@ -102,8 +102,8 @@ const Navbar: FC<Props> = ({ hideNav = false }) => {
 
           <DrawerBody>
             <DrawerLink text="Dashboard" href="/dashboard" onClick={onClose} />
-            {/* <DrawerLink text="My Page" href="/myPage" onClick={onClose} /> */}
-            {/* <DrawerLink text="Vaults" href="/vaults" onClick={onClose} /> */}
+            <DrawerLink text="My Page" href="/myPage" onClick={onClose} />
+            <DrawerLink text="Vaults" href="/vaults" onClick={onClose} />
             <DrawerLink text="Swap" href="/swap" onClick={onClose} />
             <DrawerLink text="Governance" href="/gov" onClick={onClose} />
           </DrawerBody>
