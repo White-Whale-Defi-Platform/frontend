@@ -25,6 +25,7 @@ ENV NODE_ENV production
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
+RUN apk add --no-cache curl
 
 COPY .docker/cache.sh /cloudflare/cache.sh
 COPY --from=builder /app/public ./public
