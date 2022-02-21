@@ -109,22 +109,22 @@ export const useTreasury = () => {
       {
         asset: "WHALE-UST LP",
         value: result[whaleUstLpToken].contractQuery,
-        color: "#298F46",
+        color: "#33BABD",
+      },
+      {
+        asset: "vUST",
+        value: (vustValue as any).balance,
+        color: "#279145",
       },
       {
         asset: "aUST",
         value: aUstValue,
-        color: "#194325",
+        color: "#135425",
       },
       {
         asset: "LUNA",
         value: result.uluna.contractQuery,
         color: "#FFDD4D",
-      },
-      {
-        asset: "VUST",
-        value: (vustValue as any).balance,
-        color: "#3CCD64",
       },
     ];
 
