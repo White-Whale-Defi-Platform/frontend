@@ -37,6 +37,7 @@ const Vaults = () => {
           mt="8"
           gridGap={{ base: 12, xl: 24 }}
           wrap={{ base: "wrap", xl: "nowrap" }}
+          paddingBottom="100px"
           >
           {data.map((item) => (
             <VaultItem key={item.name} data={item} />
