@@ -3,7 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { fromTerraAmount } from "@arthuryeti/terra";
 import { Box, Flex, HStack, Text, Image, Tooltip as ChakraToolTip, Tag } from "@chakra-ui/react";
-
+import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import { useTreasury } from "hooks/useTreasury";
 
 import SimpleStat from "components/SimpleStat";
@@ -40,7 +40,6 @@ const options = {
 
 const Treasury = () => {
   const treasury = useTreasury();
-
   const data = useMemo(() => {
     return treasury.assets.map((asset) => {
       return {
@@ -62,7 +61,7 @@ const Treasury = () => {
         borderWidth: 0,
       },
     ],
-  };
+  }; 
 
   const riskFreeValue = number(treasury.totalValue) - data.filter(d => d.label === 'WHALE' || d.label === 'WHALE-UST LP')
                         .map( token => token.label === 'WHALE-UST LP' ? token.valueForChart / 2 : token.valueForChart )
@@ -113,7 +112,8 @@ const Treasury = () => {
               fontSizeAsset="xl"
               />
         </Flex>
-
+        {/* <Skeleton startColor='brand.500' endColor='orange.500' isLoaded={!treasury.isLoading}> */}
+        
         <Flex
           direction={["column", null, "row"]}
           align="center"
@@ -121,6 +121,7 @@ const Treasury = () => {
           px="8"
           mt="8"
         >
+          
           
           <Box w={[null, null, "50%"]}>
             <Doughnut data={formattedData} options={options} />
@@ -135,7 +136,9 @@ const Treasury = () => {
               <AssetLine key={item.label} data={item} />
             ))}
           </Flex>
+          
         </Flex>
+        {/* </Skeleton> */}
       </Flex>
     </Card>
   );
