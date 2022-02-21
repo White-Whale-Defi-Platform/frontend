@@ -29,10 +29,10 @@ export const useHive = ({ name, query, variables, options }: Params) => {
   );
 
   if (isLoading || data == null) {
-    return null;
+    return {result:null, isLoading: isLoading};
   }
 
-  return data;
+  return {result:data, isLoading: isLoading};
 };
 
 export default useHive;
