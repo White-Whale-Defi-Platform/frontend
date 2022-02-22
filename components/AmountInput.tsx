@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   Box,
   Text,
@@ -9,7 +9,19 @@ import {
   Divider,
   forwardRef,
   Image,
+
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  Button
 } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
+
 import { fromTerraAmount, num } from "@arthuryeti/terra";
 import { useTokenInfo } from "@arthuryeti/terraswap";
 
@@ -54,13 +66,13 @@ const AmountInput: FC<Props> = forwardRef(
     ref
   ) => {
     const { getIcon, getSymbol } = useTokenInfo();
-    const icon = getIcon(value.asset);
+    const ustIcon = getIcon(value.asset);
+    const vUstIcon = getIcon(value.asset);
     const symbol = getSymbol(value.asset);
     const stakedOrAvailable = showLockedInPolls ? availableToWithdraw : initialBalance
     const max = num(stakedOrAvailable).gt("0")
       ? div(stakedOrAvailable, ONE_TOKEN)
       : null;
-      
 
     return (
       <Box ref={ref}>
@@ -70,7 +82,7 @@ const AmountInput: FC<Props> = forwardRef(
             {initialBalance != null && (
               <Text ml="6">
                 <Text as="span" variant="light" color="white" fontSize="xs">
-                  Staked:
+                  Staked: 
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
                   {fromTerraAmount(initialBalance, "0,0.000000")}
@@ -80,7 +92,7 @@ const AmountInput: FC<Props> = forwardRef(
             {showLockedInPolls && (
               <Text ml="6">
                 <Text as="span" variant="light" color="white" fontSize="xs">
-                  Available:
+                  Available: 
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
                   {fromTerraAmount(availableToWithdraw, "0,0.000000")}
@@ -101,7 +113,7 @@ const AmountInput: FC<Props> = forwardRef(
             {...field}
           >
             <NumberInputField
-              color={isError ? "red.500" : "brand.500" }
+              color={isError ? "red.500" : "brand.500"}
               placeholder="0.0"
               _placeholder={{ color: "whiteAlpha.300" }}
             />
@@ -131,7 +143,25 @@ const AmountInput: FC<Props> = forwardRef(
                 <Text color="white" fontWeight="500">
                   {symbol}
                 </Text>
-                <Image src={icon} width="1.5rem" height="1.5rem" alt="Logo" />
+                <Menu>
+                  {({ isOpen }) => (
+                    <>
+                      <MenuButton isActive={isOpen} as={Button} variant="brand" _focus={{ boxShadow: "none", }} rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}>
+                        <Image src={ustIcon} width="1.5rem" alt="Logo" />
+                      </MenuButton>
+                      <MenuList bg="blackAlpha.400" px="2" py="2" >
+                        <MenuItem >
+                          <HStack spacing="24px">
+                            <Text color="white" fontWeight="500">
+                              vUST
+                            </Text>
+                            <Image src={vUstIcon} width="1.5rem" alt="Logo" />
+                          </HStack>
+                        </MenuItem>
+                      </MenuList>
+                    </>
+                  )}
+                </Menu>
               </HStack>
             </HStack>
           </Flex>
