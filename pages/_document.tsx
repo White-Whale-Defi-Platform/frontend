@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html className='scroll-smooth' style={{scrollBehavior:'smooth'}}>
         <Head>
           <meta name="terra-wallet" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
