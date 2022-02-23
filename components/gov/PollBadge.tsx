@@ -19,7 +19,7 @@ const PollBadge: FC<Props> = ({ status }) => {
   };
 
   return (
-    <Badge variant="brand" colorScheme={getColor()} textTransform="capitalize">
+    <Badge variant="brand" colorScheme={getColor()} textTransform="capitalize" width="100%" >
       {status.replace("_", " ")}
     </Badge>
   );

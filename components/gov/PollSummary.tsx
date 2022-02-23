@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import {
   HStack,
+  Stack,
   Box,
   Heading,
   Text,
@@ -41,16 +42,16 @@ const PollSummary: FC<Props> = ({ poll, pollId }) => {
       <Card noPadding mb="6">
         <Flex direction="column" justify="space-between" h="full">
           <Box bg="blackAlpha.400" rounded="2xl" p="4">
-            <HStack justify="space-between">
-              <Box maxWidth="80%">
-                <Heading size="md" isTruncated mb="1">
+            <Stack justify="space-between" direction={['column', 'row']}>
+              <Box maxWidth="80%" >
+                <Heading size="md"  mb="1">
                   {title}
                 </Heading>
               </Box>
-              <Box>
+              <Box >
                 <PollBadge status={status} />
               </Box>
-            </HStack>
+            </Stack>
           </Box>
 
           <HStack px="4" py="4">

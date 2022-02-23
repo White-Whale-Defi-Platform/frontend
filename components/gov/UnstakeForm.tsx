@@ -31,7 +31,9 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
   const { whaleToken, gov } = useContracts();
   const stakedAmount = useGovStaked();
   const stakerInfo = useGovStaker();
-  const lockedInPolls = stakerInfo && stakerInfo.locked_balance.map(poll => parseFloat(poll[1].balance)).reduce((prevValue, currentValue) => prevValue + currentValue, 0)
+  const lockedInPolls = stakerInfo?.locked_balance
+    .map(([_, { balance }]) => parseFloat(balance))
+    .reduce((prv, current) => prv > current ? prv : current)
   const availableToWithdraw = parseFloat(stakedAmount) - lockedInPolls
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
