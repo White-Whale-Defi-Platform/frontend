@@ -13,6 +13,7 @@ import WithdrawModal from "components/vault/WithdrawModal";
 import useVaultApy from "hooks/useVaultApy";
 import { Tooltip } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
+import { toFixed } from "libs/parse";
 
 type Props = {
   data: any;
@@ -60,7 +61,7 @@ const VaultItem: FC<Props> = ({ data }) => {
   const totalBalanceAmount = format(totalBalance, "uusd");
   const ustPrice = useUstPrice();
   const isComing = data.contract == null;
-  const [ apy ] = useVaultApy();
+  const [ apr, apy ] = useVaultApy();
 
   return (
     <Card
@@ -87,7 +88,7 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APR" value={"20.00+"} asset="%" />
+            <VaultItemLine label="APR" value={toFixed(apr, 2)} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
