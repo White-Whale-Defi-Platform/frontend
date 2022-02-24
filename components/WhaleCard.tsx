@@ -7,7 +7,6 @@ import { fromTerraAmount } from "libs/terra";
 
 import { useCirculatingSupply } from "hooks/useCirculatingSupply";
 import { useWhalePrice } from "hooks/useWhalePrice";
-import { usevUSTPrice } from "hooks/usevUSTPrice";
 
 import { useWhalePriceTimes } from "hooks/useWhalePriceTimes";
 
@@ -21,8 +20,6 @@ interface GraphData {
 
 const Dashboard: NextPage = () => {
   const price = useWhalePrice();
-  const vUSTPrice = usevUSTPrice();
-  console.log(`vUSTpriceinfo  ${vUSTPrice}`);
   
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
@@ -59,7 +56,6 @@ const Dashboard: NextPage = () => {
         },
       ]}
       data={graphData}
-      vUSTPrice={vUSTPrice}
     />
   );
 };
