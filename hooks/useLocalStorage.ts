@@ -13,7 +13,7 @@ export const useLocalStorage = <T>(
       return item ? JSON.parse(item) : initial;
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(error);
+      console.warn(error);
 
       return initial;
     }
@@ -28,7 +28,7 @@ export const useLocalStorage = <T>(
         window.localStorage.setItem(key, JSON.stringify(next));
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error(error);
+        console.warn(error);
       }
     },
     [key, stored]
