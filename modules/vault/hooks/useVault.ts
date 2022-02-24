@@ -9,7 +9,6 @@ type Params = {
 export const useVault = ({ contract }: Params) => {
   const { client } = useTerraWebapp();
   const address = useAddress();
-  console.log(contract);
   const { data: vault } = useQuery(
     ["pool_config", contract],
     () => {
