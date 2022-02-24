@@ -20,7 +20,7 @@ type Props = {
 };
 
 const VaultItemLine = ({ label, value, asset = "UST" }) => {
-  const [ _, apr ] = useVaultApy();
+  const [ apr, apy  ] = useVaultApy();
   return (
     <Flex
       justify="space-between"
@@ -35,7 +35,7 @@ const VaultItemLine = ({ label, value, asset = "UST" }) => {
       <Text color="#fff">
         {label}
         {label === "APR" && (
-          <Tooltip label={`APR is estimated and representative only`} fontSize='sm' >
+          <Tooltip label={`APY: ${toFixed(apy, 2)}%. Rates are estimated and representative only.`} fontSize='sm' >
             <InfoOutlineIcon ml="2" />
           </Tooltip>
         )}

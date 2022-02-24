@@ -29,6 +29,7 @@ export const useVaultApy = () => {
     return client.wasm.contractQuery<VaultPool>(ustVault, {
       pool_state: {},
     });
+
   });
   const {apy, apr} =  useMemo(() => {
     if (pool == null || pool == undefined) {
@@ -36,18 +37,18 @@ export const useVaultApy = () => {
     }
 
     const pool_value = +pool.total_value_in_ust / +pool.total_share;
-    console.log(`Pool value is ${pool_value}`);
-    // Take weeklyApr and get a N-day rolling average to 
+    // Get pool value as a percentage. Value is always a value such as 1.xxxxx rather than 
+    // base on a past vault value, simply use 1. Ensure this value is constantly floatable 
+    // so it reacts to changes
     const weekly_apr = ((pool_value - 1) / 1) * 100;
     const apr = (weekly_apr /5) * 100;
     
     const apy = ((1 + apr / 100 / 365) ** 365 - 1) * 100;
-    console.log(`Weakly APR is ${weekly_apr}`)
-    console.log(`APR is ${apr}`)
-    console.log(`APY is ${apy}`)
+    // console.log(`Weakly APR is ${weekly_apr}`)
+    // console.log(`APR is ${apr}`)
+    // console.log(`APY is ${apy}`)
     return {apr: apr, apy:apy} as any
   }, [pool]);
-  console.log(apr)
   return [apr, apy]
 };
 
