@@ -7,9 +7,12 @@ import { fromTerraAmount } from "libs/terra";
 
 import { useCirculatingSupply } from "hooks/useCirculatingSupply";
 import { useWhalePrice } from "hooks/useWhalePrice";
+import { usevUSTPrice } from "hooks/usevUSTPrice";
+
 import { useWhalePriceTimes } from "hooks/useWhalePriceTimes";
 
 import LineGraphCard from "components/myPage/LineGraphCard";
+import USTIcon from "./icons/USTIcon";
 
 interface GraphData {
   label: string,
@@ -18,6 +21,9 @@ interface GraphData {
 
 const Dashboard: NextPage = () => {
   const price = useWhalePrice();
+  const vUSTPrice = usevUSTPrice();
+  console.log(`vUSTpriceinfo  ${vUSTPrice}`);
+  
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
   const data = useWhalePriceTimes();
@@ -53,6 +59,7 @@ const Dashboard: NextPage = () => {
         },
       ]}
       data={graphData}
+      vUSTPrice={vUSTPrice}
     />
   );
 };

@@ -17,6 +17,7 @@ const Dashboard: NextPage = () => {
         </GridItem>
 
         <GridItem colSpan={{ base: 12, lg: 7 }}>
+          
           <WhaleCard />
         </GridItem>
       </Grid>
