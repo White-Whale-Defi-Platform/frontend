@@ -33,7 +33,7 @@ const UnstakeForm: FC<Props> = ({ onClose }) => {
   const stakerInfo = useGovStaker();
   const lockedInPolls = stakerInfo?.locked_balance
     .map(([_, { balance }]) => parseFloat(balance))
-    .reduce((prv, current) => prv > current ? prv : current)
+    .reduce((prv, current) => prv > current ? prv : current, 0)
   const availableToWithdraw = parseFloat(stakedAmount) - lockedInPolls
 
   const { control, handleSubmit, watch } = useForm<IFormInputs>({
