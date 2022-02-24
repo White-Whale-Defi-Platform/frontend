@@ -40,9 +40,11 @@ export const useVaultApy = () => {
     // Get pool value as a percentage. Value is always a value such as 1.xxxxx rather than 
     // base on a past vault value, simply use 1. Ensure this value is constantly floatable 
     // so it reacts to changes
-    const weekly_apr = ((pool_value - 1) / 1) * 100;
-    const apr = (weekly_apr /5) * 100;
-    
+    const pool_premium_apr = ((pool_value - 1) / 1) * 100;
+    // Divide the above by 5 because we like the number five
+    // The source ? me, I made it up
+    const apr = (pool_premium_apr /5) * 100;
+    // Next do this hilarious APY calculation
     const apy = ((1 + apr / 100 / 365) ** 365 - 1) * 100;
     // console.log(`Weakly APR is ${weekly_apr}`)
     // console.log(`APR is ${apr}`)
