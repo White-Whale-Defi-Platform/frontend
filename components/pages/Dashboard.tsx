@@ -3,20 +3,21 @@ import { NextPage } from "next";
 
 import Treasury from "components/Treasury";
 import WhaleCard from "components/WhaleCard";
-import TransactionListCard from "components/myPage/TransactionListCard";
 import { usevUSTPrice } from "hooks/usevUSTPrice";
 import VUSTExchangeIcon from "../../components/icons/vUSTExchangeIcon";
 import USTExchangeIcon from "../../components/icons/USTExchangeIcon";
 import { useTokenInfo } from "@arthuryeti/terraswap";
-import BLunaIcon from "components/icons/BLunaIcon";
-import NLunaIcon from "components/icons/NLunaIcon";
+
+import {
+  Tag,
+} from '@chakra-ui/react'
+
 
 const Dashboard: NextPage = () => {
   const { getIcon, getSymbol } = useTokenInfo();
   const vUSTPrice = usevUSTPrice();
-  console.log(`vUSTpriceinfo  ${vUSTPrice}`);
+  // console.log(`vUSTpriceinfo  ${vUSTPrice}`);
   
-  const icon = getIcon("uusd");
   return (
     <Box my="16" mx="auto" maxW="container.xl">
       <Heading color="#fff" size="lg" mb="10">
@@ -24,12 +25,22 @@ const Dashboard: NextPage = () => {
         </Heading>
         <Flex align="end" justify="end" mt="0" mb="2">
             {vUSTPrice && (
-                <HStack color="#fff" spacing="2">
-
-                  <p>1 </p><small>vUST</small> <VUSTExchangeIcon token="vUST" />{' '}
-                  <small>≈</small>{' '}
-                  <p>{vUSTPrice}{' '}</p>
-                  <small>UST</small> <USTExchangeIcon token="ust" />
+                <HStack justify="space-between" color="#fff" spacing="2">
+                  
+                  <Tag
+                    size={'lg'}
+                    key={'lg'}
+                    borderRadius='full'
+                    variant='solid'
+                    colorScheme='brand.400'
+                    
+                  >
+                  {/* TODO: There probably shouldn't be so many boxes here. There is defo a cleaner way to do this ? */}
+                  <Box m="1">1 </Box><Box m="1">  vUST</Box> <VUSTExchangeIcon token="vUST" />{' '}
+                  <Box m="1">≈</Box>{' '}
+                  <Box m="1">{vUSTPrice}{' '}</Box>
+                  <Box m="1">UST</Box> <USTExchangeIcon token="ust" />
+                  </Tag>
                   </HStack>
         )}
         </Flex>
