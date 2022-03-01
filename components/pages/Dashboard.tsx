@@ -5,7 +5,8 @@ import Treasury from "components/Treasury";
 import WhaleCard from "components/WhaleCard";
 import TransactionListCard from "components/myPage/TransactionListCard";
 import { usevUSTPrice } from "hooks/usevUSTPrice";
-import USTIcon from "../../components/icons/USTIcon";
+import VUSTExchangeIcon from "../../components/icons/vUSTExchangeIcon";
+import USTExchangeIcon from "../../components/icons/USTExchangeIcon";
 import { useTokenInfo } from "@arthuryeti/terraswap";
 import BLunaIcon from "components/icons/BLunaIcon";
 import NLunaIcon from "components/icons/NLunaIcon";
@@ -25,10 +26,10 @@ const Dashboard: NextPage = () => {
             {vUSTPrice && (
                 <HStack color="#fff" spacing="2">
 
-                  <p>1 </p><small>vUST</small> <BLunaIcon token="vUST" />{' '}
+                  <p>1 </p><small>vUST</small> <VUSTExchangeIcon token="vUST" />{' '}
                   <small>≈</small>{' '}
                   <p>{vUSTPrice}{' '}</p>
-                  <small>UST</small> <NLunaIcon token="ust" />
+                  <small>UST</small> <USTExchangeIcon token="ust" />
                   </HStack>
         )}
         </Flex>
