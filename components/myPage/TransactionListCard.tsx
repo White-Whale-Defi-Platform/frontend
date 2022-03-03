@@ -7,6 +7,8 @@ import { useTxHistoryQuery } from "modules/myPage";
 
 import Card from "components/Card";
 
+// This is used to show all Transactions for the connected address.
+// Uses Anchor API
 const TransactionListCard: NextPage = () => {
   const { data, isLoading } = useTxHistoryQuery();
   const { network } = useWallet();

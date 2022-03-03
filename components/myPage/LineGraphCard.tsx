@@ -5,6 +5,9 @@ import { NextPage } from "next";
 import Card from "components/Card";
 import LineChart from "components/LineChart";
 
+
+import PlusCircleIcon from "components/icons/PlusCircleIcon";
+
 type DataIrtem = {
   label: string;
   value: number;
@@ -19,9 +22,12 @@ type Cell = {
 type Props = {
   cells: Cell[];
   data: DataIrtem[];
+  vUSTPrice?:any;
 };
 
-const LineGraphCard: NextPage<Props> = ({ cells, data }) => {
+const LineGraphCard: NextPage<Props> = ({ cells, data, vUSTPrice }) => {
+  
+  
   const renderDivider = (index) => {
     if (index === cells.length - 1) {
       return;
