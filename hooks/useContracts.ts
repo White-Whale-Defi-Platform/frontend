@@ -45,7 +45,7 @@ const defaultContracts: { [key: string]: any } = {
     wallet: "terra1xhhedykp6knc0ygtggwek3w0et3dmwe6apzeuz",
     aUstToken: "terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl",
     whaleToken: "terra183cvzy6knvva6mpvzcq86uyfxw0nd4925m0d0m",
-    ustVault: "terra1w0yhdc3atmrpgxz5gq66xltu8t6ez8r9dazvvx",
+    ustVault: "terra1zljypewdglfl5f6ntfl2r3epgxjmzh05qnjknv",
     ustVaultLpToken: "terra1z4hyc87tuln35nu465d5equke4nf7xqepx7rtg",
     lunaUstPair: "terra156v8s539wtz0sjpn8y8a8lfg8fhmwa7fy22aff",
     moneyMarket: "terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal",
