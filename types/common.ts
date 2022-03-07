@@ -82,6 +82,12 @@ export type Pool = {
   total_share: string;
 };
 
+export type VaultPool = {
+  assets: [Asset, Asset];
+  total_share: string;
+  total_value_in_ust: string;
+};
+
 export type Pair = {
   asset_infos: [AssetInfo, AssetInfo];
   contract: CW20Addr;

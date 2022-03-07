@@ -51,7 +51,7 @@ const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
 };
 
 export const useTreasury = () => {
-  const { client } = useTerraWebapp();
+  const { client, network } = useTerraWebapp();
   const { treasury, whaleUstLpToken, ustVaultLpToken, whaleToken, aUstToken, moneyMarket } =
     useContracts();
 
@@ -59,7 +59,7 @@ export const useTreasury = () => {
 
   const query = createQuery(treasury, assets, aUstToken, moneyMarket);
 
-  const result = useHive({
+  const {result, isLoading} = useHive({
     name: ["terraswap-pools", treasury],
     query,
     options: {
@@ -67,7 +67,6 @@ export const useTreasury = () => {
     },
   });
 
-  console.log(ustVaultLpToken)
 
   const { data: vustValue } = useQuery("vUSTValue",
     () => {
@@ -91,6 +90,7 @@ export const useTreasury = () => {
       return {
         totalValue,
         assets: [],
+        isLoading: true
       };
     }
 
@@ -109,35 +109,31 @@ export const useTreasury = () => {
       {
         asset: "WHALE-UST LP",
         value: result[whaleUstLpToken].contractQuery,
-        color: "#298F46",
+        color: "#33BABD",
+      },
+      {
+        asset: "vUST",
+        value: (vustValue as any).balance,
+        color: "#279145",
       },
       {
         asset: "aUST",
         value: aUstValue,
-        color: "#194325",
-      },
-      {
-        asset: "UST",
-        value: result.uusd.contractQuery,
-        color: "#2EB0E9",
+        color: "#135425",
       },
       {
         asset: "LUNA",
         value: result.uluna.contractQuery,
         color: "#FFDD4D",
       },
-      {
-        asset: "VUST",
-        value: (vustValue as any).balance,
-        color: "#3CCD64",
-      },
     ];
 
     return {
       totalValue: num(totalValue).plus(aUstValue).toNumber(),
       assets,
+      isLoading: isLoading
     };
-  }, [totalValue, result, whaleToken, whaleUstLpToken]);
+  }, [totalValue, result, whaleToken, isLoading, whaleUstLpToken]);
 };
 
 export default useTreasury;
