@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useCallback, useState } from "react";
 import { Box, Flex, chakra, IconButton, Button, Text } from "@chakra-ui/react";
-import { num, TxStep, fromTerraAmount } from "@arthuryeti/terra";
+import { num, TxStep, fromTerraAmount, useBalance } from "@arthuryeti/terra";
 import { useForm, Controller } from "react-hook-form";
-import { useSwap } from "@arthuryeti/terraswap";
+import { useSwap, isNativeToken } from "@arthuryeti/terraswap";
 
 import { DEFAULT_SLIPPAGE, ONE_TOKEN } from "constants/constants";
 import { toAmount } from "libs/parse";
 import useContracts from "hooks/useContracts";
+import useVaultSwap from 'components/swap/useVaultSwap'
 import useDebounceValue from "hooks/useDebounceValue";
 import { gt } from "libs/math";
 
@@ -16,6 +17,7 @@ import PendingForm from "components/PendingForm";
 import AmountInput from "components/AmountInput";
 import SwapFormInfos from "components/swap/SwapFormInfos";
 import SwapFormSuccess from "components/swap/SwapFormSuccess";
+
 
 type Inputs = {
   token1: {
@@ -30,8 +32,36 @@ type Inputs = {
 };
 
 const SwapForm: FC = () => {
-  const { whaleToken } = useContracts();
+  const { whaleToken, ustVaultLpToken } = useContracts();
   const [currentInput, setCurrentInput] = useState(null);
+  const [reverseList, setReverseList] = useState(false);
+  const whaleBalance = useBalance(whaleToken);
+  const vUstBalance = useBalance(ustVaultLpToken);
+  const ustBalance = useBalance("uusd");
+
+
+
+
+  const [token1List, setToken1List] = useState([
+    {
+      asset: "uusd",
+      amount: undefined,
+      selected: true
+    },
+    {
+      asset: ustVaultLpToken,
+      amount: undefined,
+      selected: false
+    }
+  ])
+  const [token2List, setToken2List] = useState([
+    {
+      asset: whaleToken,
+      amount: undefined,
+      selected: true
+    }
+  ])
+
 
   const { control, handleSubmit, watch, setValue } = useForm<Inputs>({
     defaultValues: {
@@ -50,8 +80,12 @@ const SwapForm: FC = () => {
   const token2 = watch("token2");
   const slippage = watch("slippage");
 
+
+
   const debouncedAmount1 = useDebounceValue(token1.amount, 200);
   const debouncedAmount2 = useDebounceValue(token2.amount, 200);
+
+
 
   const handleSuccess = useCallback(
     (txHash) => {
@@ -68,7 +102,7 @@ const SwapForm: FC = () => {
     }
   }, []);
 
-  const state = useSwap({
+  const state = useVaultSwap({
     token1: token1.asset,
     token2: token2.asset,
     amount1: toAmount(debouncedAmount1),
@@ -77,7 +111,19 @@ const SwapForm: FC = () => {
     reverse: currentInput == "token2",
     onSuccess: handleSuccess,
     onError: handleError,
-  });
+  })
+
+  // const state = useSwap({
+  //   token1: token1.asset,
+  //   token2: token2.asset,
+  //   amount1: toAmount(debouncedAmount1),
+  //   amount2: toAmount(debouncedAmount2),
+  //   slippage,
+  //   reverse: currentInput == "token2",
+  //   onSuccess: handleSuccess,
+  //   onError: handleError,
+  // });
+
 
   const handleToken1Change = (
     value: {
@@ -89,10 +135,10 @@ const SwapForm: FC = () => {
     if (
       value.amount != null &&
       num(value.amount).gt("0") &&
-      state.simulated != null
+      state?.simulated != null
     ) {
-      const amount = num(state.simulated?.amount).div(ONE_TOKEN);
-      const newAmount = num(value.amount).times(amount).toFixed(3);
+      const amount = num(state?.simulated?.amount).div(ONE_TOKEN);
+      const newAmount = num(value.amount).times(amount).toFixed(6);
 
       setValue("token2.amount", newAmount);
     }
@@ -120,10 +166,10 @@ const SwapForm: FC = () => {
     if (
       value.amount != null &&
       num(value.amount).gt("0") &&
-      state.simulated != null
+      state?.simulated != null
     ) {
-      const amount = num(state.simulated?.amount).div(ONE_TOKEN);
-      const newAmount = num(value.amount).div(amount).toFixed(3);
+      const amount = num(state?.simulated?.amount).div(ONE_TOKEN);
+      const newAmount = num(value.amount).div(amount).toFixed(6);
 
       setValue("token1.amount", newAmount);
     }
@@ -145,37 +191,45 @@ const SwapForm: FC = () => {
       asset: token1.asset,
       amount: "",
     });
+    setReverseList(!reverseList)
   };
 
   useEffect(() => {
-    if (gt(state.simulated?.amount, "0")) {
+    if (gt(state?.simulated?.amount, "0")) {
       const name = currentInput == "token2" ? "token1" : "token2";
       const token = currentInput == "token2" ? token1 : token2;
 
-      setValue(name, {
-        ...token,
-        amount: fromTerraAmount(state.simulated?.amount, "0.000"),
-      });
+      // if (token.asset === 'uusd')
+      //   setValue(name, {
+      //     ...token,
+      //     amount: fromTerraAmount(state?.simulated?.ust, "0.000000"),
+      //   });
+      // else
+        setValue(name, {
+          ...token,
+          amount: fromTerraAmount(state?.simulated?.amount, "0.000000"),
+        });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.simulated]);
+  }, [state?.simulated]);
 
   const submit = async () => {
-    state.swap();
+    state?.swap();
   };
 
-  if (state.txStep == TxStep.Posting) {
+  if (state?.txStep == TxStep.Posting) {
     return <PendingForm />;
   }
 
-  if (state.txStep == TxStep.Broadcasting) {
-    return <LoadingForm txHash={state.txHash} />;
+  if (state?.txStep == TxStep.Broadcasting) {
+    return <LoadingForm txHash={state?.txHash} />;
   }
 
-  if (state.txStep == TxStep.Success) {
-    return <SwapFormSuccess txInfo={state.txInfo} onClick={state.reset} />;
+  if (state?.txStep == TxStep.Success) {
+    return <SwapFormSuccess txInfo={state?.txInfo} onClick={state?.reset} />;
   }
+
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
@@ -195,6 +249,8 @@ const SwapForm: FC = () => {
           render={({ field }) => (
             <AmountInput
               {...field}
+              tokenList={reverseList ? token2List : token1List}
+              setTokenList={reverseList ? setToken2List : setToken1List}
               onChange={(v) => handleToken1Change(v, field.onChange)}
             />
           )}
@@ -213,6 +269,7 @@ const SwapForm: FC = () => {
         />
       </Flex>
 
+
       <Box width="full">
         <Controller
           name="token2"
@@ -221,6 +278,8 @@ const SwapForm: FC = () => {
           render={({ field }) => (
             <AmountInput
               isMaxDisabled
+              tokenList={reverseList ? token1List : token2List}
+              setTokenList={reverseList ? setToken1List : setToken2List}
               hideBalance
               {...field}
               onChange={(v) => handleToken2Change(v, field.onChange)}
@@ -233,15 +292,15 @@ const SwapForm: FC = () => {
         <SwapFormInfos
           token1={token1.asset}
           token2={token2.asset}
-          fee={state.fee}
+          fee={state?.fee}
           slippage={slippage}
-          exchangeRate={state.simulated?.price}
-          minimumReceive={state.minReceive}
+          exchangeRate={state?.simulated?.price}
+          minimumReceive={state?.minReceive}
           control={control}
         />
       </Box>
 
-      {state.error && (
+      {state?.error && (
         <Box
           my="6"
           color="red.500"
@@ -251,7 +310,7 @@ const SwapForm: FC = () => {
           py="2"
           borderRadius="2xl"
         >
-          <Text>{state.error}</Text>
+          <Text>{state?.error}</Text>
         </Box>
       )}
 
@@ -260,8 +319,8 @@ const SwapForm: FC = () => {
           type="submit"
           variant="primary"
           size="md"
-          isLoading={state.txStep == TxStep.Estimating}
-          isDisabled={state.txStep != TxStep.Ready}
+          isLoading={state?.txStep == TxStep.Estimating}
+          isDisabled={state?.txStep != TxStep.Ready}
           minW="64"
         >
           Swap
