@@ -4,7 +4,6 @@ import useContracts from "hooks/useContracts";
 import { useVault } from "modules/vault";
 import { useMemo } from "react";
 import WhaleToUstMsg from "./WhaleToUstMsg ";
-import useSimulateWithVault from './useSimulateWithVault'
 
 
 type Params = {
