@@ -12,7 +12,7 @@ export const useVault = ({ contract }: Params) => {
   const { data: vault } = useQuery(
     ["pool_config", contract],
     () => {
-      return client.wasm.contractQuery<{ liquidity_token: string }>(contract, {
+      return client.wasm.contractQuery<{ contract_addr: string, liquidity_token: string }>(contract, {
         pool_config: {},
       });
     },
@@ -35,6 +35,14 @@ export const useVault = ({ contract }: Params) => {
       enabled: contract != null,
     }
   );
+
+  const vUstValue = useMemo(() => {
+    if (pool == null) {
+      return "0";
+    }
+
+    return num(pool.total_value_in_ust).div(pool.total_share).toNumber();
+  }, [pool]);
 
   const { data: balData } = useQuery(
     ["balance", vault?.liquidity_token, address],
@@ -78,6 +86,7 @@ export const useVault = ({ contract }: Params) => {
   }, [pool]);
 
   return {
+    vUstValue,
     vault,
     balance,
     totalBalance,

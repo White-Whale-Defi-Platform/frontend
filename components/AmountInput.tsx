@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useMemo, useState, useEffect } from "react";
 import {
   Box,
   Text,
@@ -9,7 +9,19 @@ import {
   Divider,
   forwardRef,
   Image,
+
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  Button
 } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
+
 import { fromTerraAmount, num } from "@arthuryeti/terra";
 import { useTokenInfo } from "@arthuryeti/terraswap";
 
@@ -30,18 +42,22 @@ type Props = {
   isDisabled?: boolean;
   isError?: boolean;
   showLockedInPolls?: boolean;
+  tokenList?: any[],
+  setTokenList?: any;
   value: {
     amount: string;
     asset: string;
+    selected?: boolean;
   };
 };
 
 const AmountInput: FC<Props> = forwardRef(
   (
     {
+      name,
       onChange,
       onBlur,
-      value,
+      value = { asset: "", amount: 0, selected: true },
       initialBalance,
       availableToWithdraw,
       showLockedInPolls = false,
@@ -49,18 +65,44 @@ const AmountInput: FC<Props> = forwardRef(
       isMaxDisabled = false,
       hideBalance = false,
       isDisabled = false,
+      tokenList = [],
+      setTokenList,
       ...field
     },
     ref
   ) => {
     const { getIcon, getSymbol } = useTokenInfo();
-    const icon = getIcon(value.asset);
-    const symbol = getSymbol(value.asset);
+    const icon = useMemo(() => value?.asset ? getIcon(value?.asset) : '', [value]);
+    const symbol = useMemo(() => value?.asset ? getSymbol(value?.asset) : '', [value]);
     const stakedOrAvailable = showLockedInPolls ? availableToWithdraw : initialBalance
     const max = num(stakedOrAvailable).gt("0")
       ? div(stakedOrAvailable, ONE_TOKEN)
       : null;
-      
+
+    const [selected, setSelected] = useState(value)
+    const [filterTokenList, setFilterTokenList] = useState([])
+
+      useEffect(() => {
+        if(tokenList.length) {
+          const [firstToken] = tokenList.filter(token => token.selected)
+          setSelected({...firstToken, amount: value.amount})
+          onChange({ ...firstToken, amount : value.amount})
+
+          const filterSelected = tokenList.filter(token => !token.selected)
+          setFilterTokenList(filterSelected)
+        }
+
+      }, [tokenList])
+
+    const onTokenSelect = (token) => {
+      setSelected({...token, amount : value.amount})
+      const filterSelected = tokenList.map(item => {
+        item.selected = (token.asset === item.asset) ? true : false
+        return item
+      })
+      setTokenList(filterSelected)
+      onChange({ ...token, amount : value.amount})
+    }
 
     return (
       <Box ref={ref}>
@@ -83,7 +125,7 @@ const AmountInput: FC<Props> = forwardRef(
                   Available:
                 </Text>{" "}
                 <Text as="span" fontSize="xs" fontWeight="700" ml="3">
-                  {fromTerraAmount(availableToWithdraw, "0,0.000000")}
+                  {fromTerraAmount(availableToWithdraw, "0,0.00000000")}
                 </Text>
               </Text>
             )}
@@ -101,7 +143,7 @@ const AmountInput: FC<Props> = forwardRef(
             {...field}
           >
             <NumberInputField
-              color={isError ? "red.500" : "brand.500" }
+              color={isError ? "red.500" : "brand.500"}
               placeholder="0.0"
               _placeholder={{ color: "whiteAlpha.300" }}
             />
@@ -129,9 +171,35 @@ const AmountInput: FC<Props> = forwardRef(
               </Box>
               <HStack>
                 <Text color="white" fontWeight="500">
-                  {symbol}
+                  {tokenList.length ? getSymbol(selected?.asset) : symbol}
                 </Text>
-                <Image src={icon} width="1.5rem" height="1.5rem" alt="Logo" />
+                {
+                  !filterTokenList.length && (<Image src={tokenList.length ? getIcon(selected?.asset) : icon} width="1.5rem" alt="Logo" />)
+                }
+                {filterTokenList.length && (
+                  <Menu>
+                    {({ isOpen }) => (
+                      <>
+                        <MenuButton isActive={isOpen} as={Button} variant="brand" _focus={{ boxShadow: "none", }} rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}>
+                          <Image src={tokenList.length ? getIcon(selected?.asset) : icon} width="1.5rem" alt="Logo" />
+                        </MenuButton>
+                        <MenuList bg="blackAlpha.500" px="2" py="2" >
+                          {filterTokenList.map((token) => (
+                            <MenuItem key={token?.asset} onClick={(v) => { onTokenSelect(token) }}>
+                              <HStack spacing="24px">
+                                <Text color="white" fontWeight="500">
+                                  {getSymbol(token?.asset)}
+                                </Text>
+                                <Image src={getIcon(token?.asset)} width="1.5rem" alt="Logo" />
+                              </HStack>
+                            </MenuItem>
+                          ))}
+                        </MenuList>
+                      </>
+                    )}
+                  </Menu>
+                )}
+
               </HStack>
             </HStack>
           </Flex>

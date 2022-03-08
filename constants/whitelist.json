@@ -30,12 +30,18 @@
         "symbol": "WHALE-UST LP",
         "token": "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
         "icon": "/whale.svg"
+      },
+      "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg": {
+        "protocol": "White Whale vUST",
+        "symbol": "vUST",
+        "token": "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg",
+        "icon": "/vustlogo.webp"
       }
     },
     "pairs": [
       {
-        "contract_addr": "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
-        "liquidity_token": "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
+        "contract_addr": "terra12arl49w7t4xpq7krtv43t3dg6g8kn2xxyaav56",
+        "liquidity_token": "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg",
         "asset_infos": [
           {
             "token": {
@@ -43,8 +49,8 @@
             }
           },
           {
-            "native_token": {
-              "denom": "uusd"
+            "token": {
+              "contract_addr": "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg"
             }
           }
         ]
@@ -82,6 +88,12 @@
         "symbol": "WHALE-UST LP",
         "token": "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
         "icon": "/whale.svg"
+      },
+      "terra1z4hyc87tuln35nu465d5equke4nf7xqepx7rtg": {
+        "protocol": "White Whale vUST",
+        "symbol": "vUST",
+        "token": "terra1z4hyc87tuln35nu465d5equke4nf7xqepx7rtg",
+        "icon": "/vustlogo.webp"
       }
     },
     "pairs": [
@@ -102,8 +114,8 @@
         ]
       },
       {
-        "contract_addr": "terra1nyaj3xv93gzh753d03yh5er8wq4vma2rm730fg",
-        "liquidity_token": "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
+        "contract_addr": "terra1wq58ty8ddkeav64678tjrhyt7n6xfzqx5kxaej",
+        "liquidity_token": "terra1z4hyc87tuln35nu465d5equke4nf7xqepx7rtg",
         "asset_infos": [
           {
             "token": {
@@ -111,8 +123,8 @@
             }
           },
           {
-            "native_token": {
-              "denom": "uusd"
+            "token": {
+              "contract_addr": "terra1z4hyc87tuln35nu465d5equke4nf7xqepx7rtg"
             }
           }
         ]
