@@ -180,10 +180,10 @@ const AmountInput: FC<Props> = forwardRef(
                   <Menu>
                     {({ isOpen }) => (
                       <>
-                        <MenuButton isActive={isOpen} as={Button} variant="brand" _focus={{ boxShadow: "none", }} rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}>
+                        <MenuButton isActive={isOpen} p="unset" as={Button} variant="brand" _focus={{ boxShadow: "none", }} rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}>
                           <Image src={tokenList.length ? getIcon(selected?.asset) : icon} width="1.5rem" alt="Logo" />
                         </MenuButton>
-                        <MenuList bg="blackAlpha.500" px="2" py="2" >
+                        <MenuList bg="blackAlpha.900" px="2" py="2" >
                           {filterTokenList.map((token) => (
                             <MenuItem key={token?.asset} onClick={(v) => { onTokenSelect(token) }}>
                               <HStack spacing="24px">
