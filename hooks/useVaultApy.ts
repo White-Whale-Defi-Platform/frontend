@@ -32,10 +32,10 @@ export const useVaultApy = () => {
 
   });
   const {apy, apr} =  useMemo(() => {
-    if (pool == null || pool == undefined) {
+    if (pool == null || pool == undefined || data == null || data == undefined) {
       return "0";
     }
-
+    console.log(data)
     const pool_value = +pool.total_value_in_ust / +pool.total_share;
     // Get pool value as a percentage. Value is always a value such as 1.xxxxx rather than 
     // base on a past vault value, simply use 1. Ensure this value is constantly floatable 
@@ -49,8 +49,8 @@ export const useVaultApy = () => {
     // console.log(`Weakly APR is ${weekly_apr}`)
     // console.log(`APR is ${apr}`)
     // console.log(`APY is ${apy}`)
-    return {apr: apr, apy:apy} as any
-  }, [pool]);
+    return {apr: apr, apy:data.vault.apy} as any
+  }, [pool, data]);
   return [apr, apy]
 };
 
