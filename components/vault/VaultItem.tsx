@@ -4,6 +4,7 @@ import { Box, HStack, Flex, Text, Image } from "@chakra-ui/react";
 import { format } from "libs/parse";
 import { useVault } from "modules/vault";
 import { useUstPrice } from "hooks/useUstPrice";
+import { num, useTerraWebapp } from "@arthuryeti/terra";
 
 import Card from "components/Card";
 import SimpleStat from "components/SimpleStat";
@@ -88,7 +89,7 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APR" value={toFixed(apr, 2)} asset="%" />
+            <VaultItemLine label="APR" value={num(apr).gt(apy) ? "APR under Works": toFixed(apr, 2)} asset="%" />
             <VaultItemLine label="APY" value={toFixed(apy, 2)} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />

@@ -8,6 +8,7 @@ export const useLpHolding = () => {
     lpTokenContract: whaleUstLpToken,
     // stakingContract: whaleUstStaking,
   });
+  console.log(pool)
 
   return pool?.mine?.shareInUst;
 };
