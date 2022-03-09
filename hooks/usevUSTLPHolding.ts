@@ -2,13 +2,12 @@ import useContracts from "hooks/useContracts";
 import { usePool } from "modules/pool";
 
 export const usevUSTLPHolding = () => {
-  const { whaleUstPair, whaleUstLpToken } = useContracts();
+  const { whalevUSTPair, whalevUSTLpToken } = useContracts();
   const pool = usePool({
-    pairContract: whaleUstPair,
-    lpTokenContract: whaleUstLpToken,
+    pairContract: whalevUSTPair,
+    lpTokenContract: whalevUSTLpToken,
     // stakingContract: whaleUstStaking,
   });
-
   return pool?.mine?.shareInUst;
 };
 

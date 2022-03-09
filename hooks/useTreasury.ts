@@ -5,6 +5,13 @@ import { num, useTerraWebapp} from "@arthuryeti/terra";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
 import usevUSTLPHolding from "./usevUSTLPHolding";
+import useLpHolding from "./useLpHolding";
+import { Pool } from "types/common";
+import { getAmountsInPool } from "libs/terra";
+import { ONE_TOKEN } from "constants/constants";
+import { calculateSharePrice } from "modules/pool/helpers";
+import useWhalePrice from "./useWhalePrice";
+import usevUSTPrice from "./usevUSTPrice";
 
 const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
   if (assets.length === 0) {
@@ -54,11 +61,11 @@ const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
 
 export const useTreasury = () => {
   const { client, network } = useTerraWebapp();
-  const lp = usevUSTLPHolding();
-  const { treasury, whaleUstLpToken, ustVaultLpToken, whalevUSTLpToken, whaleToken, aUstToken, moneyMarket } =
+  const whalePrice = useWhalePrice();
+  const vUSTPrice = usevUSTPrice();
+  const { treasury, whaleUstLpToken, ustVaultLpToken, whalevUSTLpToken, whalevUSTPair, whaleToken, aUstToken, moneyMarket } =
     useContracts();
   const assets = ["uusd", "uluna", whaleToken, whaleUstLpToken];
-
   const query = createQuery(treasury, assets, aUstToken, moneyMarket);
 
   const {result, isLoading} = useHive({
@@ -69,21 +76,38 @@ export const useTreasury = () => {
     },
   });
 
-  const { data: vustValue } = useQuery("vUSTValue",
+  const { data: vUstBalance } = useQuery("vUstBalance",
     () => {
       return client.wasm.contractQuery<string>(ustVaultLpToken, {
         balance: { address: treasury },
       });
     }
   );
-  
-  const { data: vUSTLPValue } = useQuery("vUSTLPValue",
+
+  const { data: vUSTLPBalance } = useQuery("vUSTLPBalance",
     () => {
       return client.wasm.contractQuery<string>(whalevUSTLpToken, {
         balance: { address: treasury },
       });
     }
   );
+
+  const { data: vUSTLPPool } = useQuery("vUSTLPPool",
+    () => {
+      return client.wasm.contractQuery<Pool>(whalevUSTPair, {
+        pool: {},
+      });
+    }
+  );
+
+  const { data: vUSTLPTokenInfo } = useQuery("vUSTLPInfo",
+    () => {
+      return client.wasm.contractQuery<any>(whalevUSTLpToken, {
+        token_info: {},
+      });
+    }
+  );
+
   const { data: totalValue } = useQuery(
     ["treasury", "total-value", treasury],
     () => {
@@ -94,14 +118,14 @@ export const useTreasury = () => {
   );
 
   return useMemo(() => {
-    if (result == null || isLoading) {
+    if (result == null || isLoading || vUSTLPPool == null || vUSTLPBalance == null) {
       return {
         totalValue,
         assets: [],
         isLoading: true
       };
     }
-
+    const value = calculateSharePrice(vUSTLPPool, (vUSTLPBalance as any).balance, whalePrice, vUSTPrice);
     const exchangeRate =
       result.moneyMarketEpochState.contractQuery.exchange_rate;
     const aUstValue = num(result.balance.contractQuery.balance)
@@ -121,12 +145,12 @@ export const useTreasury = () => {
       },
       {
         asset: "WHALE-vUST LP",
-        value: (vUSTLPValue as any).balance || 0,
+        value: value || 0,
         color: "#0C5557",
       },
       {
         asset: "vUST",
-        value: (vustValue as any).balance || 0,
+        value: num((vUstBalance as any).balance).times(vUSTPrice) || 0,
         color: "#279145",
       },
       {

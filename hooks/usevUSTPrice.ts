@@ -39,12 +39,6 @@ export const usevUSTPrice = () => {
       return null;
     }
 
-    console.log(`vUST Pool Data ${vault_pool}`)
-    console.log(vault_pool)
-
-    
-    console.log()
-
     const { uusd, other } = getAmountsInPool(pool);
 
     return num(+vault_pool.total_value_in_ust).div(+vault_pool.total_share).toFixed(3);
