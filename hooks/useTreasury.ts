@@ -145,7 +145,7 @@ export const useTreasury = () => {
       },
       {
         asset: "WHALE-vUST LP",
-        value: value || 0,
+        value: num(value).times(2) || 0,
         color: "#0C5557",
       },
       {
