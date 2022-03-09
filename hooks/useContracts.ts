@@ -13,6 +13,8 @@ type Contracts = {
   whaleUstPair: string;
   whaleUstLpToken: string;
   whaleUstStaking: string;
+  whalevUSTPair:string;
+  whalevUSTLpToken:string;
   gov: string;
   treasury: string;
   communityFund: string;
@@ -37,8 +39,8 @@ const defaultContracts: { [key: string]: any } = {
     lunaUstPair: "terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552",
     whaleUstPair: "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
     whaleUstLpToken: "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
-    whalevUSTPair:"",
-    whalevUSTLpToken:"",
+    whalevUSTPair:"terra12arl49w7t4xpq7krtv43t3dg6g8kn2xxyaav56",
+    whalevUSTLpToken:"terra1hg3tr0gx2jfaw38m80s83c7khr4wgfvzyh5uak",
     gov: "terra15qv7cr7t2s4cfskq82mskq0d397hadflrazuj7",
     communityFund: "",
     warchest: "",

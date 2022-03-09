@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { num, useTerraWebapp} from "@arthuryeti/terra";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
+import usevUSTLPHolding from "./usevUSTLPHolding";
 
 const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
   if (assets.length === 0) {
@@ -12,6 +13,25 @@ const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
 
   return gql`
     {
+      balance: wasm {
+        contractQuery(
+          contractAddress: "${aUstToken}"
+          query: {
+            balance: {
+              address: "${contract}"
+            }
+          }
+        )
+      }
+
+      moneyMarketEpochState: wasm {
+        contractQuery(
+          contractAddress: "${moneyMarketContract}"
+          query: {
+            epoch_state: {}
+          }
+        )
+      }
       ${assets.map((asset) => {
         return `
           ${asset}: wasm {
@@ -25,25 +45,7 @@ const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
             )
           }
 
-          balance: wasm {
-            contractQuery(
-              contractAddress: "${aUstToken}"
-              query: {
-                balance: {
-                  address: "${contract}"
-                }
-              }
-            )
-          }
-
-          moneyMarketEpochState: wasm {
-            contractQuery(
-              contractAddress: "${moneyMarketContract}"
-              query: {
-                epoch_state: {}
-              }
-            )
-          }
+          
         `;
       })}
     }
@@ -52,9 +54,9 @@ const createQuery = (contract, assets, aUstToken, moneyMarketContract) => {
 
 export const useTreasury = () => {
   const { client, network } = useTerraWebapp();
-  const { treasury, whaleUstLpToken, ustVaultLpToken, whaleToken, aUstToken, moneyMarket } =
+  const lp = usevUSTLPHolding();
+  const { treasury, whaleUstLpToken, ustVaultLpToken, whalevUSTLpToken, whaleToken, aUstToken, moneyMarket } =
     useContracts();
-
   const assets = ["uusd", "uluna", whaleToken, whaleUstLpToken];
 
   const query = createQuery(treasury, assets, aUstToken, moneyMarket);
@@ -67,7 +69,6 @@ export const useTreasury = () => {
     },
   });
 
-
   const { data: vustValue } = useQuery("vUSTValue",
     () => {
       return client.wasm.contractQuery<string>(ustVaultLpToken, {
@@ -76,6 +77,13 @@ export const useTreasury = () => {
     }
   );
   
+  const { data: vUSTLPValue } = useQuery("vUSTLPValue",
+    () => {
+      return client.wasm.contractQuery<string>(whalevUSTLpToken, {
+        balance: { address: treasury },
+      });
+    }
+  );
   const { data: totalValue } = useQuery(
     ["treasury", "total-value", treasury],
     () => {
@@ -86,7 +94,7 @@ export const useTreasury = () => {
   );
 
   return useMemo(() => {
-    if (result == null) {
+    if (result == null || isLoading) {
       return {
         totalValue,
         assets: [],
@@ -112,8 +120,13 @@ export const useTreasury = () => {
         color: "#33BABD",
       },
       {
+        asset: "WHALE-vUST LP",
+        value: (vUSTLPValue as any).balance || 0,
+        color: "#0C5557",
+      },
+      {
         asset: "vUST",
-        value: (vustValue as any).balance,
+        value: (vustValue as any).balance || 0,
         color: "#279145",
       },
       {
