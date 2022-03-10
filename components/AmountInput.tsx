@@ -1,36 +1,18 @@
-import React, { FC, useMemo, useState, useEffect } from "react";
-import {
-  Box,
-  Text,
-  NumberInput,
-  NumberInputField,
-  Flex,
-  HStack,
-  Divider,
-  forwardRef,
-  Image,
-
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  Button
-} from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
-
 import { fromTerraAmount, num } from "@arthuryeti/terra";
 import { useTokenInfo } from "@arthuryeti/terraswap";
-
-import { formatAsset } from "libs/parse";
-import { div } from "libs/math";
-import { ONE_TOKEN } from "constants/constants";
-
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import {
+  Box, Button, Divider, Flex, forwardRef, HStack, Image,
+  Menu,
+  MenuButton, MenuItem, MenuList, NumberInput,
+  NumberInputField, Text
+} from "@chakra-ui/react";
 import AmountMaxButton from "components/AmountMaxButton";
 import Balance from "components/Balance";
+import { ONE_TOKEN } from "constants/constants";
+import { div } from "libs/math";
+import React, { FC, useEffect, useMemo, useState } from "react";
+
 
 type Props = {
   onChange: any;
@@ -82,26 +64,27 @@ const AmountInput: FC<Props> = forwardRef(
     const [selected, setSelected] = useState(value)
     const [filterTokenList, setFilterTokenList] = useState([])
 
-      useEffect(() => {
-        if(tokenList.length) {
-          const [firstToken] = tokenList.filter(token => token.selected)
-          setSelected({...firstToken, amount: value.amount})
-          onChange({ ...firstToken, amount : value.amount})
+    useEffect(() => {
+      if (tokenList.length) {
+        const [firstToken] = tokenList.filter(token => token.selected)
+        setSelected({ ...firstToken, amount: value.amount })
+        // onChange({ ...firstToken, amount : value.amount}, false)
 
-          const filterSelected = tokenList.filter(token => !token.selected)
-          setFilterTokenList(filterSelected)
-        }
+        const filterSelected = tokenList.filter(token => !token.selected)
+        setFilterTokenList(filterSelected)
+      }
 
-      }, [tokenList])
+    }, [tokenList])
 
     const onTokenSelect = (token) => {
-      setSelected({...token, amount : value.amount})
+      onChange({ ...token, amount: value.amount }, true)
+      setSelected({ ...token, amount: value.amount })
       const filterSelected = tokenList.map(item => {
         item.selected = (token.asset === item.asset) ? true : false
+        item.amount = value.amount
         return item
       })
       setTokenList(filterSelected)
-      onChange({ ...token, amount : value.amount})
     }
 
     return (
@@ -146,6 +129,9 @@ const AmountInput: FC<Props> = forwardRef(
               color={isError ? "red.500" : "brand.500"}
               placeholder="0.0"
               _placeholder={{ color: "whiteAlpha.300" }}
+              _hover={isDisabled && {
+              cursor: "not-allowed"
+            }}
             />
           </NumberInput>
           <Flex

@@ -1,22 +1,22 @@
-import React, { FC, useEffect, useCallback, useState } from "react";
-import { Box, Flex, chakra, IconButton, Button, Text } from "@chakra-ui/react";
-import { num, TxStep, fromTerraAmount, useBalance } from "@arthuryeti/terra";
-import { useForm, Controller } from "react-hook-form";
-import { useSwap, isNativeToken } from "@arthuryeti/terraswap";
-
-import { DEFAULT_SLIPPAGE, ONE_TOKEN } from "constants/constants";
-import { toAmount } from "libs/parse";
-import useContracts from "hooks/useContracts";
-import useVaultSwap from 'components/swap/useVaultSwap'
-import useDebounceValue from "hooks/useDebounceValue";
-import { gt } from "libs/math";
-
+import { fromTerraAmount, num, TxStep, useBalance } from "@arthuryeti/terra";
+import { Box, Button, chakra, Flex, IconButton, Text } from "@chakra-ui/react";
+import AmountInput from "components/AmountInput";
 import DoubleArrowsIcon from "components/icons/DoubleArrowsIcon";
 import LoadingForm from "components/LoadingForm";
 import PendingForm from "components/PendingForm";
-import AmountInput from "components/AmountInput";
 import SwapFormInfos from "components/swap/SwapFormInfos";
 import SwapFormSuccess from "components/swap/SwapFormSuccess";
+import useVaultSwap from 'components/swap/useVaultSwap';
+import { DEFAULT_SLIPPAGE } from "constants/constants";
+import useContracts from "hooks/useContracts";
+import useDebounceValue from "hooks/useDebounceValue";
+import { gt } from "libs/math";
+import { toAmount } from "libs/parse";
+import { useVault } from "modules/vault";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+
+
 
 
 type Inputs = {
@@ -32,14 +32,10 @@ type Inputs = {
 };
 
 const SwapForm: FC = () => {
-  const { whaleToken, ustVaultLpToken } = useContracts();
+  const { whaleToken, ustVaultLpToken, ustVault } = useContracts();
   const [currentInput, setCurrentInput] = useState(null);
   const [reverseList, setReverseList] = useState(false);
-  const whaleBalance = useBalance(whaleToken);
-  const vUstBalance = useBalance(ustVaultLpToken);
-  const ustBalance = useBalance("uusd");
-
-
+  const { vUstValue, isFetching } = useVault({ contract: ustVault });
 
 
   const [token1List, setToken1List] = useState([
@@ -83,9 +79,6 @@ const SwapForm: FC = () => {
 
 
   const debouncedAmount1 = useDebounceValue(token1.amount, 200);
-  const debouncedAmount2 = useDebounceValue(token2.amount, 200);
-
-
 
   const handleSuccess = useCallback(
     (txHash) => {
@@ -105,23 +98,26 @@ const SwapForm: FC = () => {
     token1: token1.asset,
     token2: token2.asset,
     amount1: toAmount(debouncedAmount1),
-    amount2: toAmount(debouncedAmount2),
     slippage,
-    reverse: currentInput == "token2",
+    reverse: false,
     onSuccess: handleSuccess,
     onError: handleError,
   })
 
-  // const state = useSwap({
-  //   token1: token1.asset,
-  //   token2: token2.asset,
-  //   amount1: toAmount(debouncedAmount1),
-  //   amount2: toAmount(debouncedAmount2),
-  //   slippage,
-  //   reverse: currentInput == "token2",
-  //   onSuccess: handleSuccess,
-  //   onError: handleError,
-  // });
+  const error = useMemo(() => {
+
+    if (!state.error) return
+
+    const message: string = typeof state.error === 'string' ? state.error : ""
+
+    // check if error message contain below words
+    const insufficient = ["Overflow", "insufficient"];
+    if (insufficient.some(condition => message.includes(condition)))
+      return "Insufficient funds"
+
+    return state.error
+
+  }, [state.error])
 
 
   const handleToken1Change = (
@@ -129,30 +125,23 @@ const SwapForm: FC = () => {
       asset: string;
       amount: string;
     },
-    onChange: (value: { asset: string; amount: string }) => void
+    onChange: (value: {
+      asset: string;
+      amount: string;
+    }) => void
   ) => {
-    if (
-      value.amount != null &&
-      num(value.amount).gt("0") &&
-      state?.simulated != null
-    ) {
-      const amount = num(state?.simulated?.amount).div(ONE_TOKEN);
-      const newAmount = num(value.amount).times(amount).toFixed(6);
+    if (state?.txStep === TxStep.Failed)
+      state.reset()
 
-      setValue("token2.amount", newAmount);
-    }
-
-    if (value.amount?.length == 0) {
-      setValue("token2.amount", "");
+    if (value.amount?.length === 0) {
+      setValue('token2', {
+        ...token2,
+        amount : ''
+      });
     }
 
     setCurrentInput("token1");
     onChange(value);
-
-    if (token1.asset != value.asset) {
-      setValue("token1.amount", "");
-      setValue("token2.amount", "");
-    }
   };
 
   const handleToken2Change = (
@@ -160,36 +149,17 @@ const SwapForm: FC = () => {
       asset: string;
       amount: string;
     },
-    onChange: (value: { asset: string; amount: string }) => void
+    onChange: (value: { asset: string; amount: string }) => void,
   ) => {
-    if (
-      value.amount != null &&
-      num(value.amount).gt("0") &&
-      state?.simulated != null
-    ) {
-      const amount = num(state?.simulated?.amount).div(ONE_TOKEN);
-      const newAmount = num(value.amount).div(amount).toFixed(6);
+    if (state?.txStep === TxStep.Failed)
+      state.reset()
 
-      setValue("token1.amount", newAmount);
-    }
-
-    if (value.amount?.length == 0) {
-      setValue("token1.amount", "");
-    }
-
-    setCurrentInput("token2");
     onChange(value);
   };
 
   const reverse = () => {
-    setValue("token1", {
-      asset: token2.asset,
-      amount: "",
-    });
-    setValue("token2", {
-      asset: token1.asset,
-      amount: "",
-    });
+    setValue("token1", token2);
+    setValue("token2", token1);
     setReverseList(!reverseList)
   };
 
@@ -198,16 +168,15 @@ const SwapForm: FC = () => {
       const name = currentInput == "token2" ? "token1" : "token2";
       const token = currentInput == "token2" ? token1 : token2;
 
-      // if (token.asset === 'uusd')
-      //   setValue(name, {
-      //     ...token,
-      //     amount: fromTerraAmount(state?.simulated?.ust, "0.000000"),
-      //   });
-      // else
-        setValue(name, {
-          ...token,
-          amount: fromTerraAmount(state?.simulated?.amount, "0.000000"),
-        });
+      const amount = token.asset === 'uusd' ?
+        fromTerraAmount(num(state?.simulated?.amount).times(vUstValue).dp(0).toString(), "0.000000") :
+        fromTerraAmount(state?.simulated?.amount, "0.000000")
+
+      setValue(name, {
+        ...token,
+        amount
+      });
+
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -232,13 +201,6 @@ const SwapForm: FC = () => {
 
   return (
     <chakra.form onSubmit={handleSubmit(submit)} width="full">
-      {/* <Box>
-        <IconButton
-          aria-label="Settings"
-          variant="primary"
-          icon={<GearIcon width="1rem" height="1rem" />}
-        />
-      </Box> */}
       <Box>
         <Controller
           name="token1"
@@ -279,6 +241,7 @@ const SwapForm: FC = () => {
               tokenList={reverseList ? token1List : token2List}
               setTokenList={reverseList ? setToken1List : setToken2List}
               hideBalance
+              isDisabled={true}
               {...field}
               onChange={(v) => handleToken2Change(v, field.onChange)}
             />
@@ -298,7 +261,7 @@ const SwapForm: FC = () => {
         />
       </Box>
 
-      {state?.error && (
+      {error && (
         <Box
           my="6"
           color="red.500"
@@ -308,7 +271,7 @@ const SwapForm: FC = () => {
           py="2"
           borderRadius="2xl"
         >
-          <Text>{state?.error}</Text>
+          <Text>{error}</Text>
         </Box>
       )}
 
@@ -317,7 +280,7 @@ const SwapForm: FC = () => {
           type="submit"
           variant="primary"
           size="md"
-          isLoading={state?.txStep == TxStep.Estimating}
+          isLoading={state?.txStep == TxStep.Estimating || isFetching}
           isDisabled={state?.txStep != TxStep.Ready}
           minW="64"
         >

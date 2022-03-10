@@ -21,7 +21,7 @@ export const useVault = ({ contract }: Params) => {
     }
   );
 
-  const { data: pool } = useQuery(
+  const { data: pool, isFetching } = useQuery(
     ["pool_state", contract],
     () => {
       return client.wasm.contractQuery<{
@@ -86,6 +86,7 @@ export const useVault = ({ contract }: Params) => {
   }, [pool]);
 
   return {
+    isFetching,
     vUstValue,
     vault,
     balance,
