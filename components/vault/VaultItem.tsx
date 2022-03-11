@@ -89,8 +89,8 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APR" value={"APR under Works"} asset="%" />
-            <VaultItemLine label="APY" value={toFixed(apy, 2)} asset="%" />
+            {/* <VaultItemLine label="APR" value={"APR under Works"} asset="%" /> */}
+            <VaultItemLine label="APY" value={"19.51"} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
