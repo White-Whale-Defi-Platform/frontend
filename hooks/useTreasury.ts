@@ -76,6 +76,27 @@ export const useTreasury = () => {
     },
   });
 
+  const vUSTdashUSTPair ="terra16w76qmlwdevxvt9xnfafmczrjyar6rh5rtsyhw";
+  const vUSTdashUSTLP ="terra122tkw2svjgx50027hlf52xqca94sq6s4mkk9d8";
+
+
+  // Review this down the line, could be poopy
+  const { data: vUSTdashUSTBalance } = useQuery("vUSTdashUSTBalance",
+    () => {
+      return client.wasm.contractQuery<string>(vUSTdashUSTLP, {
+        balance: { address: treasury },
+      });
+    }
+  );
+
+  const { data: vUSTdashUSTLPPool } = useQuery("vUSTdashUSTLPPool",
+    () => {
+      return client.wasm.contractQuery<Pool>(vUSTdashUSTPair, {
+        pool: {},
+      });
+    }
+  );
+
   const { data: vUstBalance } = useQuery("vUstBalance",
     () => {
       return client.wasm.contractQuery<string>(ustVaultLpToken, {
@@ -118,14 +139,18 @@ export const useTreasury = () => {
   );
 
   return useMemo(() => {
-    if (result == null || isLoading || vUSTLPPool == null || vUSTLPBalance == null) {
+    if (result == null || isLoading || vUSTLPPool == null || vUSTLPPool == undefined || vUSTLPBalance == undefined || vUstBalance == undefined) {
       return {
         totalValue,
         assets: [],
         isLoading: true
       };
     }
-    const value = calculateSharePrice(vUSTLPPool, (vUSTLPBalance as any).balance, whalePrice, vUSTPrice);
+    // Most of this is poopy and needs fixed
+    const whalevUSTValue = calculateSharePrice(vUSTLPPool, (vUSTLPBalance as any).balance, whalePrice, vUSTPrice);
+    const vUSTdashUSTvalue = calculateSharePrice(vUSTdashUSTLPPool, (vUSTdashUSTBalance as any).balance, vUSTPrice, "1.000");
+    console.log("Value is ")
+    console.log(vUSTdashUSTvalue)
     const exchangeRate =
       result.moneyMarketEpochState.contractQuery.exchange_rate;
     const aUstValue = num(result.balance.contractQuery.balance)
@@ -145,8 +170,13 @@ export const useTreasury = () => {
       },
       {
         asset: "WHALE-vUST LP",
-        value: num(value).times(2) || 0,
+        value: num(whalevUSTValue).times(2) || 0,
         color: "#0C5557",
+      },
+      {
+        asset: "vUST-UST LP",
+        value: num(vUSTdashUSTvalue).times(ONE_TOKEN) || 0,
+        color: "#279145",
       },
       {
         asset: "vUST",
@@ -164,9 +194,9 @@ export const useTreasury = () => {
         color: "#FFDD4D",
       },
     ];
-
+    // TODO: This is really poopy and needs refactoring 
     return {
-      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(value).times(2)).toNumber(),
+      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(num(vUSTdashUSTvalue).times(ONE_TOKEN)).toNumber(),
       assets,
       isLoading: isLoading
     };
