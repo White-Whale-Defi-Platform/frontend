@@ -166,7 +166,7 @@ export const useTreasury = () => {
     ];
 
     return {
-      totalValue: num(totalValue).plus(aUstValue).toNumber(),
+      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(value).times(2)).toNumber(),
       assets,
       isLoading: isLoading
     };
