@@ -53,9 +53,7 @@ const MyAssets: NextPage = () => {
       .plus(num(whaleAmount ?? 0))
       .toString();
   }, [balance, lpHolding, warchestAmount, ustBalance, whaleAmount]);
-  console.log(typeof lpHolding)
-  console.log(typeof whaleAmount)
-  console.log(whaleAmount)
+
 
   const data = [
     {

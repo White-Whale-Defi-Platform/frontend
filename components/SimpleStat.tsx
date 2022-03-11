@@ -26,11 +26,11 @@ const SimpleStat: FC<Props> = ({
       align="baseline"
       lineHeight="1"
     >
-      {label === "APY" && (
+      {/* {label === "APY" && (
         <Tooltip label='25% APR' fontSize='sm' >
           <InfoOutlineIcon ml="2" />
         </Tooltip>
-      )}
+      )} */}
       <Text fontSize={fontSizeValue}>{value}</Text>
       <Text fontSize={fontSizeAsset}>{asset}</Text>
 

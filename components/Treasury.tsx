@@ -62,9 +62,9 @@ const Treasury = () => {
       },
     ],
   }; 
-
-  const riskFreeValue = number(treasury.totalValue) - data.filter(d => d.label === 'WHALE' || d.label === 'WHALE-UST LP')
-                        .map( token => token.label === 'WHALE-UST LP' ? token.valueForChart / 2 : token.valueForChart )
+  // TODO: This is poopy, move to useTreasury so the calc is easier and just return it from there
+  const riskFreeValue = number(treasury.totalValue) - data.filter(d => d.label === 'WHALE' || d.label === 'WHALE-UST LP' || d.label === 'WHALE-vUST LP')
+                        .map( token => token.label === 'WHALE-UST LP' || token.label === 'WHALE-vUST LP' ? token.valueForChart / 2 : token.valueForChart )
                         .reduce((a, b) => a + b, 0)
 
   return (

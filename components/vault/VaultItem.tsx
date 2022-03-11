@@ -4,6 +4,7 @@ import { Box, HStack, Flex, Text, Image } from "@chakra-ui/react";
 import { format } from "libs/parse";
 import { useVault } from "modules/vault";
 import { useUstPrice } from "hooks/useUstPrice";
+import { num, useTerraWebapp } from "@arthuryeti/terra";
 
 import Card from "components/Card";
 import SimpleStat from "components/SimpleStat";
@@ -13,13 +14,14 @@ import WithdrawModal from "components/vault/WithdrawModal";
 import useVaultApy from "hooks/useVaultApy";
 import { Tooltip } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
+import { toFixed } from "libs/parse";
 
 type Props = {
   data: any;
 };
 
 const VaultItemLine = ({ label, value, asset = "UST" }) => {
-  const [ _, apr ] = useVaultApy();
+  const [ apr, apy  ] = useVaultApy();
   return (
     <Flex
       justify="space-between"
@@ -33,8 +35,8 @@ const VaultItemLine = ({ label, value, asset = "UST" }) => {
     >
       <Text color="#fff">
         {label}
-        {label === "APR" && (
-          <Tooltip label={`APR is estimated and representative only`} fontSize='sm' >
+        {(label === "APR"||label === "APY") && (
+          <Tooltip label={`Rates are estimated and representative only.`} fontSize='sm' >
             <InfoOutlineIcon ml="2" />
           </Tooltip>
         )}
@@ -60,7 +62,7 @@ const VaultItem: FC<Props> = ({ data }) => {
   const totalBalanceAmount = format(totalBalance, "uusd");
   const ustPrice = useUstPrice();
   const isComing = data.contract == null;
-  const [ apy ] = useVaultApy();
+  const [ apr, apy ] = useVaultApy();
 
   return (
     <Card
@@ -87,7 +89,8 @@ const VaultItem: FC<Props> = ({ data }) => {
         </Box>
         <Box p="8">
           <Box>
-            <VaultItemLine label="APR" value={"19.50+"} asset="%" />
+            {/* <VaultItemLine label="APR" value={"APR under Works"} asset="%" /> */}
+            <VaultItemLine label="APY" value={"19.51"} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
           </Box>
