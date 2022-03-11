@@ -1,5 +1,5 @@
 import { num, useAddress, useTransaction } from "@arthuryeti/terra";
-import { isNativeToken, minAmountReceive, toAsset, useSwapRoute, useSwapSimulate, useTerraswap } from "@arthuryeti/terraswap";
+import { minAmountReceive, toAsset, useSwapRoute, useSwapSimulate, useTerraswap } from "@arthuryeti/terraswap";
 import useContracts from "hooks/useContracts";
 import { useVault } from "modules/vault";
 import { useMemo } from "react";
@@ -10,7 +10,6 @@ type Params = {
   token1: string;
   token2: string;
   amount1: string;
-  amount2: string;
   slippage: string;
   reverse: boolean;
   onError: any;
@@ -21,7 +20,6 @@ export const useUstToWhaleSwap = ({
   token1,
   token2,
   amount1,
-  amount2,
   slippage,
   reverse,
   onSuccess,
@@ -29,8 +27,6 @@ export const useUstToWhaleSwap = ({
 
   const { ustVault, vUSTPool, ustVaultLpToken } = useContracts();
   const { vUstValue } = useVault({ contract: ustVault });
-
-  const isNative = isNativeToken(token1);
   const asset = toAsset({ amount: amount1, token: token1 });
   const sender = useAddress();
 
@@ -48,38 +44,31 @@ export const useUstToWhaleSwap = ({
 
   const simulated : any = useSwapSimulate({
     swapRoute,
-    amount: reverse ? amount2 : vUstAmount,
-    token: reverse ? token2 : ustVaultLpToken,
+    amount: vUstAmount,
+    token: ustVaultLpToken,
     reverse,
   });
 
 
   const minReceive = useMemo(() => {
-    if (!simulated || !amount2) return
+    if (!simulated ) return
 
     return minAmountReceive({
-      amount: reverse ? amount2 : simulated.amount,
+      amount:  simulated.amount,
       maxSpread: slippage,
     });
-  }, [simulated, slippage, amount2, reverse]);
+  }, [simulated, slippage, reverse]);
 
   const msgs = useMemo(() => {
 
     if (!simulated || !token1 || !amount1)
       return;
 
-    if (swapRoute.length > 1) {
-      return;
-    }
-
       return ustToWhaleMsg({ sender, asset, token1, amount1, vUstAmount, slippage, simulated, ustVault, vUSTPool, ustVaultLpToken })
 
-  }, [token1, token2, amount1, amount2])
-
-
+  }, [token1, token2, amount1, simulated])
 
   const { submit, ...rest } = useTransaction({ msgs, onSuccess, onError });
-
 
     return ({
       ...rest,
