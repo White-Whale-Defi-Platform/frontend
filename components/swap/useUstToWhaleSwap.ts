@@ -61,12 +61,12 @@ export const useUstToWhaleSwap = ({
 
   const msgs = useMemo(() => {
 
-    if (!simulated || !token1 || !amount1)
+    if (!simulated || !token1 || !amount1 || !vUstAmount)
       return;
 
       return ustToWhaleMsg({ sender, asset, token1, amount1, vUstAmount, slippage, simulated, ustVault, vUSTPool, ustVaultLpToken })
 
-  }, [token1, token2, amount1, simulated])
+  }, [token1, token2, amount1, simulated, vUstAmount])
 
   const { submit, ...rest } = useTransaction({ msgs, onSuccess, onError });
 
