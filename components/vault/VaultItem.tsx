@@ -93,6 +93,7 @@ const VaultItem: FC<Props> = ({ data }) => {
             <VaultItemLine label="APY" value={"19.51"} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
+            <VaultItemLine label="5 Days profit" value="50000" />
           </Box>
           <HStack mt="6">
             <WithdrawModal vault={vault} />
