@@ -3,6 +3,7 @@ import Head from "next/head";
 import { NextPage } from "next";
 
 import Dashboard from "components/pages/Dashboard";
+import Footer from "components/Footer";
 
 const DashboardPage: NextPage = () => {
   return (
@@ -11,6 +12,7 @@ const DashboardPage: NextPage = () => {
         <title>WhiteWhale Protocol</title>
       </Head>
       <Dashboard />
+      <Footer/>
     </>
   );
 };
