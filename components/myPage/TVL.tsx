@@ -16,7 +16,7 @@ const TVL: NextPage = () => {
       label: dayjs(item.createdAt).format("MMM D"),
       value: item.value,
     };
-  });
+  }).reverse();
 
   dataChart.push({
     label: "Now",
