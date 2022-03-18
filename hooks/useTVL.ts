@@ -45,7 +45,7 @@ export const useTVL = () => {
       return [];
     }
 
-    return data.tvl.reverse();
+    return data.tvl;
   }, [data]);
 
   return {
