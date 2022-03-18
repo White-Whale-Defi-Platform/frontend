@@ -4,9 +4,12 @@ import { Box, Heading, Flex, Center } from "@chakra-ui/react";
 import VaultItem from "components/vault/VaultItem";
 import VaultTracker from "components/vault/VaultTracker";
 import useContracts from "hooks/useContracts";
+import useReel from "hooks/useReel"
+import { ArbTrades } from "libs/arbTrades";
 
 const Vaults = () => {
   const { ustVault } = useContracts();
+  const vaultTrades : ArbTrades[] = useReel()
 
   const data = [
     {
@@ -26,23 +29,6 @@ const Vaults = () => {
     // },
   ];
 
-  const vaultTrades = [
-    {
-      txhash: "1213..3232",
-      timestamp: "2018-02-16",
-      vaultName: 'ust',
-      arb_assets: "arb_assets",
-      profit: "5.00"
-    },
-    {
-      txhash: "1213..3232",
-      timestamp: "2018-02-16",
-      vaultName: 'ust',
-      arb_assets: "arb_assets",
-      profit: "5.00"
-    }
-
-  ]
   return (
     <Box mt="16" mx="auto" maxW="container.xl" paddingBottom="100px">
       <Box>

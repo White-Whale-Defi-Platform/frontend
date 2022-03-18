@@ -1,67 +1,78 @@
-import React, { FC } from "react";
-import { Box, Text, Flex, HStack, VStack, Link } from "@chakra-ui/react";
-
-import ThumbsDownIcon from "components/icons/ThumbsDownIcon";
-import ThumbsUpIcon from "components/icons/ThumbsUpIcon";
-import { useMediaQuery } from '@chakra-ui/react'
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Flex, HStack, Image, Link, Text, Tooltip, useMediaQuery, VStack, Box } from "@chakra-ui/react";
+import { ArbTrades, Pair } from "libs/arbTrades";
 import { truncate } from "libs/text";
-import { ExternalLinkIcon } from '@chakra-ui/icons'
+import React, { FC } from "react";
+
+type BuildRouteProps = {
+  arbPairs: Pair[];
+}
+
+
+const BuildRoute: FC<BuildRouteProps> = ({ arbPairs = [] }) => {
+  const [isMobile] = useMediaQuery('(max-width:480px)')
+  return (
+    <>
+      {
+        arbPairs.map((pair, index) => (
+          <HStack mb="2" key={pair.dex + pair?.from?.symbol + 1} >
+            {!isMobile && (
+              <>
+                <Text size="lg" textTransform="capitalize"> {index + 1} </Text>
+                <Text size="lg" textTransform="capitalize"> {pair.dex} </Text>
+              </>
+            )}
+
+            {!pair?.from?.icon ? (
+              <Box bg="blackAlpha.900" px={2} py={.5}  color='white' borderRadius={5}>
+                <Text color="brand.500" textAlign="end" fontSize="xs" textTransform="capitalize"> {pair?.from?.symbol}</Text>
+              </Box>
+            ) : (
+              <Tooltip label={pair?.from?.symbol} borderRadius="unset" padding="1.5" bg="blackAlpha.900" fontSize="xs">
+                <Image src={pair?.from?.icon} width="1.5rem" alt={pair?.from?.symbol} />
+              </Tooltip>
+            )}
+            <Text size="lg" textTransform="capitalize">  → </Text>
+            {!pair?.to?.icon ? (
+              <Box bg="blackAlpha.900" px={2} py={.5}  color='white' borderRadius={5}>
+                <Text color="brand.500" textAlign="end" fontSize="xs" textTransform="capitalize"> {pair?.to?.symbol}</Text>
+              </Box>
+            ) : (
+              <Tooltip label={pair?.to?.symbol} borderRadius="unset" padding="1.5" bg="blackAlpha.900" fontSize="xs">
+              <Image src={pair?.to?.icon} width="1.5rem" alt={pair?.to?.symbol} />
+            </Tooltip>
+            )}
+            
+          </HStack>
+        ))
+      }
+    </>
+  )
+}
 
 type Props = {
-  trade: {
-    txhash: String;
-    timestamp: String;
-    vaultName: String;
-    arb_assets: String;
-    profit: String;
-  };
-};
+  trade: ArbTrades;
+  isLast?: boolean;
+}
 
-const VaultTrackerItem: FC<Props> = ({ trade }) => {
+const VaultTrackerItem: FC<Props> = ({ trade, isLast }) => {
 
-  const { txhash, timestamp, vaultName, profit, arb_assets, } = trade
+  const { txhash, txHashLink, timestamp, vaultName, profit, arbPairs, } = trade
   const [isMobile] = useMediaQuery('(max-width:480px)')
 
-  if (isMobile)
-    return (
-      <>
-        <Flex pb="2" flexDirection="column"
-        >
-          <VStack alignItems="start" borderBottom="1px solid" pb="2" mb="3" borderBottomColor="whiteAlpha.300">
-            <Text variant="light" flex={1} size="lg" textTransform="capitalize"> TxHash </Text>
-            <Link href='https://chakra-ui.com' isExternal color="brand.500" flex={1} size="lg" textTransform="capitalize" mt="unset">
-              {txhash} <ExternalLinkIcon mx='4px' mb="4px" />
-            </Link>
-          </VStack>
-          <VStack alignItems="start" borderBottom="1px solid" pb="2" mb="3" borderBottomColor="whiteAlpha.300">
-            <Text variant="light" flex={1} size="lg" textTransform="capitalize"> Timestamp </Text>
-            <Text color="#fff" flex={1} size="lg" textTransform="capitalize" mt="unset"> {timestamp} </Text>
-          </VStack>
-          <VStack >
-            <HStack justify="space-between" width="100%">
-              <Text variant="light" size="lg" flex="1" textTransform="capitalize"> Vault </Text>
-              <Text variant="light" size="lg" flex="1" textTransform="capitalize">Arb Pair </Text>
-              <Text variant="light" size="lg" flex="1" textAlign="end" textTransform="capitalize">Profit </Text>
-            </HStack>
-            <HStack justify="space-between" width="100%" mt="unset">
-              <Text color="#fff" size="lg" flex="1" textTransform="capitalize" mt="unset"> {vaultName} </Text>
-              <Text color="#fff" size="lg" flex="1" textTransform="capitalize" mt="unset"> {arb_assets} </Text>
-              <Text color="#fff" size="lg" flex="1" textAlign="end" textTransform="capitalize" mt="unset"> {profit} </Text>
-            </HStack>
-          </VStack>
-        </Flex>
-      </>
-    )
-
   return (
-    <Flex borderBottom="1px solid" borderBottomColor="whiteAlpha.300" pb="2" mb="5">
-      <Link href='https://chakra-ui.com' isExternal color="brand.500" flex={1} size="lg" textTransform="capitalize" mt="unset">
-        {txhash} <ExternalLinkIcon mx='5px' mb="4px" />
+    <Flex borderBottom={!isLast && "1px solid"} borderBottomColor={!isLast && "whiteAlpha.300"} pb="2" mb="5">
+      <Link href={txHashLink} isExternal color="brand.500" flex={2} size="lg" textTransform="capitalize" mt="unset">
+        {isMobile ? txhash.slice(-5) : truncate(txhash)} <ExternalLinkIcon mx='5px' mb="4px" />
       </Link>
-      <Text color="#fff" flex={1} size="lg" textTransform="capitalize"> {timestamp} </Text>
-      <Text color="#fff" flex={1} size="lg" textTransform="capitalize"> {vaultName} </Text>
-      <Text color="#fff" flex={1} size="lg" textTransform="capitalize"> {arb_assets} </Text>
-      <Text color="#fff" flex={1} textAlign="end" size="lg" textTransform="capitalize"> {profit} </Text>
+      {!isMobile && (
+        <>
+          <Text color="#fff" flex={2} size="lg" textTransform="capitalize"> {timestamp} </Text>
+          <Text color="#fff" flex={1} size="lg" textTransform="capitalize"> {vaultName} </Text>
+        </>
+      )}
+      <Flex flexDirection="column" flex={2}> <BuildRoute arbPairs={arbPairs} /> </Flex>
+      <Text color="#fff" flex={isMobile ? 'unset' : 1} textAlign="end" size="lg" textTransform="capitalize"> {profit} Ust</Text>
     </Flex>
   );
 };
