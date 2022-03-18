@@ -35,9 +35,9 @@ const VaultItemLine = ({ label, value, asset = "UST" }) => {
     >
       <Text color="#fff">
         {label}
-        {(label === "APR"||label === "APY") && (
-          <Tooltip label={`Rates are estimated and representative only.`} fontSize='sm' >
-            <InfoOutlineIcon ml="2" />
+        {(label === "Vault APR"||label === "APY") && (
+          <Tooltip label={`Rates are estimated and representative only.`} maxW="160px" bg="blackAlpha.900" fontSize="xs"  color="brand.500"  borderRadius={10}>
+            <InfoOutlineIcon ml="2" mb="1" color="brand.500" fontSize="xs" />
           </Tooltip>
         )}
 
