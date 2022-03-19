@@ -19,6 +19,8 @@ type Contracts = {
   treasury: string;
   communityFund: string;
   warchest: string;
+  anchorOverseer: string;
+  arbProfitTracker : string;
 };
 
 type Networks = {
@@ -42,6 +44,8 @@ const defaultContracts: { [key: string]: any } = {
     whalevUSTPair:"terra12arl49w7t4xpq7krtv43t3dg6g8kn2xxyaav56",
     whalevUSTLpToken:"terra1hg3tr0gx2jfaw38m80s83c7khr4wgfvzyh5uak",
     gov: "terra15qv7cr7t2s4cfskq82mskq0d397hadflrazuj7",
+    anchorOverseer: "terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8",
+    arbProfitTracker : "terra13fwsh3j8gug52y5x3tmguj3fwhr6c7nxm9kl06",
     communityFund: "",
     warchest: "",
   },
