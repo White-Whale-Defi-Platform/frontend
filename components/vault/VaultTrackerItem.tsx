@@ -8,6 +8,17 @@ type BuildRouteProps = {
   arbPairs: Pair[];
 }
 
+const ImageFallback = ({symbol}) => {
+  if (!symbol) return
+  
+
+  return (
+    <Box bg="blackAlpha.900" px={2} py={.5} color='white' borderRadius={5}>
+      <Text color="brand.500" textAlign="end" fontSize="xs" textTransform="capitalize"> {symbol} </Text>
+    </Box>
+  )
+}
+
 
 const BuildRoute: FC<BuildRouteProps> = ({ arbPairs = [] }) => {
   const [isMobile] = useMediaQuery('(max-width:480px)')
@@ -24,25 +35,25 @@ const BuildRoute: FC<BuildRouteProps> = ({ arbPairs = [] }) => {
             )}
 
             {!pair?.from?.icon ? (
-              <Box bg="blackAlpha.900" px={2} py={.5}  color='white' borderRadius={5}>
+              <Box bg="blackAlpha.900" px={2} py={.5} color='white' borderRadius={5}>
                 <Text color="brand.500" textAlign="end" fontSize="xs" textTransform="capitalize"> {pair?.from?.symbol}</Text>
               </Box>
             ) : (
               <Tooltip label={pair?.from?.symbol} borderRadius="unset" padding="1.5" bg="blackAlpha.900" fontSize="xs">
-                <Image src={pair?.from?.icon} width="1.5rem" alt={pair?.from?.symbol} />
+                <Image src={pair?.from?.icon} width="1.5rem" alt={pair?.from?.symbol} fallback={<ImageFallback symbol={pair?.from?.symbol} />} />
               </Tooltip>
             )}
             <Text size="lg" textTransform="capitalize">  → </Text>
             {!pair?.to?.icon ? (
-              <Box bg="blackAlpha.900" px={2} py={.5}  color='white' borderRadius={5}>
+              <Box bg="blackAlpha.900" px={2} py={.5} color='white' borderRadius={5}>
                 <Text color="brand.500" textAlign="end" fontSize="xs" textTransform="capitalize"> {pair?.to?.symbol}</Text>
               </Box>
             ) : (
               <Tooltip label={pair?.to?.symbol} borderRadius="unset" padding="1.5" bg="blackAlpha.900" fontSize="xs">
-              <Image src={pair?.to?.icon} width="1.5rem" alt={pair?.to?.symbol} />
-            </Tooltip>
+                <Image src={pair?.to?.icon} width="1.5rem" alt={pair?.to?.symbol} fallback={<ImageFallback symbol={pair?.to?.symbol} />}  />
+              </Tooltip>
             )}
-            
+
           </HStack>
         ))
       }
