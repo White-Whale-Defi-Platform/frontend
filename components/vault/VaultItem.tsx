@@ -35,9 +35,9 @@ const VaultItemLine = ({ label, value, asset = "UST" }) => {
     >
       <Text color="#fff">
         {label}
-        {(label === "APR"||label === "APY") && (
-          <Tooltip label={`Rates are estimated and representative only.`} fontSize='sm' >
-            <InfoOutlineIcon ml="2" />
+        {(label === "Vault APR"||label === "APY") && (
+          <Tooltip label={`Rates are estimated and representative only.`} maxW="160px" bg="blackAlpha.900" fontSize="xs"  color="brand.500"  borderRadius={10}>
+            <InfoOutlineIcon ml="2" mb="1" color="brand.500" fontSize="xs" />
           </Tooltip>
         )}
 
@@ -90,9 +90,11 @@ const VaultItem: FC<Props> = ({ data }) => {
         <Box p="8">
           <Box>
             {/* <VaultItemLine label="APR" value={"APR under Works"} asset="%" /> */}
-            <VaultItemLine label="APY" value={"19.51+"} asset="%" />
+            <VaultItemLine label="Anchor APY" value={`${apy} +`} asset="%" />
+            <VaultItemLine label="Vault APR" value={apr} asset="" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
+            {/* <VaultItemLine label="7 Days Arb Profit" value="50000" /> */}
           </Box>
           <HStack mt="6">
             <WithdrawModal vault={vault} />
