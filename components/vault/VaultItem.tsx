@@ -91,7 +91,7 @@ const VaultItem: FC<Props> = ({ data }) => {
           <Box>
             {/* <VaultItemLine label="APR" value={"APR under Works"} asset="%" /> */}
             <VaultItemLine label="Anchor APY" value={`${apy} +`} asset="%" />
-            <VaultItemLine label="Vault APR" value={apr} asset="" />
+            <VaultItemLine label="Vault APR" value={apr} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
             {/* <VaultItemLine label="7 Days Arb Profit" value="50000" /> */}
