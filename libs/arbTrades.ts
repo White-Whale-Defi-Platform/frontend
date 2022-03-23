@@ -59,12 +59,12 @@ const vaults = {
 const nativeTokens = {
     "uusd": {
         symbol: 'UST',
-        icon: "/UST.png"
+        icon: "https://assets.terra.money/icon/60/UST.png"
 
     },
     "uluna": {
         symbol: 'LUNA',
-        icon: "/Luna.png"
+        icon: "https://assets.terra.money/icon/60/Luna.png"
     }
 }
 
