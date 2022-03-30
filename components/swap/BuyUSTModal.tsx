@@ -75,7 +75,7 @@ const BuyUSTModal: FC = () => {
               <VStack align='center'>
                 {fiat.map(({ name, link, icon }) => (
 
-                  <Button colorScheme='brand' rightIcon={<Logo url={icon} name={name} />} width="100%" onClick={() => open(link, "_blank")} justifyContent="space-between" px="30px" py="25px">
+                  <Button key={name} colorScheme='brand' rightIcon={<Logo url={icon} name={name} />} width="100%" onClick={() => open(link, "_blank")} justifyContent="space-between" px="30px" py="25px">
                     <HStack>
                       <Text>{name}</Text>
                       <Icon as={FiExternalLink} />
