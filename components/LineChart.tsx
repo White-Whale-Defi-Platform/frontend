@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Box, Text } from "@chakra-ui/react";
+import Loader from "components/Loader";
 
 ChartJS.register(
   CategoryScale,
@@ -137,6 +138,9 @@ const LineChart: FC<Props> = ({ data }) => {
       },
     ],
   };
+
+ if(!data.length)
+  return <Box display="flex" alignItems='center' justifyContent="center"> <Loader /> </Box>
    
 
   return (

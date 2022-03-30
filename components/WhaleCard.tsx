@@ -46,13 +46,13 @@ const Dashboard: NextPage = () => {
         },
         {
           label: "Market Cap",
-          value: fromTerraAmount(marketCap, "0,0a"),
+          value: marketCap?.toLocaleString("en-US"),
           asset: "UST",
         },
         {
           label: "Circulating Supply",
-          value: fromTerraAmount(circSupply, "0,0a"),
-          asset: "WHALE",
+          value:circSupply?.toLocaleString("en-US"),
+          asset: "",
         },
       ]}
       data={graphData}
