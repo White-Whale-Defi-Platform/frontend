@@ -4,7 +4,7 @@ ARG NEXT_PUBLIC_TESTNET_GRAPHQL_URL
 
 ENV NEXT_PUBLIC_TESTNET_GRAPHQL_URL ${NEXT_PUBLIC_TESTNET_GRAPHQL_URL}
 
-RUN apk add --no-cache libc6-compat python3 make gcc musl-dev g++
+RUN apk add --no-cache libc6-compat python3 make gcc musl-dev g++ 'libretls>=3.3.4-r3' 
 
 WORKDIR /app
 
