@@ -1,13 +1,10 @@
-FROM node:16-alpine AS builder
+FROM node:16-alpine3.15 AS builder
 
 ARG NEXT_PUBLIC_TESTNET_GRAPHQL_URL
 
 ENV NEXT_PUBLIC_TESTNET_GRAPHQL_URL ${NEXT_PUBLIC_TESTNET_GRAPHQL_URL}
 
 RUN apk add --no-cache libc6-compat python3 make gcc musl-dev g++
-
-# Mitigate CVEs
-RUN apk add --no-cache 'libretls>=3.3.4-r3' 'libcrypto1.1>=1.1.1n-r0' 'libssl1.1>=1.1.1n-r0' 'zlib>=1.2.12-r0'
 
 WORKDIR /app
 
@@ -20,7 +17,7 @@ RUN npm ci && \
 RUN npm run build && \
     npm install --production --ignore-scripts --prefer-offline
 
-FROM node:16-alpine
+FROM node:16-alpine3.15
 
 WORKDIR /app
 
