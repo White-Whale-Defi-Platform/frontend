@@ -54,8 +54,8 @@ const AmountInput: FC<Props> = forwardRef(
     ref
   ) => {
     const { getIcon, getSymbol } = useTokenInfo();
-    const icon = useMemo(() => value?.asset ? getIcon(value?.asset) : '', [value, getIcon]);
-    const symbol = useMemo(() => value?.asset ? getSymbol(value?.asset) : '', [value, getSymbol]);
+    const icon = useMemo(() => value?.asset ? getIcon(value?.asset) : '', [value]);
+    const symbol = useMemo(() => value?.asset ? getSymbol(value?.asset) : '', [value]);
     const stakedOrAvailable = showLockedInPolls ? availableToWithdraw : initialBalance
     const max = num(stakedOrAvailable).gt("0")
       ? div(stakedOrAvailable, ONE_TOKEN)

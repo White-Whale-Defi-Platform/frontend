@@ -18,6 +18,11 @@ const TVL: NextPage = () => {
     };
   }).reverse();
 
+  dataChart.push({
+    label: "Now",
+    value: fromTerraAmount(total, "0.00"),
+  });
+
   return (
     <Card h="full">
       <Flex align="baseline" justify="space-between">

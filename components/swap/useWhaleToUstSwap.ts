@@ -38,7 +38,7 @@ export const useWhaleToUstSwap = (props: Params) => {
       amount:  simulated.amount,
       maxSpread: slippage,
     });
-  }, [simulated, slippage]);
+  }, [simulated, slippage, reverse]);
 
 
 

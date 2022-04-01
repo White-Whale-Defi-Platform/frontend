@@ -57,7 +57,7 @@ export const useUstToWhaleSwap = ({
       amount:  simulated.amount,
       maxSpread: slippage,
     });
-  }, [simulated, slippage]);
+  }, [simulated, slippage, reverse]);
 
   const msgs = useMemo(() => {
 
