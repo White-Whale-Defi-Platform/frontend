@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
 import { fromTerraAmount } from "@arthuryeti/terra";
 import { Box, Flex, Text, HStack, Circle } from "@chakra-ui/react";
 
@@ -8,15 +9,25 @@ import { useTVL } from "hooks/useTVL";
 import Card from "components/Card";
 import LineChart from "components/LineChart";
 
+dayjs.extend(isToday)
+
 const TVL: NextPage = () => {
   const { total, graph } = useTVL();
 
   const dataChart = graph.map((item) => {
+    if (dayjs(item.createdAt)?.isToday()) return
     return {
       label: dayjs(item.createdAt).format("MMM D"),
       value: item.value,
     };
-  }).reverse();
+  }).filter(item => item).reverse();
+
+
+  if (dataChart.length)
+    dataChart.push({
+      label: "Now",
+      value: fromTerraAmount(total, "0.00"),
+    });
 
   return (
     <Card h="full">

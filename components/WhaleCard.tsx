@@ -1,6 +1,9 @@
-import { useEffect , useState  } from "react";
+import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+dayjs.extend(isToday)
+
 
 import { useMarketCap } from "hooks/useMarketCap";
 import { fromTerraAmount } from "libs/terra";
@@ -20,20 +23,30 @@ interface GraphData {
 
 const Dashboard: NextPage = () => {
   const price = useWhalePrice();
-  
+
   const marketCap = useMarketCap();
   const circSupply = useCirculatingSupply();
   const data = useWhalePriceTimes();
-  const [ graphData , setGraphData ] =  useState<GraphData[]>([]);
+  const [graphData, setGraphData] = useState<GraphData[]>([]);
 
   useEffect(() => {
-    setGraphData( data && data.map((item) => {
+    const sortByDate = data.map((item) => {
+      if (dayjs(item.createdAt)?.isToday()) return
       return {
         label: dayjs(item.createdAt).format("MMM D"),
         value: item.token1,
       };
-    }));
+    }).filter(item => item)
+
+    if (data.length) {
+      sortByDate.push({
+        label: "Now",
+        value: fromTerraAmount(price, "0.0000"),
+      });
+      setGraphData(sortByDate)
+    }
   }, [data])
+
 
 
   return (
@@ -51,7 +64,7 @@ const Dashboard: NextPage = () => {
         },
         {
           label: "Circulating Supply",
-          value:circSupply?.toLocaleString("en-US"),
+          value: circSupply?.toLocaleString("en-US"),
           asset: "",
         },
       ]}
