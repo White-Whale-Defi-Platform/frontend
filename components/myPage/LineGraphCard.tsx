@@ -4,7 +4,6 @@ import { NextPage } from "next";
 
 import Card from "components/Card";
 import LineChart from "components/LineChart";
-import { Skeleton } from '@chakra-ui/react'
 
 
 import PlusCircleIcon from "components/icons/PlusCircleIcon";
@@ -23,12 +22,12 @@ type Cell = {
 type Props = {
   cells: Cell[];
   data: DataIrtem[];
-  vUSTPrice?: any;
+  vUSTPrice?:any;
 };
 
 const LineGraphCard: NextPage<Props> = ({ cells, data, vUSTPrice }) => {
-
-
+  
+  
   const renderDivider = (index) => {
     if (index === cells.length - 1) {
       return;
@@ -58,23 +57,17 @@ const LineGraphCard: NextPage<Props> = ({ cells, data, vUSTPrice }) => {
                   <Text fontSize="xl" mb="4" fontWeight="bold">
                     {cell.label}
                   </Text>
-                  {
-                    !cell?.value || cell.value === "NaN" ? 
-                    <Skeleton startColor='brand.100' endColor='brand.500' height='36px' /> : (
-                      <Text
-                        color="brand.500"
-                        fontSize="2xl"
-                        fontWeight="bold"
-                        textTransform="uppercase"
-                      >
-                        {cell.value}
-                        <Text as="span" fontSize="md">
-                          {cell.asset}
-                        </Text>
-                      </Text>
-                    )
-                  }
-
+                  <Text
+                    color="brand.500"
+                    fontSize="2xl"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    {cell.value}{" "}
+                    <Text as="span" fontSize="md">
+                      {cell.asset}
+                    </Text>
+                  </Text>
                 </Box>
                 {renderDivider(index)}
               </Fragment>

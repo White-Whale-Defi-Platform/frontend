@@ -11,7 +11,6 @@ import {
   ModalBody,
   ModalCloseButton,
   Heading,
-  Image,
   chakra,
 } from '@chakra-ui/react';
 
@@ -66,7 +65,7 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
             >
               <HStack justify="space-between">
                 <Text>{name}</Text>
-               <Image  boxSize='24px' objectFit='cover' src={icon} alt={name} />
+               <img width={24} height={24} src={icon} alt={name} />
               </HStack>
             </chakra.button>
           ))}
@@ -92,10 +91,9 @@ const WalletModal: FC<Props> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
                 >
-
                 <HStack justify="space-between">
                   <Text>Install {name}</Text>
-                 <Image  boxSize='24px' objectFit='cover' src={icon} alt={`Install ${name}`} />
+                 <img width={24} height={24} src={icon} alt={`Install ${name}`} />
                 </HStack>
               </chakra.button>
             ))}
