@@ -80,13 +80,13 @@ const PoolItem: FC<Props> = ({
           <Flex justify="space-between" mb="4">
             <Text>Liquidity</Text>
             <Text color="brand.500" fontWeight="700">
-              {fromTerraAmount(pool.total.shareInUst)} UST
+              {fromTerraAmount(pool.total.share)} UST
             </Text>
           </Flex>
           <Flex justify="space-between" mb="4">
             <Text>My Liquidity</Text>
             <Text color="brand.500" fontWeight="700">
-              {fromTerraAmount(pool.mine.shareInUst)} UST
+              {fromTerraAmount(pool.mine.share)} UST
             </Text>
           </Flex>
           {/* <Flex justify="space-between" mb="4">
