@@ -47,7 +47,7 @@ const SwapFormSuccess: FC<Props> = ({ txInfo, onClick }) => {
 
     return {}
 
-  }, [txInfo, ustVault, whaleToken])
+  }, [txInfo])
 
 
   return (

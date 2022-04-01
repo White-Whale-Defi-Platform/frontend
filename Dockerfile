@@ -1,4 +1,4 @@
-FROM node:16-alpine3.15 AS builder
+FROM node:16-alpine AS builder
 
 ARG NEXT_PUBLIC_TESTNET_GRAPHQL_URL
 
@@ -17,7 +17,7 @@ RUN npm ci && \
 RUN npm run build && \
     npm install --production --ignore-scripts --prefer-offline
 
-FROM node:16-alpine3.15
+FROM node:16-alpine
 
 WORKDIR /app
 
