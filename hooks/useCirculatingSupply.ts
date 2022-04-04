@@ -1,30 +1,35 @@
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useBalance, useTerraWebapp } from "@arthuryeti/terra";
+import { request, gql } from "graphql-request";
+import { GRAPHQL_URL } from "constants/constants";
 
 import useContracts from "hooks/useContracts";
 import { minus } from "libs/math";
+
+const query = gql`
+  query {
+    circulatingSupply {
+      value
+    }
+  }
+`;
+
 
 export const useCirculatingSupply = () => {
   const { client } = useTerraWebapp();
   const { wallet, whaleToken } = useContracts();
   const balance = useBalance(whaleToken, wallet);
 
-  const { data: tokenInfo } = useQuery("tokenInfo", () => {
-    return client.wasm.contractQuery<{
-      total_supply: string;
-    }>(whaleToken, {
-      token_info: {},
-    });
+  const { data } = useQuery("circulatingSupply", () => {
+    return request(GRAPHQL_URL, query);
   });
 
   return useMemo(() => {
-    if (balance == null || tokenInfo == null) {
-      return null;
-    }
-
-    return minus(minus(minus(tokenInfo.total_supply, balance), "50000000000000"), "14000000000000");
-  }, [balance, tokenInfo]);
+    if (!data?.circulatingSupply?.value) return null;
+    
+    return data.circulatingSupply.value
+  }, [data])
 };
 
 export default useCirculatingSupply;

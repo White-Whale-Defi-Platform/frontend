@@ -59,7 +59,7 @@ const Dashboard: NextPage = () => {
         },
         {
           label: "Market Cap",
-          value: fromTerraAmount(marketCap, "0,0a"),
+          value: marketCap?.toLocaleString("en-US"),
           asset: "UST",
         },
         {

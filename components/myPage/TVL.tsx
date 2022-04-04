@@ -29,11 +29,6 @@ const TVL: NextPage = () => {
       value: fromTerraAmount(total, "0.00"),
     });
 
-  dataChart.push({
-    label: "Now",
-    value: fromTerraAmount(total, "0.00"),
-  });
-
   return (
     <Card h="full">
       <Flex align="baseline" justify="space-between">
