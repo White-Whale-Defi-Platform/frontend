@@ -7,6 +7,9 @@ import useContracts from "hooks/useContracts";
 import Card from "components/Card";
 import PoolItem from "components/swap/PoolItem";
 import SwapForm from "components/swap/SwapForm";
+import { HStack, Icon } from '@chakra-ui/react'
+import { BiDollarCircle } from 'react-icons/bi'
+import BuyUSTModal from "components/swap/BuyUSTModal";
 
 const Swap: NextPage = () => {
   const { whaleUstLpToken, whaleUstPair, whaleUstStaking } = useContracts();
@@ -14,10 +17,14 @@ const Swap: NextPage = () => {
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
       <Flex gridGap="24">
-        <Box flex="1">
-          <Heading color="#fff" size="lg" mb="8">
-            Swap
-          </Heading>
+        <Box flex="1" >
+          <HStack justifyContent="space-between" alignItems="stretch">
+            <Heading color="#fff" size="lg" mb="8">
+              Swap
+            </Heading>
+            <BuyUSTModal />
+             
+          </HStack>
         </Box>
         <Box flex="1" display={{ base: "none", lg: "block" }}>
           <Flex

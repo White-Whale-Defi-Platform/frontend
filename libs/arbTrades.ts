@@ -35,6 +35,7 @@ export type Token = {
     protocol?: string;
     symbol: string;
     token?: string;
+    contract_addr?:string;
 }
 
 export type Pair = {
@@ -96,7 +97,7 @@ const buildRoutes = (trades, tokens): Pair[] => {
     const pairs = trades.map(({ asset_info, dex }) => {
         const address = tokenOrNative(asset_info)
         const tokensWithNative = { ...tokens, ...nativeTokens }
-        const token = tokensWithNative[address]
+        const token = tokensWithNative[address] || asset_info.token
         const [dexName] = Object.keys(dex)
         return ({ token, dex: dexName })
     })
