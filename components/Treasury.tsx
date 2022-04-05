@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { fromTerraAmount } from "@arthuryeti/terra";
+import { fromTerraAmount, num } from "@arthuryeti/terra";
 import { Box, Flex, HStack, Text, Image, Tooltip as ChakraToolTip, Tag } from "@chakra-ui/react";
 import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import { useTreasury } from "hooks/useTreasury";
@@ -67,6 +67,8 @@ const Treasury = () => {
                         .map( token => token.label === 'WHALE-UST LP' || token.label === 'WHALE-vUST LP' ? token.valueForChart / 2 : token.valueForChart )
                         .reduce((a, b) => a + b, 0)
 
+  const toAmount = (value) => num(value).div(1000000).dp(0).toNumber().toLocaleString()
+
   return (
     <Card noPadding h="full">
       <Flex direction="column" h="full">
@@ -84,7 +86,7 @@ const Treasury = () => {
             </Text>
           </HStack>
           <SimpleStat
-            value={fromTerraAmount(treasury.totalValue)}
+            value={toAmount(treasury.totalValue)}
             asset="UST"
             fontSizeValue="2xl"
             fontSizeAsset="xl"
@@ -106,7 +108,7 @@ const Treasury = () => {
           </ChakraToolTip>
           </HStack>
             <SimpleStat
-              value={fromTerraAmount(riskFreeValue)}
+              value={toAmount(riskFreeValue)}
               asset="UST"
               fontSizeValue="2xl"
               fontSizeAsset="xl"
