@@ -7,12 +7,29 @@ import useContracts from "hooks/useContracts";
 import Card from "components/Card";
 import PoolItem from "components/swap/PoolItem";
 import SwapForm from "components/swap/SwapForm";
-import { HStack, Icon } from '@chakra-ui/react'
+import { HStack, Icon , Link} from '@chakra-ui/react'
 import { BiDollarCircle } from 'react-icons/bi'
-import BuyUSTModal from "components/swap/BuyUSTModal";
 
 const Swap: NextPage = () => {
   const { whaleUstLpToken, whaleUstPair, whaleUstStaking } = useContracts();
+
+  function handleRemoveKadoRamp(event): void {
+    if (event.data === 'ejectKadoRamp') {
+      const element = document.getElementById('kadoRampOverlay');
+      element?.parentNode?.removeChild(element);
+      window.removeEventListener('message', handleRemoveKadoRamp);
+    }
+  }
+
+  const handleButton = (e): void => {
+    console.log("here")
+    const kadoRamp = document.createElement('iframe');
+    kadoRamp.src = 'https://ramp.kado.money/global';
+    kadoRamp.id = 'kadoRampOverlay';
+    Object.assign(kadoRamp.style, { 'z-index': '2147483647', 'width': '100vw', 'height': '100vh', 'border': 'none', 'border-width': '0', 'position': 'fixed', 'top': '0', 'left': '0', 'right': '0', 'bottom': '0' , 'background-color' : 'rgb(25,25,25,0.7)'});
+    document.body.appendChild(kadoRamp);
+    window.addEventListener('message', handleRemoveKadoRamp, false);
+  }
 
   return (
     <Box mt="16" mx="auto" maxW="container.xl">
@@ -22,8 +39,13 @@ const Swap: NextPage = () => {
             <Heading color="#fff" size="lg" mb="8">
               Swap
             </Heading>
-            <BuyUSTModal />
-             
+            <Link onClick={handleButton}>
+              <Flex alignItems="center">
+                <Icon fontSize="lg" color="brand.500" as={BiDollarCircle} />
+                <Text as="span" variant="light" color="brand.500" ml="5px" fontSize="md">Buy UST</Text>
+              </Flex>
+            </Link>
+
           </HStack>
         </Box>
         <Box flex="1" display={{ base: "none", lg: "block" }}>
