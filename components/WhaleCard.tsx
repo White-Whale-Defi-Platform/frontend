@@ -59,12 +59,12 @@ const Dashboard: NextPage = () => {
         },
         {
           label: "Market Cap",
-          value: marketCap?.toLocaleString("en-US"),
+          value: marketCap?.toLocaleString(),
           asset: "UST",
         },
         {
           label: "Circulating Supply",
-          value: circSupply?.toLocaleString("en-US"),
+          value: circSupply?.toLocaleString(),
           asset: "",
         },
       ]}
