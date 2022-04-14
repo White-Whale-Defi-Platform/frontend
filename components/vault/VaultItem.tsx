@@ -94,7 +94,6 @@ const VaultItem: FC<Props> = ({ data }) => {
             <VaultItemLine label="Vault APR" value={apr} asset="%" />
             <VaultItemLine label="Total Deposits" value={totalBalanceAmount} />
             <VaultItemLine label="My Deposit" value={balanceAmount} />
-            {/* <VaultItemLine label="7 Days Arb Profit" value="50000" /> */}
           </Box>
           <HStack mt="6">
             <WithdrawModal vault={vault} />

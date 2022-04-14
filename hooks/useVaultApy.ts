@@ -10,7 +10,6 @@ import useContracts from "hooks/useContracts";
 const query = gql`
   query {
     vault{
-      apy
       apr
     }
   }
@@ -38,18 +37,10 @@ export const useVaultApy = () => {
   }, [anchor])
 
 
-  // const { data } = useQuery("vaultApr", () => {
-  //   return request(GRAPHQL_URL, query);
-  // });
+  const { data } = useQuery("vaultApr", () => request(GRAPHQL_URL, query));
+  const { apr } = useMemo(() => ({apr: data?.vault.apr || "0"}), [data])
 
-  // const { apr, apy } = useMemo(() => {
-  //   return {
-  //     apr: data?.vault.apr || "0.1",
-  //     apy: data?.vault.apy
-  //   }
-  // }, [data])
-
-  return ["0.1" , apy]
+  return [apr , apy]
 };
 
 export default useVaultApy;
