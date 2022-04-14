@@ -119,7 +119,7 @@ export const getTrdes = (txs = [], tokens): ArbTrades[] => {
         const { logs } = trade
         const [msg] = trade.tx.value.msg
         const { contract } = msg.value || {}
-        const { trades } = msg.value.execute_msg.initiate_arbitrage
+        const { trades = [] } = msg.value.execute_msg.initiate_arbitrage || {}
         const arbPairs: Pair[] = buildRoutes(trades, tokens)
 
         logs.forEach(({ events }: any) => {
