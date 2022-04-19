@@ -18,7 +18,7 @@ import Polls from "components/gov/Polls";
 
 const Gov: NextPage = () => {
   return (
-    <Box mt="16" mx="auto" maxW="container.xl" paddingBottom="100px">
+    <Box mt="16" mx="auto" maxW="container.xl" >
       <Heading color="#fff" size="lg" mb="10">
         Governance
       </Heading>
