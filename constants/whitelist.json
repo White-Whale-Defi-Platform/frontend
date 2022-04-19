@@ -31,6 +31,12 @@
         "token": "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
         "icon": "/whale.svg"
       },
+      "terra1hg3tr0gx2jfaw38m80s83c7khr4wgfvzyh5uak": {
+        "protocol": "WhiteWhale",
+        "symbol": "WHALE-vUST LP",
+        "token": "terra1hg3tr0gx2jfaw38m80s83c7khr4wgfvzyh5uak",
+        "icon": "/whale.svg"
+      },
       "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg": {
         "protocol": "White Whale vUST",
         "symbol": "vUST",
@@ -87,6 +93,12 @@
         "protocol": "WhiteWhale",
         "symbol": "WHALE-UST LP",
         "token": "terra1zuspxvj76ngktnjuawmckpsmynwuvusdnq0pxd",
+        "icon": "/whale.svg"
+      },
+      "terra1t9kutq98e5k68suhuy37ezynr82xzk9hly630h": {
+        "protocol": "WhiteWhale",
+        "symbol": "WHALE-vUST LP",
+        "token": "terra1t9kutq98e5k68suhuy37ezynr82xzk9hly630h",
         "icon": "/whale.svg"
       },
       "terra1z4hyc87tuln35nu465d5equke4nf7xqepx7rtg": {
