@@ -23,7 +23,7 @@ const Poll: FC<Props> = ({ pollId }) => {
   }
 
   return (
-    <Box mt="16" mx="auto" maxW="container.xl" paddingBottom="100px">
+    <Box mt="16" mx="auto" maxW="container.xl" >
       <Box color="brand.500" mb="8">
         <Link href="/gov">
           <a>

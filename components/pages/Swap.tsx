@@ -11,7 +11,7 @@ import { HStack, Icon , Link} from '@chakra-ui/react'
 import { BiDollarCircle } from 'react-icons/bi'
 
 const Swap: NextPage = () => {
-  const { whaleUstLpToken, whaleUstPair, whaleUstStaking } = useContracts();
+  const { whaleUstLpToken, whaleUstPair, whalevUSTPair, whalevUSTLpToken } = useContracts();
 
   function handleRemoveKadoRamp(event): void {
     if (event.data === 'ejectKadoRamp') {
@@ -77,6 +77,14 @@ const Swap: NextPage = () => {
             asset="Terraswap"
             pairContract={whaleUstPair}
             lpTokenContract={whaleUstLpToken}
+          />
+        </GridItem>
+        <GridItem colSpan={{ base: 12, lg: 4 }}>
+          <PoolItem
+            label="WHALE-vUST LP"
+            asset="Terraswap"
+            pairContract={whalevUSTPair}
+            lpTokenContract={whalevUSTLpToken}
           />
         </GridItem>
       </Grid>

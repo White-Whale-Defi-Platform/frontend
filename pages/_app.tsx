@@ -23,6 +23,7 @@ import { TerraswapProvider } from "@arthuryeti/terraswap";
 import Layout from "components/Layout";
 import whitelist from "constants/whitelist.json";
 import theme from "../theme";
+import Footer from "components/Footer";
 
 dayjs.extend(timezone);
 dayjs.extend(utc);
@@ -53,6 +54,7 @@ const MyApp = ({
                 <CSSReset />
                 <Layout>
                   <Component {...pageProps} />
+                  <Footer />
                 </Layout>
               </TerraswapProvider>
             </TerraWebappProvider>
