@@ -7,6 +7,7 @@ import {
   NumberInputField,
   InputRightAddon,
   InputGroup,
+  Show
 } from "@chakra-ui/react";
 import { num } from "@arthuryeti/terra";
 
@@ -47,13 +48,15 @@ const SwapFormSlippage: FC<Props> = forwardRef(
         >
           1%
         </Button>
-        <Button
-          type="button"
-          isActive={isSelected("0.03")}
-          onClick={() => onChange("0.03")}
-        >
-          3%
-        </Button>
+        <Show above='sm'>
+          <Button
+            type="button"
+            isActive={isSelected("0.03")}
+            onClick={() => onChange("0.03")}
+          >
+            3%
+          </Button>
+        </Show>
         <Button
           type="button"
           isActive={isSelected("0.05")}
