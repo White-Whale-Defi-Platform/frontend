@@ -121,6 +121,7 @@ export const getTrdes = (txs = [], tokens): ArbTrades[] => {
         const { contract } = msg.value || {}
         const { trades = [] } = msg.value.execute_msg.initiate_arbitrage || {}
         const arbPairs: Pair[] = buildRoutes(trades, tokens)
+        if(!trades.length) return
 
         logs.forEach(({ events }: any) => {
             const wasm = events.filter(({ type }: any) => type === 'wasm')
