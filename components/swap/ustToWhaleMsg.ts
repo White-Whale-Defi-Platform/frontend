@@ -1,6 +1,6 @@
 import { toBase64 } from "@arthuryeti/terra";
 import { Coin, MsgExecuteContract } from "@terra-money/terra.js";
-import { num, useAddress, useTransaction } from "@arthuryeti/terra";
+import { num, useAddress, useTransaction } from "@arthuryeti/terra"; 
 
 type Params = {
     sender: string;
@@ -29,7 +29,7 @@ const ustToWhaleMsg = ({ sender, asset, token1, amount1, vUstAmount, slippage, s
         ),
         new MsgExecuteContract(sender, ustVaultLpToken, {
             send: {
-                amount: num(vUstAmount).minus(simulated.spread).toString(),
+                amount: vUstAmount,
                 contract: vUSTPool,
                 msg: toBase64({
                     swap: {

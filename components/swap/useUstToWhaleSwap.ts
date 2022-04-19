@@ -38,7 +38,7 @@ export const useUstToWhaleSwap = ({
     if(!amount1)
       return "0"
 
-    return num(amount1).div(vUstValue).minus(2).dp(0).toString()
+    return num(amount1).div(vUstValue).minus(10000).dp(0).toString()
   }, [vUstValue, amount1])
 
 
