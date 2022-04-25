@@ -47,11 +47,11 @@ const Dashboard: NextPage = () => {
 
 
       <Grid templateColumns="repeat(12, 1fr)" gap={{ base: 2, md: 12 }}>
-        <GridItem colSpan={{ base: 12, lg: 5 }}>
+        <GridItem colSpan={{ base: 12, lg: 6 }}>
           <Treasury />
         </GridItem>
 
-        <GridItem colSpan={{ base: 12, lg: 7 }}>
+        <GridItem colSpan={{ base: 12, lg: 6 }}>
           <GridItem rowSpan={{ base: 3, lg: 3 }}>
             <WhaleCard />
           </GridItem>

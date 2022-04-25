@@ -35,7 +35,7 @@ const LineGraphCard: NextPage<Props> = ({ cells, data, vUSTPrice }) => {
     }
 
     return (
-      <Center h="16" px="12" display={{ base: "none", lg: "block" }}>
+      <Center h="16" px="7" display={{ base: "none", lg: "block" }}>
         <Divider
           orientation="vertical"
           borderColor="rgba(255, 255, 255, 0.1)"

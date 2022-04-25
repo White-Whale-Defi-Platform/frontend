@@ -17,6 +17,11 @@ type Contracts = {
   whalevUSTLpToken:string;
   gov: string;
   treasury: string;
+  lunaBlunaPool: string;
+  astroGenerator: string;
+  astroBlunaLunaPair: string;
+  loopBlunaUstPair: string;
+  astroToken: string;
   communityFund: string;
   warchest: string;
   anchorOverseer: string;
@@ -33,12 +38,16 @@ const defaultContracts: { [key: string]: any } = {
     wallet: "terra1vjws6sa429u48dlw8s6mycr62nalyhakxc4v7v",
     aUstToken: "terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu",
     treasury: "terra1cnt2dls25u40wqyjgq72stuyjrwn0u5r6m5sm5",
+    lunaBlunaPool :"terra1htw7hm40ch0hacm8qpgd24sus4h0tq3hsseatl",
+    astroGenerator : "terra1zgrx9jjqrfye8swykfgmd6hpde60j0nszzupp9",
+    astroBlunaLunaPair : "terra1j66jatn3k50hjtg2xemnjm8s7y8dws9xqa5y8w",
+    lunaUstPair: "terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552",
+    loopBlunaUstPair: "terra18r6rdnkgrg74zew3d8l9nhk0m4xanpeukw3e20",
     whaleToken: "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz",
     ustVault: "terra1ec3r2esp9cqekqqvn0wd6nwrjslnwxm7fh8egy",
     ustVaultLpToken: "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg",
     vUSTPool: "terra12arl49w7t4xpq7krtv43t3dg6g8kn2xxyaav56",
     moneyMarket: "terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s",
-    lunaUstPair: "terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552",
     whaleUstPair: "terra1v4kpj65uq63m4x0mqzntzm27ecpactt42nyp5c",
     whaleUstLpToken: "terra17pqpurglgfqnvkhypask28c3llnf69cstaquke",
     whalevUSTPair:"terra12arl49w7t4xpq7krtv43t3dg6g8kn2xxyaav56",
@@ -46,6 +55,7 @@ const defaultContracts: { [key: string]: any } = {
     gov: "terra15qv7cr7t2s4cfskq82mskq0d397hadflrazuj7",
     anchorOverseer: "terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8",
     arbProfitTracker : "terra13fwsh3j8gug52y5x3tmguj3fwhr6c7nxm9kl06",
+    astroToken: "terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3",
     communityFund: "",
     warchest: "",
   },
