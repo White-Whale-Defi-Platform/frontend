@@ -22,7 +22,6 @@ const Swap: NextPage = () => {
   }
 
   const handleButton = (e): void => {
-    console.log("here")
     const kadoRamp = document.createElement('iframe');
     kadoRamp.src = 'https://ramp.kado.money/global';
     kadoRamp.id = 'kadoRampOverlay';
