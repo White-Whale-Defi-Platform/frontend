@@ -30,7 +30,7 @@ const Vaults = () => {
   ];
 
   return (
-    <Box mt="16" mx="auto" maxW="container.xl" paddingBottom="100px">
+    <Box mt="16" mx="auto" maxW="container.xl" >
       <Box>
         <Heading color="#fff" size="lg" mb="10">
           Arb Vaults

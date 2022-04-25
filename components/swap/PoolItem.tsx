@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { Box, HStack, Flex, Text, Image } from "@chakra-ui/react";
 import { fromTerraAmount } from "@arthuryeti/terra";
 
@@ -8,6 +8,8 @@ import Card from "components/Card";
 import ProvideModal from "components/pool/ProvideModal";
 import StakeModal from "components/pool/StakeModal";
 import ClaimPoolRewardModal from "components/pool/ClaimPoolRewardModal";
+import useContracts from "hooks/useContracts";
+
 
 type Props = {
   label: string;
@@ -22,12 +24,22 @@ const PoolItem: FC<Props> = ({
   pairContract,
   lpTokenContract,
 }) => {
+  const { whalevUSTLpToken } = useContracts();
+  const ustLogo = useMemo(() => {
+
+    if (lpTokenContract === whalevUSTLpToken)
+      return "/vustlogo.webp"
+    else
+      return "/ust.png"
+
+  }, [lpTokenContract])
+
   const pool = usePool({
     pairContract,
     lpTokenContract,
   });
 
-  const apr = usePoolApr();
+  const apr = usePoolApr(pairContract);
 
   if (pool == null) {
     return null;
@@ -60,7 +72,7 @@ const PoolItem: FC<Props> = ({
               borderRadius="full"
               p="3"
             >
-              <Image src="/ust.png" alt="ust" boxSize="2.5rem" />
+              <Image src={ustLogo} alt="ust" boxSize="2.5rem" />
             </Box>
           </HStack>
 

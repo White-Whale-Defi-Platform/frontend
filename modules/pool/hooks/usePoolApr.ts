@@ -5,16 +5,16 @@ import { useQuery } from "react-query";
 import { GRAPHQL_URL } from "constants/constants";
 
 const query = gql`
-  {
-    pool {
-      apr
+  query ($pairContract: String!) {
+      pool(pairContract: $pairContract ) { 
+        apr
     }
   }
 `;
 
-export const usePoolApr = () => {
-  const { data } = useQuery("pool-apr", () => {
-    return request(GRAPHQL_URL, query);
+export const usePoolApr = (pairContract) => {
+  const { data } = useQuery(`pool-apr-${pairContract}`, () => {
+    return request(GRAPHQL_URL, query, { pairContract });
   });
 
   return useMemo(() => {
