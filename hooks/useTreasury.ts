@@ -136,7 +136,7 @@ export const useTreasury = () => {
   const poolToUst = (pool, share) => {
     const { uusd, other } = getAmountsInPool(pool);
     const price = num(uusd).div(other).toFixed();
-    return num(share).times(price).div(ONE_TOKEN).toNumber()
+    return num(share).times(price).toNumber()
   }
 
 
@@ -249,7 +249,7 @@ export const useTreasury = () => {
       {
         asset: "bLUNA-LUNA LP",
         value: bLunaLunaLPnUST,
-        color: "#6AD087",
+        color: "#FFBF00",
       },
       {
         asset: "vUST",
@@ -279,7 +279,7 @@ export const useTreasury = () => {
     ];
     // TODO: This is really poopy and needs refactoring 
     return {
-      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(num(vUSTdashUSTvalue).times(ONE_TOKEN)).toNumber(),
+      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(bLunaLunaLPnUST).plus(num(vUSTdashUSTvalue).times(ONE_TOKEN)).toNumber(),
       assets,
       isLoading: isLoading
     };
