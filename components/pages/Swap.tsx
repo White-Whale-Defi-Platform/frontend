@@ -59,6 +59,7 @@ const Swap: NextPage = () => {
           <Flex
             flexDir={{ base: "column", sm: "column", md: "row" }}
             align="baseline"
+            justifyContent="center"
           >
             <Heading color="#fff" size="lg" pr={{ md: "10px" }} mb="8">
               Provide
@@ -68,18 +69,21 @@ const Swap: NextPage = () => {
           <Grid
             templateColumns="repeat(12, 1fr)"
             gridAutoRows={{ lg: "1fr" }}
-            gap={{ base: 4, lg: 12 }}
+            gap={{ base: 6, lg: 12 }}
+            width="fit-content"
+            margin="auto"
           >
 
-            <GridItem colSpan={{ base: 12, lg: 4 }} mb="8">
+            <GridItem colSpan={{ base: 12, lg: 6 }} mb="8" minWidth={320}>
               <PoolItem
                 label="WHALE-UST LP"
                 asset="Terraswap"
                 pairContract={whaleUstPair}
                 lpTokenContract={whaleUstLpToken}
+                
               />
             </GridItem>
-            <GridItem colSpan={{ base: 12, lg: 4 }} mb="8">
+            <GridItem colSpan={{ base: 12, lg: 6 }} mb="8" minWidth={320}>
               <PoolItem
                 label="WHALE-vUST LP"
                 asset="Terraswap"
