@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { num, useTerraWebapp} from "@arthuryeti/terra";
+import { num, useTerraWebapp } from "@arthuryeti/terra";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
 import usevUSTLPHolding from "./usevUSTLPHolding";
@@ -63,8 +63,7 @@ export const useTreasury = () => {
   const { client, network } = useTerraWebapp();
   const whalePrice = useWhalePrice();
   const vUSTPrice = usevUSTPrice();
-  const { astroToken, lunaBlunaPool, treasury, whaleUstLpToken, ustVaultLpToken, whalevUSTLpToken, whalevUSTPair, whaleToken, aUstToken, moneyMarket, astroGenerator, astroBlunaLunaPair, lunaUstPair, loopBlunaUstPair  } =
-    useContracts();
+  const { astroToken, lunaBlunaPool, treasury, whaleUstLpToken, ustVaultLpToken, whalevUSTLpToken, whalevUSTPair, whaleToken, aUstToken, moneyMarket, astroGenerator, astroBlunaLunaPair, lunaUstPair, loopBlunaUstPair } = useContracts();
   const assets = ["uusd", "uluna", whaleToken, whaleUstLpToken];
   const query = createQuery(treasury, assets, aUstToken, moneyMarket);
 
@@ -157,12 +156,19 @@ export const useTreasury = () => {
     }
   );
 
-  const { data: astro } = useQuery("astroBalance",
+  const { data: astroBalance } = useQuery("astroBalance",
     () => {
-      return client.wasm.contractQuery<string>(astroToken, {
-        balance: { address: treasury },
-      });
+      return client.wasm.contractQuery<any>(astroToken, {
+        balance: { address: treasury }
+      })
     }
+  );
+
+  const { data: astroPrice } = useQuery("astroPrice",
+    async () => {
+      const response = await fetch("https://api.extraterrestrial.money/v1/api/prices?symbol=ASTRO")
+      return await response.json()
+    }, { select: (data) => data?.prices?.ASTRO?.price }
   );
 
   const { data: vUSTLPBalance } = useQuery("vUSTLPBalance",
@@ -199,8 +205,6 @@ export const useTreasury = () => {
   );
 
 
-
-
   const bLunaLunaLPnUST = useMemo(() => {
     if (!lunaUstPool || !blunaLunaLPShare || !blunaUstPool) return null;
 
@@ -211,6 +215,14 @@ export const useTreasury = () => {
     return num(lunaInUst).plus(blunaInUst).toFixed();
 
   }, [lunaUstPool, blunaLunaLPShare, blunaUstPool])
+
+  const astro = useMemo(() => {
+    if (!astroBalance || !astroPrice) return
+
+    return num(astroBalance?.balance).times(astroPrice).div(ONE_TOKEN).toNumber()
+
+  }, [astroBalance, astroPrice])
+
 
 
   const treasuryAssets = useMemo(() => {
@@ -271,19 +283,19 @@ export const useTreasury = () => {
         value: num(vUSTdashUSTvalue).times(ONE_TOKEN) || 0,
         color: "#279145",
       },
-      // {
-      //   asset: "ASTRO",
-      //   value: astro,
-      //   color: "#504DEF",
-      // },
+      {
+        asset: "ASTRO",
+        value: num(astro).times(ONE_TOKEN),
+        color: "#504DEF",
+      },
     ];
     // TODO: This is really poopy and needs refactoring 
     return {
-      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(bLunaLunaLPnUST).plus(num(vUSTdashUSTvalue).times(ONE_TOKEN)).toNumber(),
+      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(bLunaLunaLPnUST).plus(num(vUSTdashUSTvalue).plus(astro).times(ONE_TOKEN)).toNumber(),
       assets,
       isLoading: isLoading
     };
-  }, [totalValue, result, whaleToken, isLoading, whaleUstLpToken, bLunaLunaLPnUST]);
+  }, [totalValue, result, whaleToken, isLoading, whaleUstLpToken, bLunaLunaLPnUST, astro]);
 
   return treasuryAssets
 };

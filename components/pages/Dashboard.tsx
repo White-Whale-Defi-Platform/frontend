@@ -7,6 +7,7 @@ import { usevUSTPrice } from "hooks/usevUSTPrice";
 import VUSTExchangeIcon from "../../components/icons/vUSTExchangeIcon";
 import USTExchangeIcon from "../../components/icons/USTExchangeIcon";
 import { useTokenInfo } from "@arthuryeti/terraswap";
+import BuyBackCard from "components/BuyBackCard";
 
 import {
   Tag,
@@ -52,9 +53,12 @@ const Dashboard: NextPage = () => {
         </GridItem>
 
         <GridItem colSpan={{ base: 12, lg: 6 }}>
-          <GridItem rowSpan={{ base: 3, lg: 3 }}>
+          {/* <GridItem rowSpan={{ base: 3, lg: 3 }}> */}
             <WhaleCard />
-          </GridItem>
+          {/* </GridItem> */}
+        </GridItem>
+        <GridItem colSpan={{ base: 12, lg: 6 }}>
+            <BuyBackCard />
         </GridItem>
       </Grid>
     </Box>

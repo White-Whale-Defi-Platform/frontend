@@ -106,7 +106,14 @@ const SocialMedia = () => (
 
 const Footer: FC = () => {
   return (
-    <Flex direction="column" paddingY="12" paddingX={{ base: "unset", md: "20" }}>
+    <Box
+      w="full"
+      maxW="container.xl"
+      margin="0 auto"
+      mt={{ base: "16", md: "32" }}
+      px={{ base: "4" }}
+    >
+    <Flex direction="column" paddingY="12" >
       <Flex direction={{ base: "column", md: "row" }}
         paddingY="4"
         borderBottom="1px solid"
@@ -150,6 +157,7 @@ const Footer: FC = () => {
 
 
     </Flex>
+    </Box>
   );
 };
 
