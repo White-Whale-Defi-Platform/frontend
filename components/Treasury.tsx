@@ -51,7 +51,7 @@ const Treasury = () => {
         valueForChart: number(asset.value),
         asset: "UST",
       };
-    });
+    }).filter(asset => parseFloat(asset?.value) > 0)
   }, [treasury]);
 
   const formattedData = {
