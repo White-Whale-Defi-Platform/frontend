@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { useQuery , useQueries} from "react-query";
 import { num, useTerraWebapp } from "@arthuryeti/terra";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
@@ -163,6 +163,13 @@ export const useTreasury = () => {
       })
     }
   );
+  const { data: xastroBalance } = useQuery("xastroBalance",
+    () => {
+      return client.wasm.contractQuery<any>("terra14lpnyzc9z4g3ugr4lhm8s4nle0tq8vcltkhzh7", {
+        balance: { address: treasury }
+      })
+    }
+  );
 
   const { data: astroPrice } = useQuery("astroPrice",
     async () => {
@@ -225,6 +232,31 @@ export const useTreasury = () => {
 
 
 
+  const [xAstroShare, xAstroDeposit] = useQueries([
+     {
+      queryKey: ['xAstro-totalShare'],
+      queryFn: () => client.wasm.contractQuery<any>("terra1f68wt2ch3cx2g62dxtc8v68mkdh5wchdgdjwz7", {
+        total_shares: {},
+      })
+    },
+     {
+      queryKey: ['xAstro-totalDeposit'],
+      queryFn: () => client.wasm.contractQuery<any>("terra1f68wt2ch3cx2g62dxtc8v68mkdh5wchdgdjwz7", {
+        total_deposit: {},
+      })
+    }
+    
+  ])
+
+  const xastro = useMemo(() => {
+    if (!xastroBalance || !xAstroShare || !xAstroDeposit || !astroPrice) return
+    
+    const xAstroPrice = num(xAstroDeposit?.data).div(xAstroShare?.data).toNumber()
+    return num(xastroBalance.balance).times(astroPrice).times(xAstroPrice).div(ONE_TOKEN).toNumber()
+  }, [xastroBalance, xAstroShare, xAstroDeposit, astroPrice])
+
+
+
   const treasuryAssets = useMemo(() => {
     if (result == null || isLoading || vUSTLPPool == null || vUSTLPPool == undefined || vUSTLPBalance == undefined || vUstBalance == undefined) {
       return {
@@ -265,12 +297,12 @@ export const useTreasury = () => {
       },
       {
         asset: "vUST",
-        value: num((vUstBalance as any).balance).times(vUSTPrice) || 0,
+        value: num((vUstBalance as any).balance).times(vUSTPrice).toNumber(),
         color: "#279145",
       },
       {
         asset: "WHALE-vUST LP",
-        value: num(whalevUSTValue).times(2) || 0,
+        value: num(whalevUSTValue).times(2).toNumber(),
         color: "#0C5557",
       },
       {
@@ -280,18 +312,23 @@ export const useTreasury = () => {
       },
       {
         asset: "vUST-UST LP",
-        value: num(vUSTdashUSTvalue).times(ONE_TOKEN) || 0,
+        value: num(vUSTdashUSTvalue).times(ONE_TOKEN).toNumber(),
         color: "#279145",
       },
       {
         asset: "ASTRO",
-        value: num(astro).times(ONE_TOKEN),
+        value: num(astro).times(ONE_TOKEN).toNumber(),
         color: "#504DEF",
+      },
+      {
+        asset: "xASTRO",
+        value: num(xastro).times(ONE_TOKEN).toNumber(),
+        color: "#221eeb",
       },
     ];
     // TODO: This is really poopy and needs refactoring 
     return {
-      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(bLunaLunaLPnUST).plus(num(vUSTdashUSTvalue).plus(astro).times(ONE_TOKEN)).toNumber(),
+      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(bLunaLunaLPnUST).plus(num(vUSTdashUSTvalue).plus(xastro).plus(astro).times(ONE_TOKEN)).toNumber(),
       assets,
       isLoading: isLoading
     };
