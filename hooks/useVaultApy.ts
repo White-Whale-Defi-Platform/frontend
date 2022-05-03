@@ -17,11 +17,11 @@ const query = gql`
 export const useVaultApy = () => {
   const { client } = useTerraWebapp();
 
-  const { data: apy }: any = useQuery("anchor", async () => {
+  const { data: apy = 0 }: any = useQuery("anchor", async () => {
     const addressProvider = new AddressProviderFromJson(columbus5)
     const anchor = new Anchor(client, addressProvider)
     const anchorApy = await anchor.earn.getAPY({ market : MARKET_DENOMS.UUSD })
-    return num(anchorApy).times(100).dp(2).toNumber()
+    return num(anchorApy).times(100).dp(2).toNumber() 
   });
 
   const { data } = useQuery("vaultApr", () => request(GRAPHQL_URL, query));
