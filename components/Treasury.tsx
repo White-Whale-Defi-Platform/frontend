@@ -50,6 +50,7 @@ const Treasury = () => {
         value: fromTerraAmount(asset.value),
         valueForChart: number(asset.value),
         asset: "UST",
+        tooltip : asset?.tooltip
       };
     }).filter(asset => parseFloat(asset?.value) > 0)
   }, [treasury]);
