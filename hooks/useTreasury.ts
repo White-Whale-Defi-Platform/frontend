@@ -273,7 +273,7 @@ export const useTreasury = () => {
     const aUstValue = num(result.balance.contractQuery.balance)
       .times(exchangeRate)
       .toNumber();
-
+    const retro = 335000
     const assets = [
       {
         asset: "WHALE",
@@ -325,10 +325,27 @@ export const useTreasury = () => {
         value: num(xastro).times(ONE_TOKEN).toNumber(),
         color: "#221eeb",
       },
+      {
+        asset: "RETRO",
+        value: num(retro).times(ONE_TOKEN).toNumber(),
+        color: "#56549E",
+        tooltip : "Vested"
+      },
     ];
     // TODO: This is really poopy and needs refactoring 
     return {
-      totalValue: num(totalValue).plus(aUstValue).plus(num((vUstBalance as any).balance).times(vUSTPrice)).plus(num(whalevUSTValue).times(2)).plus(bLunaLunaLPnUST).plus(num(vUSTdashUSTvalue).plus(xastro).plus(astro).times(ONE_TOKEN)).toNumber(),
+      totalValue: num(totalValue)
+        .plus(aUstValue)
+        .plus(num((vUstBalance as any).balance)
+        .times(vUSTPrice))
+        .plus(num(whalevUSTValue).times(2))
+        .plus(bLunaLunaLPnUST)
+        .plus(num(vUSTdashUSTvalue)
+        .plus(xastro)
+        .plus(astro)
+        .plus(retro)
+        .times(ONE_TOKEN))
+        .toNumber(),
       assets,
       isLoading: isLoading
     };
