@@ -252,7 +252,8 @@ export const useTreasury = () => {
     if (!xastroBalance || !xAstroShare || !xAstroDeposit || !astroPrice) return
     
     const xAstroPrice = num(xAstroDeposit?.data).div(xAstroShare?.data).toNumber()
-    return num(xastroBalance.balance).times(astroPrice).times(xAstroPrice).div(ONE_TOKEN).toNumber()
+    // return num(xastroBalance.balance).times(astroPrice).times(xAstroPrice).div(ONE_TOKEN).toNumber()
+    return num(1022825.348906).times(astroPrice).times(xAstroPrice).div(ONE_TOKEN).toNumber()
   }, [xastroBalance, xAstroShare, xAstroDeposit, astroPrice])
 
 
