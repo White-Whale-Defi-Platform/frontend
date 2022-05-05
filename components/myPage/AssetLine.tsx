@@ -14,8 +14,10 @@ import {
   Divider,
   Tag,
   Circle,
+  Tooltip,
 } from "@chakra-ui/react";
 import { fromTerraAmount } from "@arthuryeti/terra";
+import { InfoOutlineIcon } from '@chakra-ui/icons'
 
 const graphData = "1";
 
@@ -29,6 +31,14 @@ const AssetLine: FC<Props> = ({ data }) => {
       <HStack spacing="2">
         <Circle size="18" bgColor={data.color} />
         <Text whiteSpace="nowrap">{data.label}</Text>
+        {
+          data?.tooltip && (
+            <Tooltip label={data.tooltip} maxW="160px" bg="blackAlpha.900" fontSize="xs" color="brand.500" borderRadius={10} >
+              <InfoOutlineIcon ml="2" mb="1" color="brand.500" fontSize="xs" />
+            </Tooltip>
+          )
+        }
+
       </HStack>
       <Text color="#8b8b8c" fontWeight="700">
         {data.value} {data.asset}
