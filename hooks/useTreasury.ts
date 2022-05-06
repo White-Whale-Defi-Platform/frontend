@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { useMemo } from "react";
-import { useQuery , useQueries} from "react-query";
+import { useQuery, useQueries } from "react-query";
 import { num, useTerraWebapp } from "@arthuryeti/terra";
 import { useHive } from "hooks/useHive";
 import useContracts from "hooks/useContracts";
@@ -186,6 +186,21 @@ export const useTreasury = () => {
     }
   );
 
+  const { data: apolloBalance } = useQuery("apolloBalance",
+    () => {
+      return client.wasm.contractQuery<any>("terra100yeqvww74h4yaejj6h733thgcafdaukjtw397", {
+        balance: { address: treasury },
+      });
+    }
+  );
+
+  const { data: apolloPrice } = useQuery("apolloPrice",
+    async () => {
+      const response = await fetch("https://api.extraterrestrial.money/v1/api/prices?symbol=APOLLO")
+      return await response.json()
+    }, { select: (data) => data?.prices?.APOLLO?.price }
+  );
+
   const { data: vUSTLPPool } = useQuery("vUSTLPPool",
     () => {
       return client.wasm.contractQuery<Pool>(whalevUSTPair, {
@@ -230,27 +245,34 @@ export const useTreasury = () => {
 
   }, [astroBalance, astroPrice])
 
+  const apollo = useMemo(() => {
+    if (!apolloBalance || !apolloPrice) return
+
+    return num(apolloBalance?.balance).times(apolloPrice).div(ONE_TOKEN).toNumber()
+
+  }, [apolloBalance, apolloPrice])
+
 
 
   const [xAstroShare, xAstroDeposit] = useQueries([
-     {
+    {
       queryKey: ['xAstro-totalShare'],
       queryFn: () => client.wasm.contractQuery<any>("terra1f68wt2ch3cx2g62dxtc8v68mkdh5wchdgdjwz7", {
         total_shares: {},
       })
     },
-     {
+    {
       queryKey: ['xAstro-totalDeposit'],
       queryFn: () => client.wasm.contractQuery<any>("terra1f68wt2ch3cx2g62dxtc8v68mkdh5wchdgdjwz7", {
         total_deposit: {},
       })
     }
-    
+
   ])
 
   const xastro = useMemo(() => {
     if (!xastroBalance || !xAstroShare || !xAstroDeposit || !astroPrice) return
-    
+
     const xAstroPrice = num(xAstroDeposit?.data).div(xAstroShare?.data).toNumber()
     // return num(xastroBalance.balance).times(astroPrice).times(xAstroPrice).div(ONE_TOKEN).toNumber()
     return num(1022825348906).times(astroPrice).times(xAstroPrice).div(ONE_TOKEN).toNumber()
@@ -330,7 +352,12 @@ export const useTreasury = () => {
         asset: "RETRO",
         value: num(retro).times(ONE_TOKEN).toNumber(),
         color: "#56549E",
-        tooltip : "Vested"
+        tooltip: "Vested"
+      },
+      {
+        asset: "APOLLO",
+        value: num(apollo).times(ONE_TOKEN).toNumber(),
+        color: "#FC7C20"
       },
     ];
     // TODO: This is really poopy and needs refactoring 
@@ -338,14 +365,15 @@ export const useTreasury = () => {
       totalValue: num(totalValue)
         .plus(aUstValue)
         .plus(num((vUstBalance as any).balance)
-        .times(vUSTPrice))
+          .times(vUSTPrice))
         .plus(num(whalevUSTValue).times(2))
         .plus(bLunaLunaLPnUST)
         .plus(num(vUSTdashUSTvalue)
-        .plus(xastro)
-        .plus(astro)
-        .plus(retro)
-        .times(ONE_TOKEN))
+          .plus(xastro)
+          .plus(astro)
+          .plus(retro)
+          .plus(apollo)
+          .times(ONE_TOKEN))
         .toNumber(),
       assets,
       isLoading: isLoading
