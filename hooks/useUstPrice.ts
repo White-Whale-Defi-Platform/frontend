@@ -31,7 +31,7 @@ export const useUstPrice = () => {
 
     const lunaInUst = Number(uusd) / Number(other);
 
-    return (lunaInUst / Number(lunaInUsd)).toFixed(4);
+    return (Number(lunaInUsd) / lunaInUst).toFixed(4);
   }, [exchangeRate, pool]);
 };
 
