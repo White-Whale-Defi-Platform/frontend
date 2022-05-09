@@ -42,6 +42,7 @@ jobs:
           push: true
           build-args: |
             NEXT_PUBLIC_TESTNET_GRAPHQL_URL=https://api.whitewhale.money/graphql
+            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
       - uses: actions/checkout@v2
         with:
           repository: 'White-Whale-Defi-Platform/tf-infra-prod-apps'

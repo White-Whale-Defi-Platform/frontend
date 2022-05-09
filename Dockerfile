@@ -1,8 +1,10 @@
 FROM node:16-alpine3.15 AS builder
 
 ARG NEXT_PUBLIC_TESTNET_GRAPHQL_URL
+ARG SENTRY_DSN
 
 ENV NEXT_PUBLIC_TESTNET_GRAPHQL_URL ${NEXT_PUBLIC_TESTNET_GRAPHQL_URL}
+ENV SENTRY_DSN ${SENTRY_DSN}
 
 RUN apk add --no-cache libc6-compat python3 make gcc musl-dev g++
 
