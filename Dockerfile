@@ -26,9 +26,9 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
-RUN addgroup -g 1001 -S $APP_GROUP
-RUN adduser -S $APP_USER  -u 1001
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl && \ 
+    addgroup -g 1001 -S $APP_GROUP && \
+    adduser -S $APP_USER  -u 1001
 
 COPY .docker/cache.sh /cloudflare/cache.sh
 COPY --from=builder /app/public ./public
