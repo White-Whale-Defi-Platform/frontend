@@ -19,21 +19,25 @@ RUN npm run build && \
 
 FROM node:16-alpine3.15
 
+ARG APP_USER=nextjs
+ARG APP_GROUP=nodejs
+
 WORKDIR /app
 
 ENV NODE_ENV production
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN addgroup -g 1001 -S $APP_GROUP
+RUN adduser -S $APP_USER  -u 1001
 RUN apk add --no-cache curl
 
 COPY .docker/cache.sh /cloudflare/cache.sh
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=$APP_USER:$APP_GROUP /app/.next ./.next
+COPY --from=builder --chown=$APP_USER:$APP_GROUP /app/health_check.js /app/health_check.js
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-USER nextjs
+USER $APP_USER 
 
 EXPOSE 3000
 
