@@ -26,6 +26,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
+# remove curl after prod health-checks update 
 RUN apk add --no-cache curl && \ 
     addgroup -g 1001 -S $APP_GROUP && \
     adduser -S $APP_USER  -u 1001
