@@ -1,0 +1,19 @@
+---
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    target-branch: "develop"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "White-Whale-Defi-Platform/sysdogs"
+      
+  - package-ecosystem: "github-actions"
+    target-branch: "develop"
+    directory: "/"
+    schedule:
+     interval: "daily"
+    reviewers:
+      - "White-Whale-Defi-Platform/sysdogs"
