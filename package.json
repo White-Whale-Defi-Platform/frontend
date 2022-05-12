@@ -30,7 +30,7 @@
     "chart.js": "^3.6.2",
     "dayjs": "^1.10.7",
     "framer-motion": "^5.4.5",
-    "graphql-request": "^3.7.0",
+    "graphql-request": "^4.2.0",
     "next": "^12.0.7",
     "numeral": "^2.0.6",
     "ramda": "^0.27.1",
