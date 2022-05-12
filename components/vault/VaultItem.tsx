@@ -81,11 +81,12 @@ const VaultItem: FC<Props> = ({ data }) => {
                 {data.name}
               </Text>
             </HStack>
-            <Text color="brand.500" fontSize="2xl" fontWeight="bold">
+            {/* <Text color="brand.500" fontSize="2xl" fontWeight="bold">
               {data.name == "UST" ? `$${ustPrice}` : "--"}
-            </Text>
+            </Text> */}
           </Flex>
-          <ChartVault value={data.name == "UST" ? Number(ustPrice) : 0} />
+          {/* <ChartVault value={data.name == "UST" ? Number(ustPrice) : 0} /> */}
+          <Flex width="424px" ></Flex>
         </Box>
         <Box p="8">
           <Box>

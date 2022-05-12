@@ -31,7 +31,7 @@ const BuildRoute: FC<BuildRouteProps> = ({ arbPairs = [] }) => {
     <>
       {
         arbPairs.map((pair, index) => (
-          <HStack mb="2" key={pair.dex + pair?.from?.symbol + Date.now() } >
+          <HStack mb="2" key={pair.dex + pair?.from?.symbol } >
             {!isMobile && (
               <>
                 <Text size="lg" textTransform="capitalize"> {index + 1} </Text>
