@@ -31,9 +31,9 @@ RUN apk add --no-cache curl && \
     adduser -S $APP_USER  -u 1001
 
 COPY .docker/cache.sh /cloudflare/cache.sh
+COPY --chown=$APP_USER:$APP_GROUP .docker/health_check.js /app/health_check.js
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=$APP_USER:$APP_GROUP /app/.next ./.next
-COPY --from=builder --chown=$APP_USER:$APP_GROUP .docker/health_check.js /app/health_check.js
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
