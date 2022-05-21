@@ -34,7 +34,8 @@ const Warchest = () => {
             <HStack spacing="2" >
               <Text>APR</Text>
               <Text color="brand.500" fontWeight="600">
-                {govApr}%
+                {/* {govApr}% */}
+                N/A
               </Text>
             </HStack>
             <HStack spacing="2">
