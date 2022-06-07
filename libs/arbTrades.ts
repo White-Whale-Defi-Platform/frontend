@@ -80,7 +80,7 @@ export const getTxs = async (contract) => {
 export const getToken = async () => {
     const response = await fetch("https://assets.terra.money/cw20/tokens.json")
     const tokens = await response.json()
-    return {...tokens.mainnet, ...ibc}
+    return {...tokens.classic, ...ibc}
 }
 
 const tokenOrNative = (assetInfo) => {
@@ -130,7 +130,7 @@ export const getTrdes = (txs = [], tokens): ArbTrades[] => {
 
                 if (!!isSwap) {
                     const txhash = trade.txhash
-                    const txHashLink = `https://finder.terra.money/mainnet/tx/${txhash}`
+                    const txHashLink = `https://finder.terra.money/classic/tx/${txhash}`
                     const timestamp = dayjs(trade.timestamp).format('MM/DD/YYYY HH:mm:ss')
                     const [profit] = event.attributes
                         .filter(({ key }) => key === 'profit')

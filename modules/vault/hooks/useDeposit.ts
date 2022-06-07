@@ -3,9 +3,9 @@ import { useQuery } from "react-query";
 import {
   useTerraWebapp,
   useAddress,
-  useTransaction,
   useBalance,
 } from "@arthuryeti/terra";
+import {useTransaction} from "modules/govern";
 
 import { createDepositMsgs } from "modules/vault";
 import { minus } from "libs/math";

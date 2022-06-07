@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 import { useTerraWebapp, useAddress } from "@arthuryeti/terra";
 import { useQuery } from "react-query";
+import {useConnectedWallet} from '@terra-money/wallet-provider';
 
 import useContracts from "hooks/useContracts";
 
 export const useGovStaked = () => {
-  const address = useAddress();
+  const connectedWallet = useConnectedWallet();
+  const address = connectedWallet?.walletAddress
+  console.log({address})
   const { gov } = useContracts();
   const { client } = useTerraWebapp();
 

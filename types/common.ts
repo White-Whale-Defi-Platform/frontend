@@ -32,7 +32,7 @@ export interface Response<T> {
 }
 
 export enum NetworkType {
-  Mainnet = "mainnet",
+  classic = "classic",
   Testnet = "testnet",
 }
 export interface Network {
