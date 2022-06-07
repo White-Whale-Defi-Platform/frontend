@@ -35,7 +35,7 @@ const BuyBackCard = () => {
     return data.map(({ txhash, timestamp, offerAmount, returnAmount, offerAsset, askAsset }) => {
       return ({
         txhash: truncate(txhash, isMobile ? [2, 2] : [4, 4]),
-        txHashLink: `https://finder.terra.money/mainnet/tx/${txhash}`,
+        txHashLink: `https://finder.terra.money/classic/tx/${txhash}`,
         timestamp: dayjs(timestamp).format('DD/MM/YYYY'),
         offerAmount: fromTerraAmount(offerAmount),
         returnAmount: fromTerraAmount(returnAmount),

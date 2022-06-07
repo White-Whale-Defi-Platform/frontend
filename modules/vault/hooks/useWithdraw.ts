@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import {
   useAddress,
-  useTransaction,
   useTerraWebapp,
   num,
 } from "@arthuryeti/terra";
 import numeral from "numeral";
 import { useQuery } from "react-query";
+import {useTransaction} from "modules/govern";
 
 import { createWithdrawMsgs } from "modules/vault";
 import { toAmount } from "libs/parse";

@@ -13,6 +13,7 @@ export * from "./hooks/useVoteAvailable";
 export * from "./hooks/usePollVoters";
 export * from "./hooks/useVote";
 export * from "./hooks/useCreatePoll";
+export * from "./hooks/useTransaction";
 
 export * from "./createVoteMsgs";
 export * from "./createCreatePollMsgs";
