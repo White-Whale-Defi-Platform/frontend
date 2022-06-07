@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 
-import { useAddress, useTransaction } from "@arthuryeti/terra";
+import { useAddress } from "@arthuryeti/terra";
 import { createUnstakeMsgs } from "modules/govern";
+import {useTransaction} from "modules/govern";
 
 type Params = {
   govContract: string;

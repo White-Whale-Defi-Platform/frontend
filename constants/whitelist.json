@@ -1,5 +1,25 @@
 {
-  "mainnet": {
+  "mainnet" : {
+    "pairs": [
+      {
+        "contract_addr": "terra12arl49w7t4xpq7krtv43t3dg6g8kn2xxyaav56",
+        "liquidity_token": "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg",
+        "asset_infos": [
+          {
+            "token": {
+              "contract_addr": "terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz"
+            }
+          },
+          {
+            "token": {
+              "contract_addr": "terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "classic": {
     "tokens": {
       "terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x": {
         "protocol": "Anchor",
