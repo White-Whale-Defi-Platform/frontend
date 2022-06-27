@@ -53,7 +53,7 @@ jobs:
       - name: commit new version
         working-directory: './tf-infra-prod-apps'
         run: echo 'frontend_image_tag = "${{ github.sha }}"' > frontend.auto.tfvars
-      - uses: EndBug/add-and-commit@v9.0.0
+      - uses: EndBug/add-and-commit@v9.0.1
         with:
           cwd: 'tf-infra-prod-apps'
           branch: main
